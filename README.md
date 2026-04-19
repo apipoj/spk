@@ -1,6 +1,6 @@
 # AI Sprint Kit (SPK)
 
-Autonomous development for Claude Code (subscription). Paste one line into your agent — it installs itself.
+Autonomous development for Claude Code. Ships as a plugin — hot-reloads in your session, no restart.
 
 <!-- SPK-COUNTS:start -->
 **18 agents** (4 orchestrators + 14 specialists) · **9 commands**
@@ -8,14 +8,16 @@ Autonomous development for Claude Code (subscription). Paste one line into your 
 
 ## Install
 
-Paste this into your Claude Code agent:
-
 ```
-Retrieve and follow the instructions at:
-https://raw.githubusercontent.com/apipoj/spk/main/INSTALL_FOR_AGENTS.md
+/plugin marketplace add apipoj/spk
+/plugin install spk@spk
 ```
 
-The agent clones the repo, asks a few setup questions, provisions `.claude/` in your project, and runs a smoke test. No npm, no CLI binary, no browser install.
+Done. The plugin hot-reloads. On next session start, SPK scaffolds `ai_context/wiki/` and `ai_context/sources/` into your project automatically.
+
+Skills are auto-namespaced: type `/spk:` to see `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:deploy`, `/spk:ingest`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
+
+Agents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 
 ## Agent Squad
 
@@ -66,7 +68,7 @@ Every installed project gets a Karpathy-style LLM-wiki at `ai_context/wiki/`:
 - `index.md` — catalog of every wiki page
 - `log.md` — append-only record of ingests, queries, lints
 
-Drop a file in `ai_context/sources/` and it auto-ingests. Ask `/spk-query "..."` and the wiki answers before the web does.
+Drop a file in `ai_context/sources/` and it auto-ingests. Ask `/spk:query "..."` and the wiki answers before the web does.
 
 ## Security
 

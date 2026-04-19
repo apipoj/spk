@@ -1,5 +1,44 @@
 # Changelog
 
+## 3.1.0 — 2026-04-19
+
+**Major pivot:** SPK now ships as a Claude Code plugin. Hot-reloads in your session; no restart.
+
+### Install (new)
+
+```
+/plugin marketplace add apipoj/spk
+/plugin install spk@spk
+```
+
+### Added
+- `.claude-plugin/marketplace.json` at repo root + `plugins/spk/.claude-plugin/plugin.json`
+- Correct `plugins/spk/hooks/hooks.json` format (matcher + command objects) — v3.0.x hook config used a deprecated flat-string-array format that never fired
+- `plugins/spk/scripts/init-ai-context.cjs` — `SessionStart` hook scaffolds `ai_context/wiki/` + `sources/` into the user project (version-aware, idempotent)
+- 18 agents relocated to `plugins/spk/agents/`; auto-namespaced as `spk:planner`, `spk:architect`, etc.
+- 9 skills at `plugins/spk/skills/<name>/SKILL.md` (replacing flat `commands/`); invoked as `/spk:plan`, `/spk:code`, etc.
+
+### Changed (breaking vs v3.0.x)
+- **Install**: paste-install → `/plugin install spk@spk`. Legacy paste pinned at `v3.0.2`.
+- **Agent names**: `spk-planner` → `planner` (plugin auto-prepends `spk:` namespace)
+- **Command invocation**: `/spk-plan` → `/spk:plan`
+- **Hook format**: flat `["./path.cjs"]` → `{matcher, hooks: [{type, command}]}` — this fixes a silent bug where v3.0.x hooks never actually ran
+
+### Fixed
+- Hooks now actually fire (v3.0.x bug: flat-string-array format was ignored by Claude Code)
+- Reload-after-install friction gone (plugin hot-reloads)
+- Agent-name collisions with user-defined agents (handled via plugin's `spk:` namespace)
+
+### Migration from v3.0.x
+
+1. Remove old files: `rm -rf .claude/agents/spk-* .claude/commands/spk-* .claude/hooks/*/wiki-* .claude/hooks/*/gitignore-* .claude/hooks/*/auto-ingest*`
+2. Install the plugin:
+   ```
+   /plugin marketplace add apipoj/spk
+   /plugin install spk@spk
+   ```
+3. `ai_context/wiki/` + `ai_context/sources/` preserved — user data untouched.
+
 ## 3.0.2 — 2026-04-19
 
 Patch: ship `spk-devops` agent that was previously referenced by `spk-deploy-orchestrator` but missing from the manifest.
