@@ -26,7 +26,14 @@ function main() {
     console.error('manifest.json not found');
     process.exit(1);
   }
-  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+  let manifest;
+  try {
+    manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+  } catch (err) {
+    console.error('manifest.json is not valid JSON:');
+    console.error('  -', err.message);
+    process.exit(1);
+  }
   const result = validateManifest(manifest);
   if (!result.valid) {
     console.error('manifest.json is invalid:');
