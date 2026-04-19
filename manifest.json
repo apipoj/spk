@@ -1,0 +1,41 @@
+{
+  "version": "3.0.0-alpha.0",
+  "released": "2026-04-19",
+  "brand": "AI Sprint Kit",
+  "slug": "spk",
+  "tagline": "Autonomous development via Claude Code subscription",
+  "agents": {
+    "orchestrators": [
+      { "name": "plan-orchestrator",   "model": "claude-opus-4-7", "color": "green",  "phase": "planning" },
+      { "name": "build-orchestrator",  "model": "claude-opus-4-7", "color": "blue",   "phase": "building" },
+      { "name": "audit-orchestrator",  "model": "claude-opus-4-7", "color": "purple", "phase": "auditing" },
+      { "name": "deploy-orchestrator", "model": "claude-opus-4-7", "color": "orange", "phase": "shipping" }
+    ],
+    "specialists": [
+      { "name": "prd-writer",        "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
+      { "name": "business-analyst",  "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
+      { "name": "architect",         "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
+      { "name": "planner",           "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
+      { "name": "debugger",          "model": "claude-opus-4-7",   "color": "purple", "phase": "auditing" },
+      { "name": "code-auditor",      "model": "claude-opus-4-7",   "color": "purple", "phase": "auditing" },
+      { "name": "implementer",       "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
+      { "name": "tester",            "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
+      { "name": "docs",              "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
+      { "name": "researcher",        "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
+      { "name": "verifier",          "model": "claude-sonnet-4-6", "color": "purple", "phase": "auditing" },
+      { "name": "deployment-smoke",  "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" },
+      { "name": "browser-tester",    "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" }
+    ]
+  },
+  "commands": [
+    { "name": "/spk-plan",       "orchestrator": "plan-orchestrator" },
+    { "name": "/spk-code",       "orchestrator": "build-orchestrator" },
+    { "name": "/spk-review",     "orchestrator": "audit-orchestrator" },
+    { "name": "/spk-deploy",     "orchestrator": "deploy-orchestrator" },
+    { "name": "/spk-ingest",     "orchestrator": "plan-orchestrator" },
+    { "name": "/spk-query",      "agent": "researcher" },
+    { "name": "/spk-wiki-lint",  "orchestrator": "audit-orchestrator" },
+    { "name": "/spk-tdd",        "orchestrator": "build-orchestrator" },
+    { "name": "/spk-uninstall",  "agent": null }
+  ]
+}
