@@ -58,7 +58,7 @@ function main() {
     try { event = JSON.parse(raw || '{}'); } catch { process.exit(0); }
     const result = shouldEnqueue(event);
     if (result.enqueue) {
-      process.stderr.write(`[SPK auto-ingest] ${result.reason}. Run /spk-ingest to process.\n`);
+      process.stderr.write(`[SPK auto-ingest] ${result.reason}. Run /spk:ingest to process.\n`);
     }
     process.exit(0);
   });
