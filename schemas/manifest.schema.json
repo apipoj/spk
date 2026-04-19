@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/apipoj/spk/schemas/manifest.schema.json",
+  "title": "SPK manifest",
+  "type": "object",
+  "required": ["version", "released", "brand", "slug", "tagline", "agents", "commands"],
+  "properties": {
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(-[A-Za-z0-9.]+)?$" },
+    "released": { "type": "string", "format": "date" },
+    "brand": { "type": "string", "minLength": 1 },
+    "slug": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,15}$" },
+    "tagline": { "type": "string", "minLength": 1 },
+    "agents": {
+      "type": "object",
+      "required": ["orchestrators", "specialists"],
+      "properties": {
+        "orchestrators": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/agent" }
+        },
+        "specialists": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/agent" }
+        }
+      }
+    },
+    "commands": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^/spk-[a-z-]+$" },
+          "orchestrator": { "type": "string" },
+          "agent": { "type": ["string", "null"] }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "agent": {
+      "type": "object",
+      "required": ["name", "model", "color", "phase"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]+$" },
+        "model": {
+          "type": "string",
+          "enum": ["claude-opus-4-7", "claude-sonnet-4-6"]
+        },
+        "color": { "type": "string", "enum": ["green", "blue", "purple", "orange"] },
+        "phase": { "type": "string", "enum": ["planning", "building", "auditing", "shipping"] }
+      }
+    }
+  }
+}
