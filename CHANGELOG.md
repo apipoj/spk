@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.1 — 2026-04-18
+
+Patch: prefix all 17 SPK agents with `spk-` to prevent collisions with user-defined agents in target projects.
+
+### Changed (breaking, but no known affected users)
+- All 17 agent names prefixed: `planner` → `spk-planner`, `architect` → `spk-architect`, etc.
+- Orchestrator prompts, command dispatches, RESOLVER updated to use new names.
+- manifest.json `agents[].name` and `commands[].orchestrator`/`commands[].agent` updated.
+
+### Rationale
+Common unprefixed names (planner, architect, debugger, researcher, tester) are high collision risk with users' existing agents. Since v3.0.0 shipped with zero external installs, patching in v3.0.1 before adoption was cheaper than waiting for v3.1.
+
 ## 3.0.0 — 2026-04-19
 
 First production release of SPK v3.

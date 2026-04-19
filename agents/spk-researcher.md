@@ -1,5 +1,5 @@
 ---
-name: researcher
+name: spk-researcher
 description: Researches technologies, APIs, and libraries using web search + library docs. Returns distilled findings, not raw transcripts.
 model: claude-sonnet-4-6
 color: blue

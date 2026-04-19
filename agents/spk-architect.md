@@ -1,5 +1,5 @@
 ---
-name: architect
+name: spk-architect
 description: Designs system architecture + tech stack for a feature. Use when orchestrator needs a design doc with components, data flow, and tech choices.
 model: claude-opus-4-7
 color: green

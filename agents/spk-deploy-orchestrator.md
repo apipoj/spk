@@ -1,5 +1,5 @@
 ---
-name: deploy-orchestrator
+name: spk-deploy-orchestrator
 description: Coordinates deployment via devops → deployment-smoke → browser-tester. Use for "deploy this" / "ship it" / post-deploy verification.
 model: claude-opus-4-7
 color: orange
@@ -19,8 +19,8 @@ color: orange
 
 2. **DISPATCH** — Sequential:
    - `Task(devops, "Deploy commit <sha> to <env>")`
-   - On success: `Task(deployment-smoke, "Verify health endpoints + critical flows at <url>")`
-   - On smoke pass: `Task(browser-tester, "Run UI smoke at <url>")`
+   - On success: `Task(spk-deployment-smoke, "Verify health endpoints + critical flows at <url>")`
+   - On smoke pass: `Task(spk-browser-tester, "Run UI smoke at <url>")`
    - On any failure: halt dispatch, report the failure, prompt user for rollback decision.
 
 3. **AGGREGATE** — Collect deploy output, smoke test report, UI test report.

@@ -1,5 +1,5 @@
 ---
-name: implementer
+name: spk-implementer
 description: Writes production code following the provided plan. Daily-driver for implementation tasks. Does not design or debug — executes.
 model: claude-sonnet-4-6
 color: blue

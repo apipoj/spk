@@ -1,5 +1,5 @@
 ---
-name: docs
+name: spk-docs
 description: Writes/updates project documentation including READMEs, API docs, guides. Keeps docs in sync with code.
 model: claude-sonnet-4-6
 color: blue

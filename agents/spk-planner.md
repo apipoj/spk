@@ -1,5 +1,5 @@
 ---
-name: planner
+name: spk-planner
 description: Turns PRD + architecture into a step-by-step implementation plan with tasks. Use when orchestrator needs a developer-ready plan.
 model: claude-opus-4-7
 color: green

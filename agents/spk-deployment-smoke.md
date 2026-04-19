@@ -1,5 +1,5 @@
 ---
-name: deployment-smoke
+name: spk-deployment-smoke
 description: Post-deploy health checks. Hits critical endpoints, checks auth flow, verifies error rate thresholds. Fast < 60s run.
 model: claude-sonnet-4-6
 color: orange

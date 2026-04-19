@@ -1,5 +1,5 @@
 ---
-name: business-analyst
+name: spk-business-analyst
 description: Market/UX/competitor research for a product area. Use when orchestrator needs grounding in how the market solves a problem.
 model: claude-opus-4-7
 color: green
