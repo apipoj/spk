@@ -2,7 +2,7 @@
 // Layer 2 of SPK's 5-layer wiki security: blocks Write/Edit to ai_context/wiki/**
 // when the content contains secret-shaped strings.
 
-const { scanForSecrets } = require('../../scripts/secret-scanner.cjs');
+const { scanForSecrets } = require('./secret-scanner.cjs');
 
 function isWikiPath(filePath) {
   if (!filePath) return false;
