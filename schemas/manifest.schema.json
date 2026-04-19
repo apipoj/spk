@@ -30,7 +30,7 @@
         "type": "object",
         "required": ["name"],
         "properties": {
-          "name": { "type": "string", "pattern": "^/spk-[a-z-]+$" },
+          "name": { "type": "string", "pattern": "^/[a-z][a-z-]+$" },
           "orchestrator": { "type": "string" },
           "agent": { "type": ["string", "null"] }
         }

@@ -1,5 +1,5 @@
 // tests/wiki-secret-scan.test.js
-const { shouldBlock } = require('../hooks/PreToolUse/wiki-secret-scan.cjs');
+const { shouldBlock } = require('../plugins/spk/scripts/wiki-secret-scan.cjs');
 
 describe('wiki-secret-scan', () => {
   test('allows non-wiki paths even with secrets', () => {

@@ -1,5 +1,5 @@
 // tests/auto-ingest.test.js
-const { shouldEnqueue, computeSourceHash, isAlreadyIngested } = require('../hooks/PostToolUse/auto-ingest.cjs');
+const { shouldEnqueue, computeSourceHash, isAlreadyIngested } = require('../plugins/spk/scripts/auto-ingest.cjs');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');

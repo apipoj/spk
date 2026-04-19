@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const REPO_ROOT = path.join(__dirname, '..');
+const PLUGIN_ROOT = path.join(REPO_ROOT, 'plugins', 'spk');
 const manifest = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'manifest.json'), 'utf-8'));
 
 function parseFrontmatter(content) {
@@ -17,9 +18,9 @@ function parseFrontmatter(content) {
 }
 
 describe('command manifest sync', () => {
-  test.each(manifest.commands.map(c => [c.name, c]))('%s has matching .md file', (name, cmd) => {
+  test.each(manifest.commands.map(c => [c.name, c]))('%s has matching SKILL.md', (name, cmd) => {
     const slug = name.replace(/^\//, '');
-    const file = path.join(REPO_ROOT, 'commands', `${slug}.md`);
+    const file = path.join(PLUGIN_ROOT, 'skills', slug, 'SKILL.md');
     expect(fs.existsSync(file)).toBe(true);
 
     const content = fs.readFileSync(file, 'utf-8');
@@ -28,11 +29,13 @@ describe('command manifest sync', () => {
     expect(fm.description).toBeTruthy();
   });
 
-  test('no orphan .md files in commands/', () => {
-    const expected = new Set(manifest.commands.map(c => c.name.replace(/^\//, '') + '.md'));
-    const actual = fs.readdirSync(path.join(REPO_ROOT, 'commands')).filter(f => f.endsWith('.md'));
-    for (const f of actual) {
-      expect(expected.has(f)).toBe(true);
+  test('no orphan skill dirs in plugins/spk/skills/', () => {
+    const expected = new Set(manifest.commands.map(c => c.name.replace(/^\//, '')));
+    const actual = fs.readdirSync(path.join(PLUGIN_ROOT, 'skills'), { withFileTypes: true })
+      .filter(e => e.isDirectory())
+      .map(e => e.name);
+    for (const dir of actual) {
+      expect(expected.has(dir)).toBe(true);
     }
   });
 });

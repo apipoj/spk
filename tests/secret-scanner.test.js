@@ -1,5 +1,5 @@
 // tests/secret-scanner.test.js
-const { scanForSecrets, SECRET_PATTERNS } = require('../scripts/secret-scanner.cjs');
+const { scanForSecrets, SECRET_PATTERNS } = require('../plugins/spk/scripts/secret-scanner.cjs');
 
 describe('scanForSecrets', () => {
   test('clean text returns no findings', () => {

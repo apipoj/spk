@@ -4,6 +4,7 @@ const path = require('path');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const manifest = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'manifest.json'), 'utf-8'));
+const PLUGIN_ROOT = path.join(REPO_ROOT, 'plugins', 'spk');
 
 function parseFrontmatter(content) {
   const m = content.match(/^---\n([\s\S]+?)\n---/);
@@ -22,39 +23,43 @@ function main() {
   const expectedAgents = new Set(allAgents.map(a => `${a.name}.md`));
 
   for (const agent of allAgents) {
-    const file = path.join(REPO_ROOT, 'agents', `${agent.name}.md`);
+    const file = path.join(PLUGIN_ROOT, 'agents', `${agent.name}.md`);
     if (!fs.existsSync(file)) {
-      errors.push(`MISSING agent file: agents/${agent.name}.md`);
+      errors.push(`MISSING agent file: plugins/spk/agents/${agent.name}.md`);
       continue;
     }
     const fm = parseFrontmatter(fs.readFileSync(file, 'utf-8'));
     if (!fm) {
-      errors.push(`agents/${agent.name}.md: missing or malformed frontmatter`);
+      errors.push(`plugins/spk/agents/${agent.name}.md: missing or malformed frontmatter`);
       continue;
     }
     for (const field of ['name', 'model', 'color']) {
       if (fm[field] !== agent[field]) {
-        errors.push(`agents/${agent.name}.md: ${field} mismatch (file=${fm[field]} manifest=${agent[field]})`);
+        errors.push(`plugins/spk/agents/${agent.name}.md: ${field} mismatch (file=${fm[field]} manifest=${agent[field]})`);
       }
     }
-    if (!fm.description) errors.push(`agents/${agent.name}.md: missing description`);
+    if (!fm.description) errors.push(`plugins/spk/agents/${agent.name}.md: missing description`);
   }
 
-  const actualAgents = fs.readdirSync(path.join(REPO_ROOT, 'agents')).filter(f => f.endsWith('.md'));
+  const actualAgents = fs.readdirSync(path.join(PLUGIN_ROOT, 'agents')).filter(f => f.endsWith('.md'));
   for (const f of actualAgents) {
-    if (!expectedAgents.has(f)) errors.push(`ORPHAN agent file: agents/${f} (not in manifest)`);
+    if (!expectedAgents.has(f)) errors.push(`ORPHAN agent file: plugins/spk/agents/${f} (not in manifest)`);
   }
 
-  const expectedCommands = new Set(manifest.commands.map(c => c.name.replace(/^\//, '') + '.md'));
   for (const cmd of manifest.commands) {
     const slug = cmd.name.replace(/^\//, '');
-    const file = path.join(REPO_ROOT, 'commands', `${slug}.md`);
-    if (!fs.existsSync(file)) errors.push(`MISSING command file: commands/${slug}.md`);
+    const file = path.join(PLUGIN_ROOT, 'skills', slug, 'SKILL.md');
+    if (!fs.existsSync(file)) errors.push(`MISSING skill file: plugins/spk/skills/${slug}/SKILL.md`);
   }
 
-  const actualCommands = fs.readdirSync(path.join(REPO_ROOT, 'commands')).filter(f => f.endsWith('.md'));
-  for (const f of actualCommands) {
-    if (!expectedCommands.has(f)) errors.push(`ORPHAN command file: commands/${f} (not in manifest)`);
+  const skillDirs = fs.existsSync(path.join(PLUGIN_ROOT, 'skills'))
+    ? fs.readdirSync(path.join(PLUGIN_ROOT, 'skills'), { withFileTypes: true })
+        .filter(e => e.isDirectory())
+        .map(e => e.name)
+    : [];
+  const expectedSlugs = new Set(manifest.commands.map(c => c.name.replace(/^\//, '')));
+  for (const dir of skillDirs) {
+    if (!expectedSlugs.has(dir)) errors.push(`ORPHAN skill dir: plugins/spk/skills/${dir}/ (not in manifest)`);
   }
 
   if (errors.length) {

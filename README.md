@@ -22,24 +22,24 @@ The agent clones the repo, asks a few setup questions, provisions `.claude/` in 
 <!-- SPK-AGENTS:start -->
 | Name | Role | Model | Color | Phase |
 |---|---|---|---|---|
-| `spk-plan-orchestrator` | orchestrator | claude-opus-4-7 | green | planning |
-| `spk-build-orchestrator` | orchestrator | claude-opus-4-7 | blue | building |
-| `spk-audit-orchestrator` | orchestrator | claude-opus-4-7 | purple | auditing |
-| `spk-deploy-orchestrator` | orchestrator | claude-opus-4-7 | orange | shipping |
-| `spk-prd-writer` | specialist | claude-opus-4-7 | green | planning |
-| `spk-business-analyst` | specialist | claude-opus-4-7 | green | planning |
-| `spk-architect` | specialist | claude-opus-4-7 | green | planning |
-| `spk-planner` | specialist | claude-opus-4-7 | green | planning |
-| `spk-debugger` | specialist | claude-opus-4-7 | purple | auditing |
-| `spk-code-auditor` | specialist | claude-opus-4-7 | purple | auditing |
-| `spk-implementer` | specialist | claude-sonnet-4-6 | blue | building |
-| `spk-tester` | specialist | claude-sonnet-4-6 | blue | building |
-| `spk-docs` | specialist | claude-sonnet-4-6 | blue | building |
-| `spk-researcher` | specialist | claude-sonnet-4-6 | blue | building |
-| `spk-verifier` | specialist | claude-sonnet-4-6 | purple | auditing |
-| `spk-devops` | specialist | claude-sonnet-4-6 | orange | shipping |
-| `spk-deployment-smoke` | specialist | claude-sonnet-4-6 | orange | shipping |
-| `spk-browser-tester` | specialist | claude-sonnet-4-6 | orange | shipping |
+| `plan-orchestrator` | orchestrator | claude-opus-4-7 | green | planning |
+| `build-orchestrator` | orchestrator | claude-opus-4-7 | blue | building |
+| `audit-orchestrator` | orchestrator | claude-opus-4-7 | purple | auditing |
+| `deploy-orchestrator` | orchestrator | claude-opus-4-7 | orange | shipping |
+| `prd-writer` | specialist | claude-opus-4-7 | green | planning |
+| `business-analyst` | specialist | claude-opus-4-7 | green | planning |
+| `architect` | specialist | claude-opus-4-7 | green | planning |
+| `planner` | specialist | claude-opus-4-7 | green | planning |
+| `debugger` | specialist | claude-opus-4-7 | purple | auditing |
+| `code-auditor` | specialist | claude-opus-4-7 | purple | auditing |
+| `implementer` | specialist | claude-sonnet-4-6 | blue | building |
+| `tester` | specialist | claude-sonnet-4-6 | blue | building |
+| `docs` | specialist | claude-sonnet-4-6 | blue | building |
+| `researcher` | specialist | claude-sonnet-4-6 | blue | building |
+| `verifier` | specialist | claude-sonnet-4-6 | purple | auditing |
+| `devops` | specialist | claude-sonnet-4-6 | orange | shipping |
+| `deployment-smoke` | specialist | claude-sonnet-4-6 | orange | shipping |
+| `browser-tester` | specialist | claude-sonnet-4-6 | orange | shipping |
 <!-- SPK-AGENTS:end -->
 
 ## Commands
@@ -47,15 +47,15 @@ The agent clones the repo, asks a few setup questions, provisions `.claude/` in 
 <!-- SPK-COMMANDS:start -->
 | Command | Dispatches to |
 |---|---|
-| `/spk-plan` | spk-plan-orchestrator |
-| `/spk-code` | spk-build-orchestrator |
-| `/spk-review` | spk-audit-orchestrator |
-| `/spk-deploy` | spk-deploy-orchestrator |
-| `/spk-ingest` | spk-plan-orchestrator |
-| `/spk-query` | spk-researcher |
-| `/spk-wiki-lint` | spk-audit-orchestrator |
-| `/spk-tdd` | spk-build-orchestrator |
-| `/spk-uninstall` | (no agent) |
+| `/plan` | plan-orchestrator |
+| `/code` | build-orchestrator |
+| `/review` | audit-orchestrator |
+| `/deploy` | deploy-orchestrator |
+| `/ingest` | plan-orchestrator |
+| `/query` | researcher |
+| `/wiki-lint` | audit-orchestrator |
+| `/tdd` | build-orchestrator |
+| `/uninstall` | (no agent) |
 <!-- SPK-COMMANDS:end -->
 
 ## Memory

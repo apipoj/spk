@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const REPO_ROOT = path.join(__dirname, '..');
+const PLUGIN_ROOT = path.join(REPO_ROOT, 'plugins', 'spk');
 const manifest = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'manifest.json'), 'utf-8'));
 
 function parseFrontmatter(content) {
@@ -23,7 +24,7 @@ describe('agent manifest sync', () => {
   ];
 
   test.each(allAgents.map(a => [a.name, a]))('%s has matching .md file', (name, agent) => {
-    const file = path.join(REPO_ROOT, 'agents', `${name}.md`);
+    const file = path.join(PLUGIN_ROOT, 'agents', `${name}.md`);
     expect(fs.existsSync(file)).toBe(true);
 
     const content = fs.readFileSync(file, 'utf-8');
@@ -35,9 +36,9 @@ describe('agent manifest sync', () => {
     expect(fm.description).toBeTruthy();
   });
 
-  test('no orphan .md files in agents/', () => {
+  test('no orphan .md files in plugins/spk/agents/', () => {
     const expected = new Set(allAgents.map(a => `${a.name}.md`));
-    const actual = fs.readdirSync(path.join(REPO_ROOT, 'agents')).filter(f => f.endsWith('.md'));
+    const actual = fs.readdirSync(path.join(PLUGIN_ROOT, 'agents')).filter(f => f.endsWith('.md'));
     for (const f of actual) {
       expect(expected.has(f)).toBe(true);
     }

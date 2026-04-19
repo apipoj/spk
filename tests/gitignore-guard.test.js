@@ -1,5 +1,5 @@
 // tests/gitignore-guard.test.js
-const { shouldBlock } = require('../hooks/PreToolUse/gitignore-guard.cjs');
+const { shouldBlock } = require('../plugins/spk/scripts/gitignore-guard.cjs');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');

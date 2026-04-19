@@ -1,42 +1,42 @@
 {
-  "version": "3.0.2",
+  "version": "3.1.0",
   "released": "2026-04-19",
   "brand": "AI Sprint Kit",
   "slug": "spk",
   "tagline": "Autonomous development via Claude Code subscription",
   "agents": {
     "orchestrators": [
-      { "name": "spk-plan-orchestrator",   "model": "claude-opus-4-7", "color": "green",  "phase": "planning" },
-      { "name": "spk-build-orchestrator",  "model": "claude-opus-4-7", "color": "blue",   "phase": "building" },
-      { "name": "spk-audit-orchestrator",  "model": "claude-opus-4-7", "color": "purple", "phase": "auditing" },
-      { "name": "spk-deploy-orchestrator", "model": "claude-opus-4-7", "color": "orange", "phase": "shipping" }
+      { "name": "plan-orchestrator",   "model": "claude-opus-4-7", "color": "green",  "phase": "planning" },
+      { "name": "build-orchestrator",  "model": "claude-opus-4-7", "color": "blue",   "phase": "building" },
+      { "name": "audit-orchestrator",  "model": "claude-opus-4-7", "color": "purple", "phase": "auditing" },
+      { "name": "deploy-orchestrator", "model": "claude-opus-4-7", "color": "orange", "phase": "shipping" }
     ],
     "specialists": [
-      { "name": "spk-prd-writer",        "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
-      { "name": "spk-business-analyst",  "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
-      { "name": "spk-architect",         "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
-      { "name": "spk-planner",           "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
-      { "name": "spk-debugger",          "model": "claude-opus-4-7",   "color": "purple", "phase": "auditing" },
-      { "name": "spk-code-auditor",      "model": "claude-opus-4-7",   "color": "purple", "phase": "auditing" },
-      { "name": "spk-implementer",       "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
-      { "name": "spk-tester",            "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
-      { "name": "spk-docs",              "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
-      { "name": "spk-researcher",        "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
-      { "name": "spk-verifier",          "model": "claude-sonnet-4-6", "color": "purple", "phase": "auditing" },
-      { "name": "spk-devops",            "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" },
-      { "name": "spk-deployment-smoke",  "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" },
-      { "name": "spk-browser-tester",    "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" }
+      { "name": "prd-writer",        "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
+      { "name": "business-analyst",  "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
+      { "name": "architect",         "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
+      { "name": "planner",           "model": "claude-opus-4-7",   "color": "green",  "phase": "planning" },
+      { "name": "debugger",          "model": "claude-opus-4-7",   "color": "purple", "phase": "auditing" },
+      { "name": "code-auditor",      "model": "claude-opus-4-7",   "color": "purple", "phase": "auditing" },
+      { "name": "implementer",       "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
+      { "name": "tester",            "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
+      { "name": "docs",              "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
+      { "name": "researcher",        "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
+      { "name": "verifier",          "model": "claude-sonnet-4-6", "color": "purple", "phase": "auditing" },
+      { "name": "devops",            "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" },
+      { "name": "deployment-smoke",  "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" },
+      { "name": "browser-tester",    "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" }
     ]
   },
   "commands": [
-    { "name": "/spk-plan",       "orchestrator": "spk-plan-orchestrator" },
-    { "name": "/spk-code",       "orchestrator": "spk-build-orchestrator" },
-    { "name": "/spk-review",     "orchestrator": "spk-audit-orchestrator" },
-    { "name": "/spk-deploy",     "orchestrator": "spk-deploy-orchestrator" },
-    { "name": "/spk-ingest",     "orchestrator": "spk-plan-orchestrator" },
-    { "name": "/spk-query",      "agent": "spk-researcher" },
-    { "name": "/spk-wiki-lint",  "orchestrator": "spk-audit-orchestrator" },
-    { "name": "/spk-tdd",        "orchestrator": "spk-build-orchestrator" },
-    { "name": "/spk-uninstall",  "agent": null }
+    { "name": "/plan",       "orchestrator": "plan-orchestrator" },
+    { "name": "/code",       "orchestrator": "build-orchestrator" },
+    { "name": "/review",     "orchestrator": "audit-orchestrator" },
+    { "name": "/deploy",     "orchestrator": "deploy-orchestrator" },
+    { "name": "/ingest",     "orchestrator": "plan-orchestrator" },
+    { "name": "/query",      "agent": "researcher" },
+    { "name": "/wiki-lint",  "orchestrator": "audit-orchestrator" },
+    { "name": "/tdd",        "orchestrator": "build-orchestrator" },
+    { "name": "/uninstall",  "agent": null }
   ]
 }

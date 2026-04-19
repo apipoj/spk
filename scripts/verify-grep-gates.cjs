@@ -48,7 +48,8 @@ const GATES = [
       'INSTALL_FOR_AGENTS.md',
       'RESOLVER.md',
       'manifest.json',
-      'scripts/verify-grep-gates.cjs'
+      'scripts/verify-grep-gates.cjs',
+      'plugins/spk/.claude-plugin/plugin.json'
     ] },
   { pattern: '^model:\\s+(opus|sonnet|haiku)\\s*$', name: 'no-alias-models', flags: 'm' }
 ];

@@ -5,15 +5,15 @@ Maps user intent → the right SPK command. When the main-thread Claude is unsur
 <!-- SPK-COMMANDS:start -->
 | Command | Dispatches to |
 |---|---|
-| `/spk-plan` | spk-plan-orchestrator |
-| `/spk-code` | spk-build-orchestrator |
-| `/spk-review` | spk-audit-orchestrator |
-| `/spk-deploy` | spk-deploy-orchestrator |
-| `/spk-ingest` | spk-plan-orchestrator |
-| `/spk-query` | spk-researcher |
-| `/spk-wiki-lint` | spk-audit-orchestrator |
-| `/spk-tdd` | spk-build-orchestrator |
-| `/spk-uninstall` | (no agent) |
+| `/plan` | plan-orchestrator |
+| `/code` | build-orchestrator |
+| `/review` | audit-orchestrator |
+| `/deploy` | deploy-orchestrator |
+| `/ingest` | plan-orchestrator |
+| `/query` | researcher |
+| `/wiki-lint` | audit-orchestrator |
+| `/tdd` | build-orchestrator |
+| `/uninstall` | (no agent) |
 <!-- SPK-COMMANDS:end -->
 
 ## Intent → Command Reference
