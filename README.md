@@ -3,7 +3,7 @@
 Autonomous development for Claude Code (subscription). Paste one line into your agent — it installs itself.
 
 <!-- SPK-COUNTS:start -->
-**17 agents** (4 orchestrators + 13 specialists) · **9 commands**
+**18 agents** (4 orchestrators + 14 specialists) · **9 commands**
 <!-- SPK-COUNTS:end -->
 
 ## Install
@@ -37,6 +37,7 @@ The agent clones the repo, asks a few setup questions, provisions `.claude/` in 
 | `spk-docs` | specialist | claude-sonnet-4-6 | blue | building |
 | `spk-researcher` | specialist | claude-sonnet-4-6 | blue | building |
 | `spk-verifier` | specialist | claude-sonnet-4-6 | purple | auditing |
+| `spk-devops` | specialist | claude-sonnet-4-6 | orange | shipping |
 | `spk-deployment-smoke` | specialist | claude-sonnet-4-6 | orange | shipping |
 | `spk-browser-tester` | specialist | claude-sonnet-4-6 | orange | shipping |
 <!-- SPK-AGENTS:end -->

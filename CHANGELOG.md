@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.0.2 — 2026-04-19
+
+Patch: ship `spk-devops` agent that was previously referenced by `spk-deploy-orchestrator` but missing from the manifest.
+
+### Added
+- `spk-devops` — Sonnet 4.6 specialist for CI/CD setup, deployment scripts, infrastructure config. Shipping phase (orange).
+
+### Fixed
+- Install feedback reported `spk-deploy-orchestrator references a devops agent that isn't shipped` — gap closed.
+
 ## 3.0.1 — 2026-04-18
 
 Patch: prefix all 17 SPK agents with `spk-` to prevent collisions with user-defined agents in target projects.

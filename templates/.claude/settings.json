@@ -13,7 +13,7 @@
     "SPK_WIKI_SECRETS_STRICT": "true"
   },
   "spk": {
-    "version": "3.0.1",
+    "version": "3.0.2",
     "wikiRoot": "ai_context/wiki",
     "sourcesRoot": "ai_context/sources"
   }

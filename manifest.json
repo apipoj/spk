@@ -1,5 +1,5 @@
 {
-  "version": "3.0.1",
+  "version": "3.0.2",
   "released": "2026-04-19",
   "brand": "AI Sprint Kit",
   "slug": "spk",
@@ -23,6 +23,7 @@
       { "name": "spk-docs",              "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
       { "name": "spk-researcher",        "model": "claude-sonnet-4-6", "color": "blue",   "phase": "building" },
       { "name": "spk-verifier",          "model": "claude-sonnet-4-6", "color": "purple", "phase": "auditing" },
+      { "name": "spk-devops",            "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" },
       { "name": "spk-deployment-smoke",  "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" },
       { "name": "spk-browser-tester",    "model": "claude-sonnet-4-6", "color": "orange", "phase": "shipping" }
     ]

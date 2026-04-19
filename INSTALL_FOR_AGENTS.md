@@ -3,7 +3,7 @@
 You are a Claude Code agent installing SPK (AI Sprint Kit) v3 into the user's project. Follow these steps IN ORDER. Ask the user only where indicated. Do not skip steps.
 
 <!-- SPK-COUNTS:start -->
-**17 agents** (4 orchestrators + 13 specialists) · **9 commands**
+**18 agents** (4 orchestrators + 14 specialists) · **9 commands**
 <!-- SPK-COUNTS:end -->
 
 ## Step 0 — Environment Detection (parallel)
