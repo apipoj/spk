@@ -28,5 +28,5 @@ color: purple
 
 - Fail-closed: any gate failure → ❌ FAIL.
 - Do NOT fix failures — report them.
-- Route fixes to `implementer` via the orchestrator.
+- Route fixes to `spk:implementer` via the orchestrator.
 - Output format is terse: `✅ Tests: 21/21 · Coverage: 87% · Gates: 3/3 · Manifest: valid · Docs: in sync`.

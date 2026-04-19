@@ -1,11 +1,11 @@
 ---
-description: Implement from a plan via build-orchestrator (implementer → tester → docs).
+description: Implement from a plan via spk:build-orchestrator (spk:implementer → spk:tester → spk:docs).
 argument-hint: "[plan reference or feature]"
 ---
 
 # /spk:code
 
-Delegate to `build-orchestrator` for implementation.
+Delegate to `spk:build-orchestrator` for implementation.
 
 ## Pre-computed Context
 !`git status --short`

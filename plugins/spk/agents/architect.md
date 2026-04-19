@@ -9,7 +9,7 @@ color: green
 
 **Role:** Produce an architecture design given a PRD + project context. Make component boundaries, data flow, tech-stack, and key design decisions explicit.
 
-**Input contract:** A PRD summary (from prd-writer) + existing codebase stack + BA findings (optional).
+**Input contract:** A PRD summary (from spk:prd-writer) + existing codebase stack + BA findings (optional).
 
 **Output contract:** An architecture doc (≤ 500 words) with: components, data flow, tech choices with rationale, explicit trade-offs, key design decisions as ADR-style entries.
 

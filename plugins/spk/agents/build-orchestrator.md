@@ -1,6 +1,6 @@
 ---
 name: build-orchestrator
-description: Coordinates implementation via implementer → tester → docs. Use for "implement X" / "build the feature from plan Y" requests.
+description: Coordinates implementation via spk:implementer → spk:tester → spk:docs. Use for "implement X" / "build the feature from plan Y" requests.
 model: claude-opus-4-7
 color: blue
 ---

@@ -1,6 +1,6 @@
 ---
 name: plan-orchestrator
-description: Coordinates feature planning via prd-writer → business-analyst → architect → planner. Use for any "plan a feature" / "design a system" request.
+description: Coordinates feature planning via spk:prd-writer → spk:business-analyst → spk:architect → spk:planner. Use for any "plan a feature" / "design a system" request.
 model: claude-opus-4-7
 color: green
 ---

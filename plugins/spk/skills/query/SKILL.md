@@ -5,7 +5,7 @@ argument-hint: "[question]"
 
 # /spk:query
 
-Delegate to `researcher` for wiki-first lookup.
+Delegate to `spk:researcher` for wiki-first lookup.
 
 ## Pre-computed Context
 !`ls ai_context/wiki/ 2>/dev/null`

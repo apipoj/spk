@@ -1,11 +1,11 @@
 ---
-description: Ingest a source file into the wiki. plan-orchestrator extracts entities + concepts and writes pages.
+description: Ingest a source file into the wiki. spk:plan-orchestrator extracts entities + concepts and writes pages.
 argument-hint: "[file path or URL]"
 ---
 
 # /spk:ingest
 
-Delegate to `plan-orchestrator` for wiki ingest.
+Delegate to `spk:plan-orchestrator` for wiki ingest.
 
 ## Pre-computed Context
 !`ls ai_context/sources/ 2>/dev/null | head -5`

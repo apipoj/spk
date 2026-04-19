@@ -1,6 +1,6 @@
 ---
 name: deploy-orchestrator
-description: Coordinates deployment via devops → deployment-smoke → browser-tester. Use for "deploy this" / "ship it" / post-deploy verification.
+description: Coordinates deployment via spk:devops → spk:deployment-smoke → spk:browser-tester. Use for "deploy this" / "ship it" / post-deploy verification.
 model: claude-opus-4-7
 color: orange
 ---
@@ -29,6 +29,6 @@ color: orange
 
 ## Constraints
 
-- For PRODUCTION deploys, pause for user confirmation before dispatching `devops`.
-- On smoke failure, do NOT proceed to browser-tester. Report immediately.
+- For PRODUCTION deploys, pause for user confirmation before dispatching `spk:devops`.
+- On smoke failure, do NOT proceed to spk:browser-tester. Report immediately.
 - Rollback is user-decided; orchestrator recommends but does not execute.

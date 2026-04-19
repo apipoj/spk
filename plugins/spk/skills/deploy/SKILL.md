@@ -1,11 +1,11 @@
 ---
-description: Deploy + smoke test + UI verify via deploy-orchestrator.
+description: Deploy + smoke test + UI verify via spk:deploy-orchestrator.
 argument-hint: "[env: staging|production]"
 ---
 
 # /spk:deploy
 
-Delegate to `deploy-orchestrator` for full deployment cycle.
+Delegate to `spk:deploy-orchestrator` for full deployment cycle.
 
 ## Pre-computed Context
 !`git log -1 --format='%H %s'`

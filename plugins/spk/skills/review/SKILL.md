@@ -1,11 +1,11 @@
 ---
-description: Multi-pass code + security + maintainability review via audit-orchestrator.
+description: Multi-pass code + security + maintainability review via spk:audit-orchestrator.
 argument-hint: "[diff range or 'wiki']"
 ---
 
 # /spk:review
 
-Delegate to `audit-orchestrator` for deep review.
+Delegate to `spk:audit-orchestrator` for deep review.
 
 ## Pre-computed Context
 !`git diff HEAD~1 --stat`

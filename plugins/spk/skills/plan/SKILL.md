@@ -1,11 +1,11 @@
 ---
-description: Plan a feature via plan-orchestrator (PRD → BA → architect → planner).
+description: Plan a feature via spk:plan-orchestrator (PRD → BA → spk:architect → spk:planner).
 argument-hint: "[feature description]"
 ---
 
 # /spk:plan
 
-Delegate to `plan-orchestrator` with the user's feature description.
+Delegate to `spk:plan-orchestrator` with the user's feature description.
 
 ## Pre-computed Context
 !`git status --short`

@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.1.2 — 2026-04-19
+
+Hotfix (part 2): prefix `spk:` to ALL agent-name references inside plugin files, not just `Task()` dispatches.
+
+### Fixed
+- v3.1.1 fixed the programmatic dispatches. But prose mentions like "Delegate to `plan-orchestrator`" and skill descriptions like "Plan a feature via plan-orchestrator" still used bare names. Claude Code's main-thread reads these to pick agents and may dispatch with the literal bare name → fail.
+- Now every backtick-quoted agent name + every description-field mention + every arrow-chain ("prd-writer → business-analyst → ...") uses the `spk:` namespace.
+
+### Lesson (saved to memory)
+The auto-namespace prefix must appear in ALL agent references inside plugin files, not just programmatic `Task()` calls. Prose in `description:` frontmatter and workflow text gets read for routing, not just display.
+
 ## 3.1.1 — 2026-04-19
 
 Hotfix: prefix all `Task(subagent_type=...)` dispatches with `spk:` namespace.

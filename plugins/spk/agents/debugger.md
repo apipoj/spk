@@ -27,5 +27,5 @@ color: purple
 
 - Never propose a fix without establishing the root cause first.
 - "I think it's probably X" is not a root cause. Verify.
-- Return ONLY the diagnosis. Let the orchestrator route the fix to `implementer`.
+- Return ONLY the diagnosis. Let the orchestrator route the fix to `spk:implementer`.
 - If the bug touches production data or credentials, STOP and escalate to user.

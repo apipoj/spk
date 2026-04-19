@@ -4,7 +4,7 @@ description: Audit the wiki for orphans, contradictions, stale claims, missing c
 
 # /spk:wiki-lint
 
-Delegate to `audit-orchestrator` with wiki-lint lens.
+Delegate to `spk:audit-orchestrator` with wiki-lint lens.
 
 ## Pre-computed Context
 !`ls ai_context/wiki/ 2>/dev/null`

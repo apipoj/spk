@@ -1,11 +1,11 @@
 ---
-description: TDD loop — tester writes failing test, implementer makes it pass, iterate. Driven by build-orchestrator.
+description: TDD loop — spk:tester writes failing test, spk:implementer makes it pass, iterate. Driven by spk:build-orchestrator.
 argument-hint: "[feature or function name]"
 ---
 
 # /spk:tdd
 
-Delegate to `build-orchestrator` in TDD mode.
+Delegate to `spk:build-orchestrator` in TDD mode.
 
 ## Pre-computed Context
 !`git status --short`
