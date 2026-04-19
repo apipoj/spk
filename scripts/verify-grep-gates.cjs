@@ -36,6 +36,7 @@ const GATES = [
     excludePaths: [
       'docs/changelog-v3.0.md',
       'CHANGELOG.md',
+      'INSTALL_FOR_AGENTS.md',
       'scripts/verify-grep-gates.cjs',
       'tests/verify-grep-gates.test.js'
     ] },
