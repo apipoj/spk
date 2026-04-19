@@ -26,6 +26,9 @@ jobs:
       - name: Verify docs in sync with manifest
         run: npm run regen:check
 
+      - name: Verify files in sync with manifest
+        run: npm run verify:sync
+
       - name: Run grep gates
         run: npm run verify:gates
 

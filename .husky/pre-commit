@@ -11,3 +11,6 @@ npm run verify:gates
 
 # Validate manifest
 npm run validate:manifest
+
+# Verify files in sync with manifest
+npm run verify:sync

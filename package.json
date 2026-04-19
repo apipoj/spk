@@ -19,6 +19,7 @@
     "regen:check": "node scripts/regenerate-docs.cjs --check",
     "validate:manifest": "node scripts/validate-manifest.cjs",
     "verify:gates": "node scripts/verify-grep-gates.cjs",
+    "verify:sync": "node scripts/verify-manifest-sync.cjs",
     "prepare": "husky"
   },
   "devDependencies": {
