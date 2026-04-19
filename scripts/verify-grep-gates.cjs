@@ -29,6 +29,8 @@ function runGate(rootDir, { pattern, name, flags = 'i', excludePaths = [] }) {
   return { name, passed: hits.length === 0, hits };
 }
 
+// Gate config + test fixtures self-exempt — the script and its tests
+// necessarily contain the literal patterns they detect in user code.
 const GATES = [
   { pattern: 'ralph',             name: 'no-ralph',        flags: 'i',
     excludePaths: [
