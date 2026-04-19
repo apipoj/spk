@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+# Regenerate docs from manifest.json; fail if anything changed without re-staging
+npm run regen
+
+# Re-stage any regenerated docs that were already in the commit
+git update-index --again
+
+# Run gates
+npm run verify:gates
+
+# Validate manifest
+npm run validate:manifest
