@@ -1,5 +1,5 @@
 ---
-name: spk-browser-tester
+name: browser-tester
 description: Browser-based UI smoke tests using the agent-browser skill. No Playwright install required.
 model: claude-sonnet-4-6
 color: orange

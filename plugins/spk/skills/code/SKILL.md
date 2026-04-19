@@ -1,11 +1,11 @@
 ---
-description: Implement from a plan via spk-build-orchestrator (implementer → tester → docs).
+description: Implement from a plan via build-orchestrator (implementer → tester → docs).
 argument-hint: "[plan reference or feature]"
 ---
 
-# /spk-code
+# /spk:code
 
-Delegate to `spk-build-orchestrator` for implementation.
+Delegate to `build-orchestrator` for implementation.
 
 ## Pre-computed Context
 !`git status --short`
@@ -13,6 +13,6 @@ Delegate to `spk-build-orchestrator` for implementation.
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="spk-build-orchestrator", prompt="Implement: $ARGUMENTS. Plan reference: ai_context/wiki/plans/ (latest matching)")`
+Dispatch: `Task(subagent_type="build-orchestrator", prompt="Implement: $ARGUMENTS. Plan reference: ai_context/wiki/plans/ (latest matching)")`
 
 Expect: committed code, passing tests, updated docs.

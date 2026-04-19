@@ -1,11 +1,11 @@
 ---
-description: Deploy + smoke test + UI verify via spk-deploy-orchestrator.
+description: Deploy + smoke test + UI verify via deploy-orchestrator.
 argument-hint: "[env: staging|production]"
 ---
 
-# /spk-deploy
+# /spk:deploy
 
-Delegate to `spk-deploy-orchestrator` for full deployment cycle.
+Delegate to `deploy-orchestrator` for full deployment cycle.
 
 ## Pre-computed Context
 !`git log -1 --format='%H %s'`
@@ -13,6 +13,6 @@ Delegate to `spk-deploy-orchestrator` for full deployment cycle.
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="spk-deploy-orchestrator", prompt="Deploy current HEAD to: $ARGUMENTS")`
+Dispatch: `Task(subagent_type="deploy-orchestrator", prompt="Deploy current HEAD to: $ARGUMENTS")`
 
 Expect: deployment result, smoke test verdict, UI check verdict. Paused for user confirmation if production.

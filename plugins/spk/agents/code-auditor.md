@@ -1,5 +1,5 @@
 ---
-name: spk-code-auditor
+name: code-auditor
 description: Multi-pass code review covering correctness, security (OWASP, secrets), and maintainability. Merges reviewer + security responsibilities.
 model: claude-opus-4-7
 color: purple

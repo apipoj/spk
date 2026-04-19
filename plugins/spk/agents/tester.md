@@ -1,5 +1,5 @@
 ---
-name: spk-tester
+name: tester
 description: Generates unit + integration tests with ≥80% coverage on new code. Uses the project's test framework.
 model: claude-sonnet-4-6
 color: blue

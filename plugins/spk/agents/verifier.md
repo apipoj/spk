@@ -1,5 +1,5 @@
 ---
-name: spk-verifier
+name: verifier
 description: Runs the pre-commit quality gate. Tests pass, coverage ≥80%, no secrets, no loop-agent refs, no alias models. Pass/fail summary.
 model: claude-sonnet-4-6
 color: purple

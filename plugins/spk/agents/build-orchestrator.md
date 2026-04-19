@@ -1,5 +1,5 @@
 ---
-name: spk-build-orchestrator
+name: build-orchestrator
 description: Coordinates implementation via implementer → tester → docs. Use for "implement X" / "build the feature from plan Y" requests.
 model: claude-opus-4-7
 color: blue
@@ -18,9 +18,9 @@ color: blue
 1. **PARSE** — Read the plan from `ai_context/wiki/plans/<ref>.md`. Read `ai_context/wiki/index.md` for related implementation patterns. Check recent `log.md` entries for known blockers.
 
 2. **DISPATCH** — Usually sequential:
-   - `Task(spk-implementer, "Implement step N from plan, for these files: ...")` — one dispatch per plan step, or batched when steps touch the same module
-   - `Task(spk-tester, "Generate tests for the changes in <files>")`
-   - `Task(spk-docs, "Update docs to reflect <changes>")`
+   - `Task(implementer, "Implement step N from plan, for these files: ...")` — one dispatch per plan step, or batched when steps touch the same module
+   - `Task(tester, "Generate tests for the changes in <files>")`
+   - `Task(docs, "Update docs to reflect <changes>")`
    - Escalate to Opus-level implementer by re-dispatching with a sharper prompt if Sonnet implementer returns BLOCKED on multi-file refactors.
 
 3. **AGGREGATE** — Collect file lists, test results, coverage numbers from each specialist.

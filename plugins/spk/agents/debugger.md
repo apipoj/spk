@@ -1,5 +1,5 @@
 ---
-name: spk-debugger
+name: debugger
 description: Root-cause analysis for bugs. Reads wiki/log.md for past incidents before diagnosing. Use when a test fails or behavior is unexpected.
 model: claude-opus-4-7
 color: purple
