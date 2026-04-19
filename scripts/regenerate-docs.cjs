@@ -68,6 +68,7 @@ function listTargetFiles(rootDir) {
   const targets = [];
   const candidates = [
     'README.md',
+    'README-EN.md',
     'CHANGELOG.md',
     'INSTALL_FOR_AGENTS.md',
     'RESOLVER.md'

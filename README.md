@@ -1,23 +1,27 @@
 # AI Sprint Kit (SPK)
 
-Autonomous development for Claude Code. Ships as a plugin — hot-reloads in your session, no restart.
+ระบบ autonomous development สำหรับ Claude Code ติดตั้งเป็น plugin — hot-reload ใน session ทันที ไม่ต้อง restart
+
+> English version: [README-EN.md](./README-EN.md)
 
 <!-- SPK-COUNTS:start -->
 **18 agents** (4 orchestrators + 14 specialists) · **9 commands**
 <!-- SPK-COUNTS:end -->
 
-## Install
+## ติดตั้ง
 
 ```
 /plugin marketplace add apipoj/spk
 /plugin install spk@spk
 ```
 
-Done. The plugin hot-reloads. On next session start, SPK scaffolds `ai_context/wiki/` and `ai_context/sources/` into your project automatically.
+เสร็จ Plugin hot-reload ให้เอง ไม่ต้อง restart `claude`
 
-Skills are auto-namespaced: type `/spk:` to see `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:deploy`, `/spk:ingest`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
+ครั้งต่อไปที่เริ่ม session ใหม่ SPK จะ scaffold `ai_context/wiki/` และ `ai_context/sources/` ใน project ของคุณอัตโนมัติ
 
-Agents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
+Skills มี namespace `/spk:` ให้เอง — พิมพ์ `/spk:` แล้วจะเห็น `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:deploy`, `/spk:ingest`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
+
+Agent ก็ namespace `spk:` ให้เหมือนกัน: `spk:planner`, `spk:architect`, ฯลฯ
 
 ## Agent Squad
 
@@ -62,23 +66,32 @@ Agents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 
 ## Memory
 
-Every installed project gets a Karpathy-style LLM-wiki at `ai_context/wiki/`:
-- `sources/` — raw files you drop in, immutable
-- `wiki/` — LLM-maintained concept/entity/decision pages, cross-linked
-- `index.md` — catalog of every wiki page
-- `log.md` — append-only record of ingests, queries, lints
+ทุก project ที่ติดตั้ง SPK จะได้ LLM-wiki สไตล์ Karpathy ที่ `ai_context/wiki/`:
 
-Drop a file in `ai_context/sources/` and it auto-ingests. Ask `/spk:query "..."` and the wiki answers before the web does.
+- `sources/` — ไฟล์ raw ที่คุณ drop ลงมา ห้ามแก้ (immutable)
+- `wiki/` — LLM เป็นคนดูแล page concept / entity / decision ข้ามโยงกันเอง
+- `index.md` — catalog รวมทุก wiki page
+- `log.md` — log แบบ append-only สำหรับ ingest / query / lint
+
+Drop ไฟล์ลงใน `ai_context/sources/` แล้ว auto-ingest จะทำงานให้ ถาม `/spk:query "..."` แล้ว wiki จะตอบก่อนไปค้น web
 
 ## Security
 
-5-layer defense for wiki: ingest-time secret scan, pre-write fail-closed hook, lint-time audit, `.gitignore`-gated sources directory, `.gitignore` respect during wiki-build. Secrets never land in wiki pages.
+ป้องกัน secrets ใน wiki 5 ชั้น:
+
+1. ingest-time secret scan
+2. pre-write fail-closed hook
+3. lint-time audit
+4. `ai_context/sources/` ถูก `.gitignore` by default
+5. `.gitignore` respect ระหว่าง wiki-build
+
+Secrets จะไม่หลุดเข้า wiki pages
 
 ## Requirements
 
-- Claude Code (subscription — Max or Pro)
+- Claude Code (subscription — Max หรือ Pro)
 - Git
-- Node.js 20+ (one-time install only; agents don't need it at runtime)
+- Node.js 20+ (ใช้ตอน install เท่านั้น agent ไม่ใช้ runtime)
 
 ## License
 
