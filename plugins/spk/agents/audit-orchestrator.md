@@ -18,11 +18,11 @@ color: purple
 1. **PARSE** — Determine audit scope (diff vs wiki vs repo-wide). Check `wiki/log.md` for recent incidents to weight findings.
 
 2. **DISPATCH** — Parallel multi-pass:
-   - `Task(code-auditor, "Pass 1: correctness + edge cases — scope: <X>")`
-   - `Task(code-auditor, "Pass 2: security + OWASP + secrets — scope: <X>")`
-   - `Task(code-auditor, "Pass 3: readability + maintainability — scope: <X>")`
-   - For wiki-lint: `Task(code-auditor, "Wiki lint: orphans + contradictions + stale + missing citations + dead links + index drift")`
-   - Then: `Task(verifier, "Quality gate: tests pass, coverage ≥ 80%, no secrets in wiki")`
+   - `Task(spk:code-auditor, "Pass 1: correctness + edge cases — scope: <X>")`
+   - `Task(spk:code-auditor, "Pass 2: security + OWASP + secrets — scope: <X>")`
+   - `Task(spk:code-auditor, "Pass 3: readability + maintainability — scope: <X>")`
+   - For wiki-lint: `Task(spk:code-auditor, "Wiki lint: orphans + contradictions + stale + missing citations + dead links + index drift")`
+   - Then: `Task(spk:verifier, "Quality gate: tests pass, coverage ≥ 80%, no secrets in wiki")`
 
 3. **AGGREGATE** — Merge findings into one ranked list. Deduplicate. Sort by severity (critical > important > minor).
 

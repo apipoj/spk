@@ -18,10 +18,10 @@ color: green
 1. **PARSE** — Read `ai_context/wiki/index.md` to find existing related pages. Read `ai_context/wiki/SCHEMA.md` for project conventions. Determine the feature scope and decide which specialists to dispatch.
 
 2. **DISPATCH** (parallel where possible)
-   - `Task(prd-writer, "Create PRD for: <request>")` + `Task(business-analyst, "Competitor/UX research for: <domain>")` in parallel when BOTH are relevant.
+   - `Task(spk:prd-writer, "Create PRD for: <request>")` + `Task(spk:business-analyst, "Competitor/UX research for: <domain>")` in parallel when BOTH are relevant.
    - Wait for both. Pass distilled results into the next dispatch.
-   - `Task(architect, "Design for <stack>, given PRD summary + BA findings")`
-   - `Task(planner, "Implementation plan from PRD + architecture")`
+   - `Task(spk:architect, "Design for <stack>, given PRD summary + BA findings")`
+   - `Task(spk:planner, "Implementation plan from PRD + architecture")`
 
 3. **AGGREGATE** — Each specialist returns a 200–500 word distilled summary. Keep only load-bearing facts.
 

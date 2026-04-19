@@ -13,6 +13,6 @@ Delegate to `build-orchestrator` for implementation.
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="build-orchestrator", prompt="Implement: $ARGUMENTS. Plan reference: ai_context/wiki/plans/ (latest matching)")`
+Dispatch: `Task(subagent_type="spk:build-orchestrator", prompt="Implement: $ARGUMENTS. Plan reference: ai_context/wiki/plans/ (latest matching)")`
 
 Expect: committed code, passing tests, updated docs.

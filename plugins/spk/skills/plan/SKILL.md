@@ -13,6 +13,6 @@ Delegate to `plan-orchestrator` with the user's feature description.
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="plan-orchestrator", prompt="Plan this feature: $ARGUMENTS")`
+Dispatch: `Task(subagent_type="spk:plan-orchestrator", prompt="Plan this feature: $ARGUMENTS")`
 
 Expect: a written plan saved to `ai_context/wiki/plans/<date>-<slug>.md` + a concise summary.

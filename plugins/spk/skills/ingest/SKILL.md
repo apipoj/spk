@@ -12,6 +12,6 @@ Delegate to `plan-orchestrator` for wiki ingest.
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="plan-orchestrator", prompt="Ingest into wiki: $ARGUMENTS")`
+Dispatch: `Task(subagent_type="spk:plan-orchestrator", prompt="Ingest into wiki: $ARGUMENTS")`
 
 Expect: source copied to `ai_context/sources/`, wiki pages created/updated, `log.md` appended.

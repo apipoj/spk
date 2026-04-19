@@ -18,9 +18,9 @@ color: orange
 1. **PARSE** — Read `ai_context/wiki/entities/<infra>.md` pages for current deployment architecture. Check `log.md` for recent deploy incidents.
 
 2. **DISPATCH** — Sequential:
-   - `Task(devops, "Deploy commit <sha> to <env>")`
-   - On success: `Task(deployment-smoke, "Verify health endpoints + critical flows at <url>")`
-   - On smoke pass: `Task(browser-tester, "Run UI smoke at <url>")`
+   - `Task(spk:devops, "Deploy commit <sha> to <env>")`
+   - On success: `Task(spk:deployment-smoke, "Verify health endpoints + critical flows at <url>")`
+   - On smoke pass: `Task(spk:browser-tester, "Run UI smoke at <url>")`
    - On any failure: halt dispatch, report the failure, prompt user for rollback decision.
 
 3. **AGGREGATE** — Collect deploy output, smoke test report, UI test report.

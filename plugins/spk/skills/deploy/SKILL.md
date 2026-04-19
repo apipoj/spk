@@ -13,6 +13,6 @@ Delegate to `deploy-orchestrator` for full deployment cycle.
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="deploy-orchestrator", prompt="Deploy current HEAD to: $ARGUMENTS")`
+Dispatch: `Task(subagent_type="spk:deploy-orchestrator", prompt="Deploy current HEAD to: $ARGUMENTS")`
 
 Expect: deployment result, smoke test verdict, UI check verdict. Paused for user confirmation if production.

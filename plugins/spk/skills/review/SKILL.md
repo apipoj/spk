@@ -13,6 +13,6 @@ Delegate to `audit-orchestrator` for deep review.
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="audit-orchestrator", prompt="Audit: $ARGUMENTS. Use all 3 passes (correctness, security, maintainability) unless scope narrower.")`
+Dispatch: `Task(subagent_type="spk:audit-orchestrator", prompt="Audit: $ARGUMENTS. Use all 3 passes (correctness, security, maintainability) unless scope narrower.")`
 
 Expect: ranked findings in `ai_context/wiki/audits/<date>-<slug>.md` + summary.

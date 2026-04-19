@@ -11,6 +11,6 @@ Delegate to `audit-orchestrator` with wiki-lint lens.
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="audit-orchestrator", prompt="Wiki lint — run code-auditor with wiki-lint lens over ai_context/wiki/. Report issues + proposed auto-fixes.")`
+Dispatch: `Task(subagent_type="spk:audit-orchestrator", prompt="Wiki lint — run code-auditor with wiki-lint lens over ai_context/wiki/. Report issues + proposed auto-fixes.")`
 
 Expect: lint report with severity-ranked findings + auto-fix proposals.

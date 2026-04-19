@@ -12,6 +12,6 @@ Delegate to `build-orchestrator` in TDD mode.
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="build-orchestrator", prompt="TDD loop for: $ARGUMENTS. tester writes failing test first, implementer makes green, commit per cycle.")`
+Dispatch: `Task(subagent_type="spk:build-orchestrator", prompt="TDD loop for: $ARGUMENTS. tester writes failing test first, implementer makes green, commit per cycle.")`
 
 Expect: commits in red→green→refactor pattern, each with passing tests.

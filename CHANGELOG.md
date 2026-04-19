@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.1.1 — 2026-04-19
+
+Hotfix: prefix all `Task(subagent_type=...)` dispatches with `spk:` namespace.
+
+### Fixed
+- Install reported `Agent type 'plan-orchestrator' not found` — plugin agents are auto-namespaced as `spk:<name>`, so skills and orchestrators must dispatch with the namespaced form. All 8 skills + 4 orchestrators updated.
+
+### Lesson
+Auto-namespacing applies to the dispatch lookup, not just the UI label. When referencing plugin agents from within plugin skills/agents, always use the fully qualified `spk:<name>`.
+
 ## 3.1.0 — 2026-04-19
 
 **Major pivot:** SPK now ships as a Claude Code plugin. Hot-reloads in your session; no restart.

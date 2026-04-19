@@ -12,6 +12,6 @@ Delegate to `researcher` for wiki-first lookup.
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="researcher", prompt="Query (wiki-first): $ARGUMENTS. Check ai_context/wiki/index.md before any external call.")`
+Dispatch: `Task(subagent_type="spk:researcher", prompt="Query (wiki-first): $ARGUMENTS. Check ai_context/wiki/index.md before any external call.")`
 
 Expect: answer, citations to wiki pages or external sources. Answer may be saved back to wiki as a new page.
