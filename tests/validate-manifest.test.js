@@ -7,7 +7,7 @@ describe('validateManifest', () => {
     released: '2026-04-19',
     brand: 'AI Sprint Kit',
     slug: 'spk',
-    tagline: 'Autonomous development via Claude Code subscription',
+    tagline: 'Skills-first subagent development via Claude Code subscription',
     agents: {
       orchestrators: [
         { name: 'plan-orchestrator', model: 'claude-opus-4-7', color: 'green', phase: 'planning' }

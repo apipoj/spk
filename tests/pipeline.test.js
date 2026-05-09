@@ -38,8 +38,8 @@ describe('pipeline smoke', () => {
     const readme = fs.readFileSync(path.join(REPO_ROOT, 'README.md'), 'utf-8');
     const match = readme.match(/<!-- SPK-COUNTS:start -->\n(.+?)\n<!-- SPK-COUNTS:end -->/s);
     expect(match).not.toBeNull();
-    expect(match[1]).toMatch(/\*\*\d+ agents\*\*/);
-    expect(match[1]).toMatch(/\*\*\d+ commands\*\*/);
+    expect(match[1]).toMatch(/\*\*\d+ subagents\*\*/);
+    expect(match[1]).toMatch(/\*\*\d+ skills\*\*/);
   });
 
   test('every agent in manifest has unique name', () => {

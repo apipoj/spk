@@ -1,9 +1,13 @@
 # AI Sprint Kit (SPK)
 
-Autonomous development for Claude Code. Ships as a plugin — hot-reloads in your session, no restart.
+![AI Sprint Kit repo banner](./assets/repo-banner.png)
+
+Skills & subagent development for Claude Code. Ships as a plugin — hot-reloads in your session, no restart.
+
+**Positioning:** Skills-first Subagents — subagents become more capable through reusable skills/playbooks, not just longer prompts.
 
 <!-- SPK-COUNTS:start -->
-**18 agents** (4 orchestrators + 14 specialists) · **9 commands**
+**20 subagents** (4 orchestrators + 16 specialists) · **12 skills**
 <!-- SPK-COUNTS:end -->
 
 ## Install
@@ -15,11 +19,18 @@ Autonomous development for Claude Code. Ships as a plugin — hot-reloads in you
 
 Done. The plugin hot-reloads. On next session start, SPK scaffolds `ai_context/wiki/` and `ai_context/sources/` into your project automatically.
 
-Skills are auto-namespaced: type `/spk:` to see `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:deploy`, `/spk:ingest`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
+Skills are auto-namespaced: type `/spk:` to see `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
 
-Agents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
+Subagents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 
-## Agent Squad
+## Workflow Highlights
+
+- `/spk:debug` is for failing tests, unclear errors, regressions, and unexpected behavior: `spk:debugger` performs root-cause analysis before any fix and returns evidence + a regression-test recommendation.
+- `/spk:pr` prepares PRs safely: default mode is prepare-only, producing a PR body/checklist/safety report first, and requiring explicit confirmation before any push or `gh pr create/edit`.
+- `/spk:tdd` enforces RED-GREEN-REFACTOR: tests must fail for the expected reason before implementation begins.
+- Orchestrators share one subagent contract: self-contained specialist prompts, parallel dispatch only for non-overlapping work, one retry for `BLOCKED`, and verifier gate before saying done.
+
+## Subagent Squad
 
 <!-- SPK-AGENTS:start -->
 | Name | Role | Model | Color | Phase |
@@ -32,6 +43,7 @@ Agents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 | `business-analyst` | specialist | claude-opus-4-7 | green | planning |
 | `architect` | specialist | claude-opus-4-7 | green | planning |
 | `planner` | specialist | claude-opus-4-7 | green | planning |
+| `primer` | specialist | claude-sonnet-4-6 | green | planning |
 | `debugger` | specialist | claude-opus-4-7 | purple | auditing |
 | `code-auditor` | specialist | claude-opus-4-7 | purple | auditing |
 | `implementer` | specialist | claude-sonnet-4-6 | blue | building |
@@ -39,25 +51,29 @@ Agents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 | `docs` | specialist | claude-sonnet-4-6 | blue | building |
 | `researcher` | specialist | claude-sonnet-4-6 | blue | building |
 | `verifier` | specialist | claude-sonnet-4-6 | purple | auditing |
+| `pr-manager` | specialist | claude-sonnet-4-6 | orange | shipping |
 | `devops` | specialist | claude-sonnet-4-6 | orange | shipping |
 | `deployment-smoke` | specialist | claude-sonnet-4-6 | orange | shipping |
 | `browser-tester` | specialist | claude-sonnet-4-6 | orange | shipping |
 <!-- SPK-AGENTS:end -->
 
-## Commands
+## Skills / Slash Commands
 
 <!-- SPK-COMMANDS:start -->
-| Command | Dispatches to |
+| Skill | Dispatches to subagent |
 |---|---|
-| `/plan` | plan-orchestrator |
-| `/code` | build-orchestrator |
-| `/review` | audit-orchestrator |
-| `/deploy` | deploy-orchestrator |
-| `/ingest` | plan-orchestrator |
-| `/query` | researcher |
-| `/wiki-lint` | audit-orchestrator |
-| `/tdd` | build-orchestrator |
-| `/uninstall` | (no agent) |
+| `/spk:plan` | plan-orchestrator |
+| `/spk:code` | build-orchestrator |
+| `/spk:review` | audit-orchestrator |
+| `/spk:debug` | debugger |
+| `/spk:deploy` | deploy-orchestrator |
+| `/spk:pr` | pr-manager |
+| `/spk:ingest` | plan-orchestrator |
+| `/spk:prime` | primer |
+| `/spk:query` | researcher |
+| `/spk:wiki-lint` | audit-orchestrator |
+| `/spk:tdd` | build-orchestrator |
+| `/spk:uninstall` | (no subagent) |
 <!-- SPK-COMMANDS:end -->
 
 ## Memory

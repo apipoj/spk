@@ -67,7 +67,7 @@ function main() {
     errors.forEach(e => console.error('  -', e));
     process.exit(1);
   }
-  console.log(`Manifest sync OK (${allAgents.length} agents, ${manifest.commands.length} commands)`);
+  console.log(`Manifest sync OK (${allAgents.length} subagents, ${manifest.commands.length} skills)`);
 }
 
 if (require.main === module) main();

@@ -25,8 +25,8 @@ function renderBlock(name, manifest) {
       const orch = manifest.agents.orchestrators.length;
       const spec = manifest.agents.specialists.length;
       const total = orch + spec;
-      const cmds = manifest.commands.length;
-      return `**${total} agents** (${orch} orchestrators + ${spec} specialists) · **${cmds} commands**`;
+      const skills = manifest.commands.length;
+      return `**${total} subagents** (${orch} orchestrators + ${spec} specialists) · **${skills} skills**`;
     }
     case 'SPK-AGENTS': {
       const rows = [
@@ -41,11 +41,12 @@ function renderBlock(name, manifest) {
     }
     case 'SPK-COMMANDS': {
       const rows = [
-        '| Command | Dispatches to |',
+        '| Skill | Dispatches to subagent |',
         '|---|---|',
         ...manifest.commands.map(c => {
-          const target = c.orchestrator || c.agent || '(no agent)';
-          return `| \`${c.name}\` | ${target} |`;
+          const target = c.orchestrator || c.agent || '(no subagent)';
+          const slug = c.name.replace(/^\//, '');
+          return `| \`/spk:${slug}\` | ${target} |`;
         })
       ];
       return rows.join('\n');

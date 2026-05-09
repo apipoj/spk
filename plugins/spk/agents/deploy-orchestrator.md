@@ -15,20 +15,32 @@ color: orange
 
 ## Workflow
 
-1. **PARSE** — Read `ai_context/wiki/entities/<infra>.md` pages for current deployment architecture. Check `log.md` for recent deploy incidents.
+1. **PARSE** — Read `ai_context/wiki/entities/<infra>.md` pages for current deployment architecture. Check `log.md` for recent deploy incidents. Identify target env, commit SHA, rollback path, and confirmation requirements.
 
-2. **DISPATCH** — Sequential:
-   - `Task(spk:devops, "Deploy commit <sha> to <env>")`
+2. **PRE-FLIGHT** — Confirm quality gates passed before deploy. For production, pause for user confirmation before dispatching `spk:devops`.
+
+3. **DISPATCH** — Sequential:
+   - `Task(spk:devops, "Deploy commit <sha> to <env>. Report exact URL, SHA, and rollback command.")`
    - On success: `Task(spk:deployment-smoke, "Verify health endpoints + critical flows at <url>")`
    - On smoke pass: `Task(spk:browser-tester, "Run UI smoke at <url>")`
    - On any failure: halt dispatch, report the failure, prompt user for rollback decision.
 
-3. **AGGREGATE** — Collect deploy output, smoke test report, UI test report.
+4. **AGGREGATE** — Collect deploy output, smoke test report, UI test report, timings, URL, SHA, and rollback notes.
 
-4. **SYNTHESIZE** — Append deploy entry to `log.md` including SHA, env, timing, results. Update `wiki/decisions/` if this was a notable deployment (e.g. first production deploy of a feature). Report to user.
+5. **SYNTHESIZE** — Append deploy entry to `log.md` including SHA, env, timing, results. Update `wiki/decisions/` if this was a notable deployment. Report to user.
+
+## Core Orchestration Contract
+
+- Read `ai_context/wiki/index.md`, `ai_context/wiki/log.md`, and relevant `CLAUDE.md` / `AGENTS.md` before dispatch.
+- Specialist prompts must be self-contained: include task, scope, relevant paths, acceptance criteria, constraints, and expected output.
+- Dispatch in parallel only when tasks have disjoint file ownership or independent analysis lenses. Use sequential dispatch when tasks touch the same files or depend on prior results.
+- If a specialist returns `BLOCKED`, re-dispatch once with sharper context. If still blocked, stop and report the exact blocker.
+- Aggregate only load-bearing facts: files changed, tests run, evidence, risks, and open decisions.
+- Before saying done, route verification through `spk:verifier` or an equivalent explicit gate.
 
 ## Constraints
 
 - For PRODUCTION deploys, pause for user confirmation before dispatching `spk:devops`.
-- On smoke failure, do NOT proceed to spk:browser-tester. Report immediately.
-- Rollback is user-decided; orchestrator recommends but does not execute.
+- On smoke failure, do NOT proceed to `spk:browser-tester`. Report immediately.
+- Rollback is user-decided; orchestrator recommends but does not execute unless explicitly confirmed.
+- Do not treat PR creation as deployment; use `spk:pr-manager` for PR lifecycle.

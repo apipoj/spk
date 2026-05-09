@@ -53,9 +53,9 @@ describe('regenerateContent', () => {
 OLD
 <!-- SPK-COUNTS:end -->`;
     const output = regenerateContent(input, manifest);
-    expect(output).toContain('**4 agents**');
+    expect(output).toContain('**4 subagents**');
     expect(output).toContain('2 orchestrators + 2 specialists');
-    expect(output).toContain('**2 commands**');
+    expect(output).toContain('**2 skills**');
     expect(output).not.toContain('OLD');
   });
 

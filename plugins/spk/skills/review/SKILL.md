@@ -1,6 +1,6 @@
 ---
-description: Multi-pass code + security + maintainability review via spk:audit-orchestrator.
-argument-hint: "[diff range or 'wiki']"
+description: Multi-pass pre-merge review: correctness, security, maintainability, tests, docs, and ship-readiness via spk:audit-orchestrator.
+argument-hint: "[diff range, branch, PR, 'wiki', or working tree]"
 ---
 
 # /spk:review
@@ -8,11 +8,22 @@ argument-hint: "[diff range or 'wiki']"
 Delegate to `spk:audit-orchestrator` for deep review.
 
 ## Pre-computed Context
-!`git diff HEAD~1 --stat`
-!`git log -3 --oneline`
+!`git status --short --branch --untracked-files=all`
+!`git diff --stat`
+!`git diff --name-status`
+!`git log -5 --oneline`
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="spk:audit-orchestrator", prompt="Audit: $ARGUMENTS. Use all 3 passes (correctness, security, maintainability) unless scope narrower.")`
+Dispatch: `Task(subagent_type="spk:audit-orchestrator", prompt="Audit: $ARGUMENTS. Run isolated passes for correctness/edge cases, security/secrets/authz, maintainability/scope creep, tests/docs, and final quality gate. Review only the requested scope unless the scope is unsafe. Rank findings as Critical, Important, or Minor. Critical or Important issues mean HOLD. Include file:line, evidence, why it matters, and a specific fix. Deduplicate before reporting.")`
 
 Expect: ranked findings in `ai_context/wiki/audits/<date>-<slug>.md` + summary.
+
+## Review Contract
+
+- Critical: security/data loss/broken build/wrong behavior; blocks merge.
+- Important: should fix in this PR before merge.
+- Minor: safe follow-up or style suggestion.
+- Suggestions are not blockers unless tied to concrete risk.
+- Any secret-shaped added line is fail-closed until proven safe.
+- Verify docs drift when behavior, commands, manifests, or public workflow changes.

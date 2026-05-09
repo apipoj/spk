@@ -11,9 +11,16 @@ The plugin hot-reloads — no `claude` restart needed. On the next session start
 
 ## Skills (after install)
 
-Type `/spk:` to see: `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:deploy`, `/spk:ingest`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
+Type `/spk:` to see: `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
 
-Agents are auto-namespaced: `spk:planner`, `spk:architect`, etc.
+Subagents are auto-namespaced: `spk:planner`, `spk:architect`, etc.
+
+## Common Workflows
+
+- Debug/root cause: `/spk:debug <error or repro>` diagnoses first and does not patch source code.
+- TDD build: `/spk:tdd <feature>` runs RED-GREEN-REFACTOR with focused verification.
+- Safe PR prep: `/spk:pr <title or scope>` defaults to prepare-only. It must ask for explicit confirmation before any push or GitHub write.
+- Repo priming: `/spk:prime [scope]` scans source roots and creates concise `CLAUDE.md` / `AGENTS.md` context files for downstream subagents.
 
 ## Uninstall
 

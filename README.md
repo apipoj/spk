@@ -1,11 +1,15 @@
 # AI Sprint Kit (SPK)
 
-ระบบ autonomous development สำหรับ Claude Code ติดตั้งเป็น plugin — hot-reload ใน session ทันที ไม่ต้อง restart
+![AI Sprint Kit repo banner](./assets/repo-banner.png)
+
+ระบบ skills & subagent development สำหรับ Claude Code ติดตั้งเป็น plugin — hot-reload ใน session ทันที ไม่ต้อง restart
+
+**Positioning:** Skills-first Subagents — subagent ทำงานเก่งขึ้นเพราะมี reusable skills / playbooks ไม่ใช่แค่ prompt ยาว ๆ
 
 > English version: [README-EN.md](./README-EN.md)
 
 <!-- SPK-COUNTS:start -->
-**18 agents** (4 orchestrators + 14 specialists) · **9 commands**
+**20 subagents** (4 orchestrators + 16 specialists) · **12 skills**
 <!-- SPK-COUNTS:end -->
 
 ## ติดตั้ง
@@ -19,11 +23,18 @@
 
 ครั้งต่อไปที่เริ่ม session ใหม่ SPK จะ scaffold `ai_context/wiki/` และ `ai_context/sources/` ใน project ของคุณอัตโนมัติ
 
-Skills มี namespace `/spk:` ให้เอง — พิมพ์ `/spk:` แล้วจะเห็น `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:deploy`, `/spk:ingest`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
+Skills มี namespace `/spk:` ให้เอง — พิมพ์ `/spk:` แล้วจะเห็น `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
 
-Agent ก็ namespace `spk:` ให้เหมือนกัน: `spk:planner`, `spk:architect`, ฯลฯ
+Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:planner`, `spk:architect`, ฯลฯ
 
-## Agent Squad
+## Workflow Highlights
+
+- `/spk:debug` ใช้ตอน test fail / behavior เพี้ยน / error ไม่ชัด: ให้ `spk:debugger` ทำ root-cause analysis ก่อนเสนอ fix และต้องมี evidence + regression test recommendation
+- `/spk:pr` ใช้เตรียม PR อย่างปลอดภัย: default เป็น prepare-only, ทำ PR body/checklist/safety report ก่อน และต้องขอ explicit confirmation ก่อน push หรือ `gh pr create/edit`
+- `/spk:tdd` บังคับ RED-GREEN-REFACTOR: test ต้อง fail ก่อน implementation แล้วค่อย green/refactor
+- Orchestrators ใช้ shared subagent contract: prompt ต้อง self-contained, parallel เฉพาะงานไม่ชนไฟล์, retry `BLOCKED` ได้หนึ่งครั้ง, และต้องผ่าน verifier gate ก่อนบอกว่า done
+
+## Subagent Squad
 
 <!-- SPK-AGENTS:start -->
 | Name | Role | Model | Color | Phase |
@@ -36,6 +47,7 @@ Agent ก็ namespace `spk:` ให้เหมือนกัน: `spk:planner
 | `business-analyst` | specialist | claude-opus-4-7 | green | planning |
 | `architect` | specialist | claude-opus-4-7 | green | planning |
 | `planner` | specialist | claude-opus-4-7 | green | planning |
+| `primer` | specialist | claude-sonnet-4-6 | green | planning |
 | `debugger` | specialist | claude-opus-4-7 | purple | auditing |
 | `code-auditor` | specialist | claude-opus-4-7 | purple | auditing |
 | `implementer` | specialist | claude-sonnet-4-6 | blue | building |
@@ -43,25 +55,29 @@ Agent ก็ namespace `spk:` ให้เหมือนกัน: `spk:planner
 | `docs` | specialist | claude-sonnet-4-6 | blue | building |
 | `researcher` | specialist | claude-sonnet-4-6 | blue | building |
 | `verifier` | specialist | claude-sonnet-4-6 | purple | auditing |
+| `pr-manager` | specialist | claude-sonnet-4-6 | orange | shipping |
 | `devops` | specialist | claude-sonnet-4-6 | orange | shipping |
 | `deployment-smoke` | specialist | claude-sonnet-4-6 | orange | shipping |
 | `browser-tester` | specialist | claude-sonnet-4-6 | orange | shipping |
 <!-- SPK-AGENTS:end -->
 
-## Commands
+## Skills / Slash Commands
 
 <!-- SPK-COMMANDS:start -->
-| Command | Dispatches to |
+| Skill | Dispatches to subagent |
 |---|---|
-| `/plan` | plan-orchestrator |
-| `/code` | build-orchestrator |
-| `/review` | audit-orchestrator |
-| `/deploy` | deploy-orchestrator |
-| `/ingest` | plan-orchestrator |
-| `/query` | researcher |
-| `/wiki-lint` | audit-orchestrator |
-| `/tdd` | build-orchestrator |
-| `/uninstall` | (no agent) |
+| `/spk:plan` | plan-orchestrator |
+| `/spk:code` | build-orchestrator |
+| `/spk:review` | audit-orchestrator |
+| `/spk:debug` | debugger |
+| `/spk:deploy` | deploy-orchestrator |
+| `/spk:pr` | pr-manager |
+| `/spk:ingest` | plan-orchestrator |
+| `/spk:prime` | primer |
+| `/spk:query` | researcher |
+| `/spk:wiki-lint` | audit-orchestrator |
+| `/spk:tdd` | build-orchestrator |
+| `/spk:uninstall` | (no subagent) |
 <!-- SPK-COMMANDS:end -->
 
 ## Memory
