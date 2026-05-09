@@ -9,7 +9,7 @@
 > English version: [README-EN.md](./README-EN.md)
 
 <!-- SPK-COUNTS:start -->
-**20 subagents** (4 orchestrators + 16 specialists) · **12 skills**
+**20 subagents** (4 orchestrators + 16 specialists) · **14 skills**
 <!-- SPK-COUNTS:end -->
 
 ## ติดตั้ง
@@ -23,12 +23,14 @@
 
 ครั้งต่อไปที่เริ่ม session ใหม่ SPK จะ scaffold `ai_context/wiki/` และ `ai_context/sources/` ใน project ของคุณอัตโนมัติ
 
-Skills มี namespace `/spk:` ให้เอง — พิมพ์ `/spk:` แล้วจะเห็น `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
+Skills มี namespace `/spk:` ให้เอง — พิมพ์ `/spk:` แล้วจะเห็น `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
 
 Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:planner`, `spk:architect`, ฯลฯ
 
 ## Workflow Highlights
 
+- `/spk:bala` ใช้หลักพละ 5 เป็น balance check ก่อน plan/code/review/debug: ศรัทธา วิริยะ สติ สมาธิ ปัญญา แปลงเป็น evidence, effort, context, focus, wisdom
+- `/spk:sunzi` ใช้หลักซุนวูเป็น strategy lens ก่อนเลือก battle, architecture, rollout หรือ competitive move: รู้เรา รู้เขา เลือก terrain และหา smallest winning move
 - `/spk:debug` ใช้ตอน test fail / behavior เพี้ยน / error ไม่ชัด: ให้ `spk:debugger` ทำ root-cause analysis ก่อนเสนอ fix และต้องมี evidence + regression test recommendation
 - `/spk:pr` ใช้เตรียม PR อย่างปลอดภัย: default เป็น prepare-only, ทำ PR body/checklist/safety report ก่อน และต้องขอ explicit confirmation ก่อน push หรือ `gh pr create/edit`
 - `/spk:tdd` บังคับ RED-GREEN-REFACTOR: test ต้อง fail ก่อน implementation แล้วค่อย green/refactor
@@ -69,6 +71,8 @@ Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:pla
 | `/spk:plan` | plan-orchestrator |
 | `/spk:code` | build-orchestrator |
 | `/spk:review` | audit-orchestrator |
+| `/spk:bala` | verifier |
+| `/spk:sunzi` | planner |
 | `/spk:debug` | debugger |
 | `/spk:deploy` | deploy-orchestrator |
 | `/spk:pr` | pr-manager |

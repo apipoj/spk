@@ -34,6 +34,8 @@
     { "name": "/plan",      "orchestrator": "plan-orchestrator" },
     { "name": "/code",      "orchestrator": "build-orchestrator" },
     { "name": "/review",    "orchestrator": "audit-orchestrator" },
+    { "name": "/bala",      "agent": "verifier" },
+    { "name": "/sunzi",     "agent": "planner" },
     { "name": "/debug",     "agent": "debugger" },
     { "name": "/deploy",    "orchestrator": "deploy-orchestrator" },
     { "name": "/pr",        "agent": "pr-manager" },

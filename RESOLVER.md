@@ -8,6 +8,8 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 | `/spk:plan` | plan-orchestrator |
 | `/spk:code` | build-orchestrator |
 | `/spk:review` | audit-orchestrator |
+| `/spk:bala` | verifier |
+| `/spk:sunzi` | planner |
 | `/spk:debug` | debugger |
 | `/spk:deploy` | deploy-orchestrator |
 | `/spk:pr` | pr-manager |
@@ -37,6 +39,8 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 ### Auditing
 
 - "review my changes" / "code review" / "ultrareview" → `/spk:review [diff]`
+- "พละ 5" / "Bala 5" / "balance this plan" / "are we overbuilding" / "ช่วยเช็คสติ สมาธิ ปัญญา" → `/spk:bala <scope|plan|diff>`
+- "ซุนวู" / "Sun Tzu" / "Sunzi" / "strategy lens" / "choose battle" / "competitive move" / "smallest winning move" → `/spk:sunzi <goal|plan|rollout>`
 - "security audit" / "OWASP check" / "find secrets" → `/spk:review` (audit-orchestrator uses code-auditor with security lens)
 - "lint the wiki" / "check wiki health" → `/spk:wiki-lint`
 - "debug this error" / "why is X failing" / "root cause this" → `/spk:debug <error|repro>`
@@ -67,7 +71,7 @@ Skills map to 4 phases, color-coded:
 
 - Planning (green) → `/spk:plan`, `/spk:prime`
 - Building (blue) → `/spk:code`, `/spk:tdd`, `/spk:ingest` (when ingesting for implementation), `/spk:query`
-- Auditing (purple) → `/spk:review`, `/spk:debug`, `/spk:wiki-lint`
+- Auditing (purple) → `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:debug`, `/spk:wiki-lint`
 - Shipping (orange) → `/spk:deploy`, `/spk:pr`
 
 ## When Main-Thread Should Dispatch Directly

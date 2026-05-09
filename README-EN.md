@@ -7,7 +7,7 @@ Skills & subagent development for Claude Code. Ships as a plugin — hot-reloads
 **Positioning:** Skills-first Subagents — subagents become more capable through reusable skills/playbooks, not just longer prompts.
 
 <!-- SPK-COUNTS:start -->
-**20 subagents** (4 orchestrators + 16 specialists) · **12 skills**
+**20 subagents** (4 orchestrators + 16 specialists) · **14 skills**
 <!-- SPK-COUNTS:end -->
 
 ## Install
@@ -19,12 +19,14 @@ Skills & subagent development for Claude Code. Ships as a plugin — hot-reloads
 
 Done. The plugin hot-reloads. On next session start, SPK scaffolds `ai_context/wiki/` and `ai_context/sources/` into your project automatically.
 
-Skills are auto-namespaced: type `/spk:` to see `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
+Skills are auto-namespaced: type `/spk:` to see `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
 
 Subagents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 
 ## Workflow Highlights
 
+- `/spk:bala` applies the Buddhist Five Powers as a practical balance check before plan/code/review/debug: confidence, energy, mindfulness, concentration, and wisdom.
+- `/spk:sunzi` applies Sun Tzu as a practical strategy lens before choosing battles, architecture, rollout, or competitive moves: know self, know constraints, choose terrain, and find the smallest winning move.
 - `/spk:debug` is for failing tests, unclear errors, regressions, and unexpected behavior: `spk:debugger` performs root-cause analysis before any fix and returns evidence + a regression-test recommendation.
 - `/spk:pr` prepares PRs safely: default mode is prepare-only, producing a PR body/checklist/safety report first, and requiring explicit confirmation before any push or `gh pr create/edit`.
 - `/spk:tdd` enforces RED-GREEN-REFACTOR: tests must fail for the expected reason before implementation begins.
@@ -65,6 +67,8 @@ Subagents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 | `/spk:plan` | plan-orchestrator |
 | `/spk:code` | build-orchestrator |
 | `/spk:review` | audit-orchestrator |
+| `/spk:bala` | verifier |
+| `/spk:sunzi` | planner |
 | `/spk:debug` | debugger |
 | `/spk:deploy` | deploy-orchestrator |
 | `/spk:pr` | pr-manager |

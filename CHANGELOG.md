@@ -3,6 +3,8 @@
 ## Unreleased
 
 ### Added
+- `/spk:sunzi` skill that adapts Sun Tzu (ซุนวู) into a practical strategy lens for choosing battles, terrain, leverage, and the smallest winning move.
+- `/spk:bala` skill that adapts the Buddhist Five Powers (พละ 5) into a practical subagent balance check: confidence, energy, mindfulness, concentration, and wisdom.
 - Skills-first/subagent repo banner image at `assets/repo-banner.png` and README embeds for Thai/English READMEs.
 - `/spk:debug` command that routes directly to `spk:debugger` with a systematic root-cause workflow: reproduce, compare patterns, test one hypothesis at a time, then recommend the smallest fix + regression test.
 - `/spk:pr` command + `spk:pr-manager` Sonnet specialist for safe GitHub PR lifecycle: prepare-only default, branch hygiene, reviewed staging, staged-diff secret scan, conventional PR body, explicit confirmation before push/GitHub writes, and CI follow-up.
