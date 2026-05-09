@@ -10,6 +10,7 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 | `/spk:review` | audit-orchestrator |
 | `/spk:bala` | verifier |
 | `/spk:sunzi` | planner |
+| `/spk:design-shotgun` | designer |
 | `/spk:debug` | debugger |
 | `/spk:deploy` | deploy-orchestrator |
 | `/spk:pr` | pr-manager |
@@ -29,6 +30,7 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 - "write a PRD" / "I need requirements" → `/spk:plan` (plan-orchestrator will dispatch prd-writer)
 - "competitor research" / "how do others solve this" → `/spk:plan` (plan-orchestrator dispatches business-analyst)
 - "architecture for X" → `/spk:plan` (plan-orchestrator dispatches architect)
+- "show me design options" / "design shotgun" / "visual brainstorm" / "I don't like this UI" / "ขอหลายแบบให้เลือก" → `/spk:design-shotgun <screen|URL|rough idea>`
 
 ### Building
 
@@ -69,7 +71,7 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 
 Skills map to 4 phases, color-coded:
 
-- Planning (green) → `/spk:plan`, `/spk:prime`
+- Planning (green) → `/spk:plan`, `/spk:design-shotgun`, `/spk:prime`
 - Building (blue) → `/spk:code`, `/spk:tdd`, `/spk:ingest` (when ingesting for implementation), `/spk:query`
 - Auditing (purple) → `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:debug`, `/spk:wiki-lint`
 - Shipping (orange) → `/spk:deploy`, `/spk:pr`
@@ -80,6 +82,7 @@ Sometimes the main-thread Claude can dispatch a single specialist via `Task(suba
 
 - Single file implementation → `Task(implementer, ...)`
 - Quick docs update → `Task(docs, ...)`
+- Visual design exploration → `Task(designer, ...)`
 - One-off test run → `Task(verifier, ...)`
 
 When scope is broader (multi-file, multi-step, cross-concern) → use the corresponding skill/orchestrator.

@@ -11,7 +11,7 @@ The plugin hot-reloads — no `claude` restart needed. On the next session start
 
 ## Skills (after install)
 
-Type `/spk:` to see: `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
+Type `/spk:` to see: `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
 
 Subagents are auto-namespaced: `spk:planner`, `spk:architect`, etc.
 
@@ -19,6 +19,7 @@ Subagents are auto-namespaced: `spk:planner`, `spk:architect`, etc.
 
 - Bala 5 balance check: `/spk:bala <scope|plan|diff>` applies confidence, energy, mindfulness, concentration, and wisdom as an engineering workflow check.
 - Sunzi strategy check: `/spk:sunzi <goal|plan|rollout>` applies know-self/know-constraint, terrain, leverage, and smallest-winning-move thinking.
+- Design shotgun: `/spk:design-shotgun <screen|URL|rough idea>` generates multiple UI directions, a comparison board, feedback notes, and an approved direction before implementation.
 - Debug/root cause: `/spk:debug <error or repro>` diagnoses first and does not patch source code.
 - TDD build: `/spk:tdd <feature>` runs RED-GREEN-REFACTOR with focused verification.
 - Safe PR prep: `/spk:pr <title or scope>` defaults to prepare-only. It must ask for explicit confirmation before any push or GitHub write.

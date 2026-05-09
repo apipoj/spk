@@ -9,7 +9,7 @@
 > English version: [README-EN.md](./README-EN.md)
 
 <!-- SPK-COUNTS:start -->
-**20 subagents** (4 orchestrators + 16 specialists) · **14 skills**
+**21 subagents** (4 orchestrators + 17 specialists) · **15 skills**
 <!-- SPK-COUNTS:end -->
 
 ## ติดตั้ง
@@ -23,7 +23,7 @@
 
 ครั้งต่อไปที่เริ่ม session ใหม่ SPK จะ scaffold `ai_context/wiki/` และ `ai_context/sources/` ใน project ของคุณอัตโนมัติ
 
-Skills มี namespace `/spk:` ให้เอง — พิมพ์ `/spk:` แล้วจะเห็น `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
+Skills มี namespace `/spk:` ให้เอง — พิมพ์ `/spk:` แล้วจะเห็น `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
 
 Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:planner`, `spk:architect`, ฯลฯ
 
@@ -31,6 +31,7 @@ Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:pla
 
 - `/spk:bala` ใช้หลักพละ 5 เป็น balance check ก่อน plan/code/review/debug: ศรัทธา วิริยะ สติ สมาธิ ปัญญา แปลงเป็น evidence, effort, context, focus, wisdom
 - `/spk:sunzi` ใช้หลักซุนวูเป็น strategy lens ก่อนเลือก battle, architecture, rollout หรือ competitive move: รู้เรา รู้เขา เลือก terrain และหา smallest winning move
+- `/spk:design-shotgun` ทำ visual brainstorm แบบ GStack: แตก 3+ design directions, ทำ comparison board, เก็บ feedback แล้วล็อก approved direction ก่อน `/spk:code`
 - `/spk:debug` ใช้ตอน test fail / behavior เพี้ยน / error ไม่ชัด: ให้ `spk:debugger` ทำ root-cause analysis ก่อนเสนอ fix และต้องมี evidence + regression test recommendation
 - `/spk:pr` ใช้เตรียม PR อย่างปลอดภัย: default เป็น prepare-only, ทำ PR body/checklist/safety report ก่อน และต้องขอ explicit confirmation ก่อน push หรือ `gh pr create/edit`
 - `/spk:tdd` บังคับ RED-GREEN-REFACTOR: test ต้อง fail ก่อน implementation แล้วค่อย green/refactor
@@ -49,6 +50,7 @@ Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:pla
 | `business-analyst` | specialist | claude-opus-4-7 | green | planning |
 | `architect` | specialist | claude-opus-4-7 | green | planning |
 | `planner` | specialist | claude-opus-4-7 | green | planning |
+| `designer` | specialist | claude-sonnet-4-6 | green | planning |
 | `primer` | specialist | claude-sonnet-4-6 | green | planning |
 | `debugger` | specialist | claude-opus-4-7 | purple | auditing |
 | `code-auditor` | specialist | claude-opus-4-7 | purple | auditing |
@@ -73,6 +75,7 @@ Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:pla
 | `/spk:review` | audit-orchestrator |
 | `/spk:bala` | verifier |
 | `/spk:sunzi` | planner |
+| `/spk:design-shotgun` | designer |
 | `/spk:debug` | debugger |
 | `/spk:deploy` | deploy-orchestrator |
 | `/spk:pr` | pr-manager |

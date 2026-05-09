@@ -3,6 +3,7 @@
 ## Unreleased
 
 ### Added
+- `/spk:design-shotgun` skill + `spk:designer` specialist for GStack-style visual brainstorming: multiple distinct UI variants, local comparison board, structured feedback, and approved design direction before implementation.
 - `/spk:sunzi` skill that adapts Sun Tzu (ซุนวู) into a practical strategy lens for choosing battles, terrain, leverage, and the smallest winning move.
 - `/spk:bala` skill that adapts the Buddhist Five Powers (พละ 5) into a practical subagent balance check: confidence, energy, mindfulness, concentration, and wisdom.
 - Skills-first/subagent repo banner image at `assets/repo-banner.png` and README embeds for Thai/English READMEs.
