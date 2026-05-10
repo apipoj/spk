@@ -1,4 +1,4 @@
-# SPK — Install
+# SPK - Install
 
 SPK v3.1+ is distributed as a **Claude Code plugin**. Install in two commands:
 
@@ -7,7 +7,7 @@ SPK v3.1+ is distributed as a **Claude Code plugin**. Install in two commands:
 /plugin install spk@spk
 ```
 
-The plugin hot-reloads — no `claude` restart needed. On the next session start, SPK scaffolds `ai_context/wiki/` and `ai_context/sources/` into your project automatically.
+The plugin hot-reloads - no `claude` restart needed. On the next session start, SPK scaffolds `ai_context/wiki/` and `ai_context/sources/` into your project automatically.
 
 ## Skills (after install)
 
@@ -31,25 +31,26 @@ Subagents are auto-namespaced: `spk:planner`, `spk:architect`, etc.
 /plugin uninstall spk
 ```
 
-Wiki data (`ai_context/wiki/`, `ai_context/sources/`) is preserved — that's user data.
+Wiki data (`ai_context/wiki/`, `ai_context/sources/`) is preserved - that's user data.
 
-## Native Skills (No Plugin Required)
+## Native Skills (Thai, No Plugin Required)
 
-If you prefer not to use the Claude Code plugin system, the `skills/` directory at the repo root contains self-contained native skill copies. These are standalone playbooks that run as main-thread workflows without subagents, `Task()` dispatch, or plugin dependencies.
+If you prefer not to use the Claude Code plugin system, the `skills/` directory at the repo root contains self-contained native skill copies written in Thai. These are standalone playbooks that run as main-thread workflows without subagents, `Task()` dispatch, or plugin dependencies.
 
 **How to use:**
 1. Clone or download the repo.
-2. For a project-local skill, copy the whole directory: `skills/<slug>/` → `.claude/skills/<slug>/`.
-3. For a personal skill available in every project, copy it to `~/.claude/skills/<slug>/`.
-4. Invoke with `/slug` in Claude Code, or let Claude load the skill automatically when its description matches the task.
+2. For a project-local skill, copy the whole directory: `skills/spk-<slug>/` → `.claude/skills/spk-<slug>/`.
+3. For a personal skill available in every project, copy it to `~/.claude/skills/spk-<slug>/`.
+4. Invoke with `/spk-<slug>` in Claude Code (e.g. `/spk-bala`, `/spk-code`, `/spk-plan`).
 
-**Available skills:** bala, code, debug, deploy, design-shotgun, ingest, plan, pr, prime, query, review, sunzi, tdd, uninstall, wiki-lint.
+**Available skills:** spk-bala, spk-code, spk-debug, spk-deploy, spk-design-shotgun, spk-ingest, spk-plan, spk-pr, spk-prime, spk-query, spk-review, spk-sunzi, spk-tdd, spk-uninstall, spk-wiki-lint.
 
 **Differences from plugin skills:**
+- Written in Thai.
 - No plugin install needed.
-- No `Task()` subagent dispatch — all workflows run on the main thread.
+- No `Task()` subagent dispatch - all workflows run on the main thread.
 - No auto-scaffolding (wiki/hooks are not created automatically).
-- No `/spk:` namespace — skills use `/slug` directly.
+- No `/spk:` namespace - skills use `/spk-<slug>` directly.
 
 Verify native skills: `npm run verify:native`
 

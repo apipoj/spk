@@ -2,9 +2,9 @@
 
 ![AI Sprint Kit repo banner](./assets/repo-banner.png)
 
-ระบบ skills & subagent development สำหรับ Claude Code ติดตั้งเป็น plugin — hot-reload ใน session ทันที ไม่ต้อง restart
+ระบบ skills & subagent development สำหรับ Claude Code ติดตั้งเป็น plugin - hot-reload ใน session ทันที ไม่ต้อง restart
 
-**Positioning:** Skills-first Subagents — subagent ทำงานเก่งขึ้นเพราะมี reusable skills / playbooks ไม่ใช่แค่ prompt ยาว ๆ
+**Positioning:** Skills-first Subagents - subagent ทำงานเก่งขึ้นเพราะมี reusable skills / playbooks ไม่ใช่แค่ prompt ยาว ๆ
 
 > English version: [README-EN.md](./README-EN.md)
 
@@ -23,7 +23,7 @@
 
 ครั้งต่อไปที่เริ่ม session ใหม่ SPK จะ scaffold `ai_context/wiki/` และ `ai_context/sources/` ใน project ของคุณอัตโนมัติ
 
-Skills มี namespace `/spk:` ให้เอง — พิมพ์ `/spk:` แล้วจะเห็น `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
+Skills มี namespace `/spk:` ให้เอง - พิมพ์ `/spk:` แล้วจะเห็น `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
 
 Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:planner`, `spk:architect`, ฯลฯ
 
@@ -91,10 +91,10 @@ Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:pla
 
 ทุก project ที่ติดตั้ง SPK จะได้ LLM-wiki สไตล์ Karpathy ที่ `ai_context/wiki/`:
 
-- `sources/` — ไฟล์ raw ที่คุณ drop ลงมา ห้ามแก้ (immutable)
-- `wiki/` — LLM เป็นคนดูแล page concept / entity / decision ข้ามโยงกันเอง
-- `index.md` — catalog รวมทุก wiki page
-- `log.md` — log แบบ append-only สำหรับ ingest / query / lint
+- `sources/` - ไฟล์ raw ที่คุณ drop ลงมา ห้ามแก้ (immutable)
+- `wiki/` - LLM เป็นคนดูแล page concept / entity / decision ข้ามโยงกันเอง
+- `index.md` - catalog รวมทุก wiki page
+- `log.md` - log แบบ append-only สำหรับ ingest / query / lint
 
 Drop ไฟล์ลงใน `ai_context/sources/` แล้ว auto-ingest จะทำงานให้ ถาม `/spk:query "..."` แล้ว wiki จะตอบก่อนไปค้น web
 
@@ -110,27 +110,45 @@ Drop ไฟล์ลงใน `ai_context/sources/` แล้ว auto-ingest จ
 
 Secrets จะไม่หลุดเข้า wiki pages
 
-## Native Skills (No Plugin)
+## Native Skills (Thai, No Plugin)
 
-ระบบ `skills/` ที่ root ของ repo มี native skill copies ที่ทำงานได้โดยไม่ต้องติดตั้ง plugin — เหมาะสำหรับผู้ที่ไม่ใช้ Claude Code plugin system หรือต้องการ skill playbooks แบบ self-contained
+ระบบ `skills/` ที่ root ของ repo มี native skill copies ภาษาไทยที่ทำงานได้โดยไม่ต้องติดตั้ง plugin เหมาะสำหรับผู้ที่ไม่ใช้ Claude Code plugin system หรือต้องการ skill playbooks แบบ self-contained
 
-**วิธีใช้:** copy ทั้ง folder `skills/<slug>/` เข้าไปที่ `.claude/skills/<slug>/` ใน project ของคุณ หรือ `~/.claude/skills/<slug>/` ถ้าต้องการใช้ทุก project
+**วิธีใช้:** copy ทั้ง folder `skills/spk-<slug>/` เข้าไปที่ `.claude/skills/spk-<slug>/` ใน project ของคุณ หรือ `~/.claude/skills/spk-<slug>/` ถ้าต้องการใช้ทุก project เรียกใช้ด้วย `/spk-bala`, `/spk-code`, `/spk-plan` ฯลฯ
 
-Native skills ไม่มี namespace `/spk:` และไม่ขึ้นกับ subagent หรือ plugin — ทำงานเป็น main-thread workflow เลย
+Native skills เขียนเป็นภาษาไทย มี prefix `spk-` และทำงานเป็น main-thread workflow โดยตรง ไม่ขึ้นกับ subagent หรือ plugin
+
+**Skills ที่มี:**
+- `/spk-bala` - ตรวจสอบสมดุลด้วยหลักพละ 5
+- `/spk-code` - implement จาก plan แบบ TDD
+- `/spk-debug` - root cause analysis อย่างเป็นระบบ
+- `/spk-deploy` - deploy และ verify
+- `/spk-design-shotgun` - visual brainstorm หลายทิศทาง
+- `/spk-ingest` - นำ source เข้า wiki
+- `/spk-plan` - วางแผน feature
+- `/spk-pr` - เตรียม PR อย่างปลอดภัย
+- `/spk-prime` - prime repo context
+- `/spk-query` - Q&A แบบ wiki-first
+- `/spk-review` - code review หลาย pass
+- `/spk-sunzi` - strategy lens แบบซุนวู
+- `/spk-tdd` - TDD loop แบบเข้มงวด
+- `/spk-uninstall` - ถอน SPK ออก
+- `/spk-wiki-lint` - ตรวจสอบสุขภาพ wiki
 
 **ข้อแตกต่างจาก plugin skills:**
+- เขียนเป็นภาษาไทย
 - ไม่ต้องการ plugin install
 - ไม่มี `Task()` dispatch ไปยัง subagent
 - Workflow ทำงานบน main thread โดยตรง
 - ไม่มี auto-scaffolding wiki/hooks
 
-Plugin skills (`/spk:plan`, `/spk:code`, ฯลฯ) ยังคงทำงานเหมือนเดิมหลังติดตั้ง plugin — native skills เป็น alternative path เท่านั้น
+Plugin skills (`/spk:plan`, `/spk:code`, ฯลฯ) ยังคงทำงานเหมือนเดิมหลังติดตั้ง plugin - native skills เป็น alternative path เท่านั้น
 
 ตรวจสอบ native skills: `npm run verify:native`
 
 ## Requirements
 
-- Claude Code (subscription — Max หรือ Pro)
+- Claude Code (subscription - Max หรือ Pro)
 - Git
 - Node.js 20+ (ใช้ตอน install เท่านั้น agent ไม่ใช้ runtime)
 

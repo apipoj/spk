@@ -22,9 +22,13 @@ const FORBIDDEN_TOKENS = [
   'plugin install', 'plugin marketplace', '/plugin ',
 ];
 
-describe('native skills', () => {
-  const expectedSlugs = MANIFEST.commands.map(c => c.name.replace(/^\//, ''));
+// Thai content signal: at least one Thai character range
+const THAI_CHAR_RE = /[\u0E00-\u0E7F]/;
 
+// Expected native skill dirs are spk-prefixed versions of manifest commands
+const expectedSlugs = MANIFEST.commands.map(c => 'spk-' + c.name.replace(/^\//, ''));
+
+describe('native skills', () => {
   test('native skills directory exists', () => {
     expect(fs.existsSync(NATIVE_SKILLS_DIR)).toBe(true);
   });
@@ -40,6 +44,14 @@ describe('native skills', () => {
     const fm = parseFrontmatter(content);
     expect(fm).not.toBeNull();
     expect(fm.description).toBeTruthy();
+  });
+
+  test.each(expectedSlugs)('/%s SKILL.md body contains Thai content', (slug) => {
+    const skillFile = path.join(NATIVE_SKILLS_DIR, slug, 'SKILL.md');
+    const content = fs.readFileSync(skillFile, 'utf-8');
+    // Strip frontmatter to check body only
+    const body = content.replace(/^---\n[\s\S]+?\n---/, '');
+    expect(body).toMatch(THAI_CHAR_RE);
   });
 
   test.each(expectedSlugs)('/%s SKILL.md has no forbidden tokens (no plugin/subagent deps)', (slug) => {

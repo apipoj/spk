@@ -2,9 +2,9 @@
 
 ![AI Sprint Kit repo banner](./assets/repo-banner.png)
 
-Skills & subagent development for Claude Code. Ships as a plugin — hot-reloads in your session, no restart.
+Skills & subagent development for Claude Code. Ships as a plugin - hot-reloads in your session, no restart.
 
-**Positioning:** Skills-first Subagents — subagents become more capable through reusable skills/playbooks, not just longer prompts.
+**Positioning:** Skills-first Subagents - subagents become more capable through reusable skills/playbooks, not just longer prompts.
 
 <!-- SPK-COUNTS:start -->
 **21 subagents** (4 orchestrators + 17 specialists) · **15 skills**
@@ -86,10 +86,10 @@ Subagents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 ## Memory
 
 Every installed project gets a Karpathy-style LLM-wiki at `ai_context/wiki/`:
-- `sources/` — raw files you drop in, immutable
-- `wiki/` — LLM-maintained concept/entity/decision pages, cross-linked
-- `index.md` — catalog of every wiki page
-- `log.md` — append-only record of ingests, queries, lints
+- `sources/` - raw files you drop in, immutable
+- `wiki/` - LLM-maintained concept/entity/decision pages, cross-linked
+- `index.md` - catalog of every wiki page
+- `log.md` - append-only record of ingests, queries, lints
 
 Drop a file in `ai_context/sources/` and it auto-ingests. Ask `/spk:query "..."` and the wiki answers before the web does.
 
@@ -97,27 +97,45 @@ Drop a file in `ai_context/sources/` and it auto-ingests. Ask `/spk:query "..."`
 
 5-layer defense for wiki: ingest-time secret scan, pre-write fail-closed hook, lint-time audit, `.gitignore`-gated sources directory, `.gitignore` respect during wiki-build. Secrets never land in wiki pages.
 
-## Native Skills (No Plugin)
+## Native Skills (Thai, No Plugin)
 
-The `skills/` directory at the repo root contains native skill copies that work without the Claude Code plugin — useful if you don't use the plugin system or want self-contained skill playbooks.
+The `skills/` directory at the repo root contains native skill copies written in Thai that work without the Claude Code plugin - useful if you don't use the plugin system or want self-contained skill playbooks.
 
-**Usage:** copy the full `skills/<slug>/` directory into `.claude/skills/<slug>/` for a project skill, or `~/.claude/skills/<slug>/` for a personal skill available everywhere.
+**Usage:** copy the full `skills/spk-<slug>/` directory into `.claude/skills/spk-<slug>/` for a project skill, or `~/.claude/skills/spk-<slug>/` for a personal skill available everywhere. Invoke with `/spk-bala`, `/spk-code`, `/spk-plan`, etc.
 
-Native skills have no `/spk:` namespace and do not depend on subagents or plugins — they run as main-thread workflows.
+Native skills are written in Thai, prefixed with `spk-`, and run as main-thread workflows without subagents or plugins.
+
+**Available skills:**
+- `/spk-bala` - Five Powers balance check
+- `/spk-code` - implement from plan with TDD
+- `/spk-debug` - systematic root cause analysis
+- `/spk-deploy` - deploy and verify
+- `/spk-design-shotgun` - visual brainstorm with multiple directions
+- `/spk-ingest` - ingest sources into wiki
+- `/spk-plan` - feature planning
+- `/spk-pr` - safe PR preparation
+- `/spk-prime` - prime repo context
+- `/spk-query` - wiki-first Q&A
+- `/spk-review` - multi-pass code review
+- `/spk-sunzi` - Sun Tzu strategy lens
+- `/spk-tdd` - strict TDD loop
+- `/spk-uninstall` - remove SPK
+- `/spk-wiki-lint` - wiki health audit
 
 **Differences from plugin skills:**
+- Written in Thai
 - No plugin install required
 - No `Task()` dispatch to subagents
 - Workflows run directly on the main thread
 - No auto-scaffolding of wiki/hooks
 
-Plugin skills (`/spk:plan`, `/spk:code`, etc.) continue to work as before after plugin install — native skills are an alternative path.
+Plugin skills (`/spk:plan`, `/spk:code`, etc.) continue to work as before after plugin install - native skills are an alternative path.
 
 Verify native skills: `npm run verify:native`
 
 ## Requirements
 
-- Claude Code (subscription — Max or Pro)
+- Claude Code (subscription - Max or Pro)
 - Git
 - Node.js 20+ (one-time install only; agents don't need it at runtime)
 

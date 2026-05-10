@@ -20,6 +20,9 @@ const FORBIDDEN_TOKENS = [
   '/plugin ',
 ];
 
+// Thai content signal: at least one Thai character range
+const THAI_CHAR_RE = /[\u0E00-\u0E7F]/;
+
 function parseFrontmatter(content) {
   const m = content.match(/^---\n([\s\S]+?)\n---/);
   if (!m) return null;
@@ -48,8 +51,8 @@ function main() {
   const errors = [];
   const warnings = [];
 
-  // Collect expected slugs from manifest
-  const expectedSlugs = new Set(MANIFEST.commands.map(c => c.name.replace(/^\//, '')));
+  // Collect expected slugs from manifest, prefixed with spk-
+  const expectedSlugs = new Set(MANIFEST.commands.map(c => 'spk-' + c.name.replace(/^\//, '')));
 
   // Check native skills directory exists
   if (!fs.existsSync(NATIVE_SKILLS_DIR)) {
@@ -66,7 +69,7 @@ function main() {
   for (const slug of expectedSlugs) {
     const skillFile = path.join(NATIVE_SKILLS_DIR, slug, 'SKILL.md');
     if (!fs.existsSync(skillFile)) {
-      errors.push(`MISSING native skill: skills/${slug}/SKILL.md (required by manifest command /${slug})`);
+      errors.push(`MISSING native skill: skills/${slug}/SKILL.md (required by manifest command /${slug.replace(/^spk-/, '')})`);
       continue;
     }
 
@@ -80,6 +83,12 @@ function main() {
     }
     if (!fm.description) {
       errors.push(`skills/${slug}/SKILL.md: missing description in frontmatter`);
+    }
+
+    // Check Thai content signal (body must contain Thai characters)
+    const body = content.replace(/^---\n[\s\S]+?\n---/, '');
+    if (!THAI_CHAR_RE.test(body)) {
+      errors.push(`skills/${slug}/SKILL.md: body lacks Thai content signal — native skills must be written in Thai`);
     }
 
     // Check forbidden tokens (plugin/subagent dependencies)
@@ -110,9 +119,9 @@ function main() {
     process.exit(1);
   }
 
-  console.log(`Native skills OK (${expectedSlugs.size} skills verified, no forbidden tokens)`);
+  console.log(`Native skills OK (${expectedSlugs.size} skills verified, Thai content OK, no forbidden tokens)`);
 }
 
 if (require.main === module) main();
 
-module.exports = { parseFrontmatter, checkForbiddenTokens, FORBIDDEN_TOKENS };
+module.exports = { parseFrontmatter, checkForbiddenTokens, FORBIDDEN_TOKENS, THAI_CHAR_RE };
