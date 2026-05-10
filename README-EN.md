@@ -97,6 +97,24 @@ Drop a file in `ai_context/sources/` and it auto-ingests. Ask `/spk:query "..."`
 
 5-layer defense for wiki: ingest-time secret scan, pre-write fail-closed hook, lint-time audit, `.gitignore`-gated sources directory, `.gitignore` respect during wiki-build. Secrets never land in wiki pages.
 
+## Native Skills (No Plugin)
+
+The `skills/` directory at the repo root contains native skill copies that work without the Claude Code plugin — useful if you don't use the plugin system or want self-contained skill playbooks.
+
+**Usage:** copy the full `skills/<slug>/` directory into `.claude/skills/<slug>/` for a project skill, or `~/.claude/skills/<slug>/` for a personal skill available everywhere.
+
+Native skills have no `/spk:` namespace and do not depend on subagents or plugins — they run as main-thread workflows.
+
+**Differences from plugin skills:**
+- No plugin install required
+- No `Task()` dispatch to subagents
+- Workflows run directly on the main thread
+- No auto-scaffolding of wiki/hooks
+
+Plugin skills (`/spk:plan`, `/spk:code`, etc.) continue to work as before after plugin install — native skills are an alternative path.
+
+Verify native skills: `npm run verify:native`
+
 ## Requirements
 
 - Claude Code (subscription — Max or Pro)

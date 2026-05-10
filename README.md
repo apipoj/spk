@@ -110,6 +110,24 @@ Drop ไฟล์ลงใน `ai_context/sources/` แล้ว auto-ingest จ
 
 Secrets จะไม่หลุดเข้า wiki pages
 
+## Native Skills (No Plugin)
+
+ระบบ `skills/` ที่ root ของ repo มี native skill copies ที่ทำงานได้โดยไม่ต้องติดตั้ง plugin — เหมาะสำหรับผู้ที่ไม่ใช้ Claude Code plugin system หรือต้องการ skill playbooks แบบ self-contained
+
+**วิธีใช้:** copy ทั้ง folder `skills/<slug>/` เข้าไปที่ `.claude/skills/<slug>/` ใน project ของคุณ หรือ `~/.claude/skills/<slug>/` ถ้าต้องการใช้ทุก project
+
+Native skills ไม่มี namespace `/spk:` และไม่ขึ้นกับ subagent หรือ plugin — ทำงานเป็น main-thread workflow เลย
+
+**ข้อแตกต่างจาก plugin skills:**
+- ไม่ต้องการ plugin install
+- ไม่มี `Task()` dispatch ไปยัง subagent
+- Workflow ทำงานบน main thread โดยตรง
+- ไม่มี auto-scaffolding wiki/hooks
+
+Plugin skills (`/spk:plan`, `/spk:code`, ฯลฯ) ยังคงทำงานเหมือนเดิมหลังติดตั้ง plugin — native skills เป็น alternative path เท่านั้น
+
+ตรวจสอบ native skills: `npm run verify:native`
+
 ## Requirements
 
 - Claude Code (subscription — Max หรือ Pro)

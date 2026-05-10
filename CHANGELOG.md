@@ -3,6 +3,10 @@
 ## Unreleased
 
 ### Added
+- Native standalone skill copies under `skills/<slug>/SKILL.md` for all 15 manifest skills — self-contained playbooks that work without the Claude Code plugin, subagents, or `Task()` dispatch. Each native skill runs as a direct main-thread workflow.
+- `scripts/verify-native-skills.cjs` — verifies native skills exist, have valid frontmatter, and contain no forbidden plugin/subagent dependency tokens (`Task(`, `subagent_type`, `spk:`, etc.).
+- `npm run verify:native` — convenience script for native skill verification.
+- `tests/native-skills.test.js` — Jest test suite covering native skill existence, frontmatter validity, forbidden token checks, and orphan directory detection.
 - `/spk:design-shotgun` skill + `spk:designer` specialist for GStack-style visual brainstorming: multiple distinct UI variants, local comparison board, structured feedback, and approved design direction before implementation.
 - `/spk:sunzi` skill that adapts Sun Tzu (ซุนวู) into a practical strategy lens for choosing battles, terrain, leverage, and the smallest winning move.
 - `/spk:bala` skill that adapts the Buddhist Five Powers (พละ 5) into a practical subagent balance check: confidence, energy, mindfulness, concentration, and wisdom.
