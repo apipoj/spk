@@ -8,8 +8,8 @@ argument-hint: "[feature description]"
 Delegate to `spk:plan-orchestrator` with the user's feature description.
 
 ## Pre-computed Context
-!`git status --short`
-!`git log -3 --oneline`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git status --short || true; else echo "Git status unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git log -3 --oneline || echo "Git history unavailable: no commits yet."; else echo "Git history unavailable: not inside a git worktree."; fi`
 !`find . -maxdepth 3 \( -name CLAUDE.md -o -name AGENTS.md -o -name package.json -o -name pyproject.toml -o -name go.mod -o -name Cargo.toml -o -name tsconfig.json \) -not -path './node_modules/*' -not -path './.git/*' | sort | head -100`
 
 ## Workflow

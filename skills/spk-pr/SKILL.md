@@ -9,9 +9,9 @@ argument-hint: "[title หรือ scope; optional: draft|ready]"
 
 ## รวบรวม Context
 
-- รัน `git status --short --branch --untracked-files=all`
-- รัน `git remote get-url origin` และ `git rev-list --left-right --count HEAD...origin/main`
-- รัน `git log --oneline --decorate -8` และ `git diff --stat`
+- ถ้าอยู่ใน git worktree ให้รัน `git status --short --branch --untracked-files=all`
+- ถ้าอยู่ใน git worktree ให้รัน `git remote get-url origin` และ `git rev-list --left-right --count HEAD...origin/main`; ถ้า remote/main ไม่มี ให้บันทึกว่าไม่มีข้อมูลเปรียบเทียบ
+- ถ้าอยู่ใน git worktree ให้รัน `git log --oneline --decorate -8` และ `git diff --stat`; ถ้าไม่ใช่ git repo ให้รายงานว่า PR context ไม่พร้อมแทนการหยุดด้วย error
 - เช็ค `gh auth status`
 
 ## Workflow

@@ -9,7 +9,7 @@ Scan source-code folders และสร้างหรืออัพเดต 
 
 ## รวบรวม Context
 
-- รัน `git status --short` และ `git log -3 --oneline`
+- ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
 - ระบุ source subtrees ที่สำคัญ (package.json, pyproject.toml, go.mod, Cargo.toml, tsconfig, requirements.txt)
 
 ## Workflow

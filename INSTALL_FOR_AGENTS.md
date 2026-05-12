@@ -9,6 +9,12 @@ SPK v3.1+ is distributed as a **Claude Code plugin**. Install in two commands:
 
 The plugin hot-reloads - no `claude` restart needed. On the next session start, SPK scaffolds `ai_context/wiki/` and `ai_context/sources/` into your project automatically.
 
+Update an existing install with:
+
+```text
+/plugin update
+```
+
 ## Skills (after install)
 
 Type `/spk:` to see: `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.

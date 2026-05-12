@@ -8,10 +8,10 @@ argument-hint: "[diff range, branch, PR, 'wiki', or working tree]"
 Delegate to `spk:audit-orchestrator` for deep review.
 
 ## Pre-computed Context
-!`git status --short --branch --untracked-files=all`
-!`git diff --stat`
-!`git diff --name-status`
-!`git log -5 --oneline`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git status --short --branch --untracked-files=all || true; else echo "Git status unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git diff --stat || true; else echo "Git diff unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git diff --name-status || true; else echo "Git diff unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git log -5 --oneline || echo "Git history unavailable: no commits yet."; else echo "Git history unavailable: not inside a git worktree."; fi`
 
 ## Workflow
 

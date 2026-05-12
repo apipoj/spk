@@ -9,9 +9,9 @@ argument-hint: "[diff range, branch, PR, 'wiki', หรือ working tree]"
 
 ## รวบรวม Context
 
-- รัน `git status --short --branch --untracked-files=all`
-- รัน `git diff --stat` และ `git diff --name-status`
-- รัน `git log -5 --oneline`
+- ถ้าอยู่ใน git worktree ให้รัน `git status --short --branch --untracked-files=all`
+- ถ้าอยู่ใน git worktree ให้รัน `git diff --stat` และ `git diff --name-status`
+- ถ้าอยู่ใน git worktree ให้รัน `git log -5 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และ review จาก scope ที่ user ให้มา
 
 ## Review Passes
 

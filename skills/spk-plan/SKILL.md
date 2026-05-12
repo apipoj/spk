@@ -9,7 +9,7 @@ argument-hint: "[feature description]"
 
 ## รวบรวม Context
 
-- รัน `git status --short` และ `git log -3 --oneline`
+- ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
 - ดู project structure (CLAUDE.md, AGENTS.md, package.json, tsconfig, pyproject.toml, go.mod, Cargo.toml ฯลฯ)
 - ดู plans ที่มีอยู่ใน `ai_context/wiki/plans/` ถ้ามี
 

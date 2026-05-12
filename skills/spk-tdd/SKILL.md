@@ -9,7 +9,7 @@ argument-hint: "[feature, behavior, bug, หรือ plan reference]"
 
 ## รวบรวม Context
 
-- รัน `git status --short` และ `git log -3 --oneline`
+- ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
 - ระบุ test setup (package.json, pyproject.toml, pytest.ini, jest.config, vitest.config)
 
 ## TDD Cycle

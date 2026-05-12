@@ -10,7 +10,7 @@ argument-hint: "[scope, plan, diff, incident, หรือ decision]"
 ## รวบรวม Context
 
 ก่อนประเมิน ให้เก็บสถานะปัจจุบันก่อน:
-- รัน `git status --short` และ `git log -3 --oneline`
+- ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
 - ดู context ของ project (CLAUDE.md, AGENTS.md, package.json ฯลฯ)
 - อ่าน plan, diff, incident หรือ decision ที่ให้มา
 

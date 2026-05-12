@@ -1,6 +1,8 @@
 // tests/command-manifest-sync.test.js
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+const childProcess = require('child_process');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const PLUGIN_ROOT = path.join(REPO_ROOT, 'plugins', 'spk');
@@ -16,6 +18,12 @@ function parseFrontmatter(content) {
   }
   return fm;
 }
+
+function extractPrecomputedCommands(content) {
+  return [...content.matchAll(/^!`([^`]+)`$/gm)].map(m => m[1]);
+}
+
+const GIT_COMMAND_RE = /(^|[;&|() ])git(?=\s|$)/;
 
 describe('command manifest sync', () => {
   test.each(manifest.commands.map(c => [c.name, c]))('%s has matching SKILL.md', (name, cmd) => {
@@ -36,6 +44,27 @@ describe('command manifest sync', () => {
       .map(e => e.name);
     for (const dir of actual) {
       expect(expected.has(dir)).toBe(true);
+    }
+  });
+
+  test.each(manifest.commands.map(c => [c.name, c]))('%s git pre-computed context is optional outside git worktrees', (name) => {
+    const slug = name.replace(/^\//, '');
+    const file = path.join(PLUGIN_ROOT, 'skills', slug, 'SKILL.md');
+    const content = fs.readFileSync(file, 'utf-8');
+    const gitCommands = extractPrecomputedCommands(content).filter(command => GIT_COMMAND_RE.test(command));
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'spk-non-git-'));
+
+    try {
+      for (const command of gitCommands) {
+        expect(() => {
+          childProcess.execFileSync('sh', ['-c', command], {
+            cwd: tmpDir,
+            stdio: 'pipe'
+          });
+        }).not.toThrow();
+      }
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
     }
   });
 });

@@ -10,9 +10,9 @@ Run a systematic root-cause investigation before any fix is attempted.
 Use this for failing tests, production bugs, build errors, regressions, unexpected behavior, or any situation where guessing would waste time.
 
 ## Pre-computed Context
-!`git status --short`
-!`git log -5 --oneline`
-!`git diff --stat`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git status --short || true; else echo "Git status unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git log -5 --oneline || echo "Git history unavailable: no commits yet."; else echo "Git history unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git diff --stat || true; else echo "Git diff unavailable: not inside a git worktree."; fi`
 
 ## Workflow
 

@@ -10,11 +10,11 @@ Prepare a GitHub pull request for the current branch or reviewed local changes. 
 Use this after `/spk:review` passes, or when the user asks to open a PR, prepare a PR body, monitor CI, or repair a PR branch.
 
 ## Pre-computed Context
-!`git status --short --branch --untracked-files=all`
-!`git remote get-url origin 2>/dev/null || true`
-!`git rev-list --left-right --count HEAD...origin/main 2>/dev/null || true`
-!`git log --oneline --decorate -8`
-!`git diff --stat`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git status --short --branch --untracked-files=all || true; else echo "Git status unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git remote get-url origin 2>/dev/null || true; else echo "Git remote unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git rev-list --left-right --count HEAD...origin/main 2>/dev/null || true; else echo "Git branch comparison unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git log --oneline --decorate -8 || echo "Git history unavailable: no commits yet."; else echo "Git history unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git diff --stat || true; else echo "Git diff unavailable: not inside a git worktree."; fi`
 !`gh auth status 2>/dev/null || true`
 
 ## Workflow

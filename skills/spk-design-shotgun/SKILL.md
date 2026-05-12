@@ -11,7 +11,7 @@ argument-hint: "[screen, product area, URL, screenshot, หรือ rough UI id
 
 ## รวบรวม Context
 
-- รัน `git status --short` และ `git log -3 --oneline`
+- ถ้าอยู่ใน git worktree ให้รัน `git status --short` และ `git log -3 --oneline`; ถ้าไม่ใช่ git repo ให้ข้าม git context และทำงานต่อ
 - อ่าน DESIGN.md ถ้ามี
 - ตรวจสอบ app/routes/components ที่เกี่ยวข้อง
 - เช็ค designs ที่อนุมัติแล้วใน `.spk/design-shotgun/`

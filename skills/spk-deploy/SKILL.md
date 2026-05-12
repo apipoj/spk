@@ -9,7 +9,7 @@ Deploy HEAD ปัจจุบันไป environment ที่ระบุ ร
 
 ## รวบรวม Context
 
-- รัน `git log -1 --format='%H %s'` และ `git branch --show-current`
+- ถ้าอยู่ใน git worktree ให้รัน `git log -1 --format='%H %s'` และ `git branch --show-current`; ถ้าไม่ใช่ git repo ให้รายงานว่าไม่มี git context แล้วทำ smoke/deploy context อื่นต่อ
 - ตรวจสอบ working tree สะอาด (ไม่มี uncommitted changes)
 
 ## Workflow

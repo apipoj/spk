@@ -11,7 +11,7 @@ argument-hint: "[bug, failing test, error output, หรือ reproduction step
 
 ## รวบรวม Context
 
-- รัน `git status --short`, `git log -5 --oneline` และ `git diff --stat`
+- ถ้าอยู่ใน git worktree ให้รัน `git status --short`, `git log -5 --oneline` และ `git diff --stat`; ถ้าไม่ใช่ git repo ให้ข้าม git context และใช้ข้อมูลที่มีแทน
 - เก็บ error output, test failure หรือ behavior ที่ไม่คาดคิดให้ครบ
 
 ## Process RCA 4 ขั้น

@@ -8,8 +8,8 @@ argument-hint: "[env: staging|production]"
 Delegate to `spk:deploy-orchestrator` for full deployment cycle.
 
 ## Pre-computed Context
-!`git log -1 --format='%H %s'`
-!`git branch --show-current`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git log -1 --format='%H %s' || echo "Git history unavailable: no commits yet."; else echo "Git history unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git branch --show-current || true; else echo "Git branch unavailable: not inside a git worktree."; fi`
 
 ## Workflow
 

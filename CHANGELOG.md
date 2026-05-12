@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## 3.1.3 - 2026-05-12
+
+Hotfix: make git pre-computed context optional so SPK skills still run outside git worktrees.
+
+### Fixed
+- Guarded all plugin skill pre-compute git probes with `git rev-parse --is-inside-work-tree` checks, so `/spk:bala`, `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:debug`, `/spk:pr`, `/spk:deploy`, and related skills report unavailable git context instead of failing before the workflow starts.
+- Updated native Thai skill playbooks to treat git context as optional.
+- Added a regression test that executes every git-related plugin pre-compute command from a temporary non-git directory.
+
+### Release
+- Bumped `manifest.json`, `.claude-plugin/marketplace.json`, and `plugins/spk/.claude-plugin/plugin.json` to `3.1.3` so Claude Code users can receive the fix through `/plugin update`.
+
 ### Added
 - Native standalone skill copies under `skills/spk-<slug>/SKILL.md` for all 15 manifest skills - self-contained playbooks written in Thai that work without the Claude Code plugin, subagents, or `Task()` dispatch. Each native skill runs as a direct main-thread workflow and is invoked as `/spk-bala`, `/spk-code`, etc.
 - `scripts/verify-native-skills.cjs` - verifies native skills exist (spk-prefixed), have valid frontmatter, contain Thai content signal, and contain no forbidden plugin/subagent dependency tokens (`Task(`, `subagent_type`, `spk:`, etc.).

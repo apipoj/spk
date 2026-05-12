@@ -10,8 +10,8 @@ Use this when the user wants to explore visual directions before committing to i
 This is adapted from GStack's design-shotgun idea, but SPK keeps it local, lightweight, and codebase-aware: generate disposable variants, create a comparison board, collect structured feedback, then hand the approved direction to `/spk:code`.
 
 ## Pre-computed Context
-!`git status --short`
-!`git log -3 --oneline`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git status --short || true; else echo "Git status unavailable: not inside a git worktree."; fi`
+!`if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then git log -3 --oneline || echo "Git history unavailable: no commits yet."; else echo "Git history unavailable: not inside a git worktree."; fi`
 !`find . -maxdepth 3 \( -name DESIGN.md -o -name CLAUDE.md -o -name AGENTS.md -o -name package.json -o -name tsconfig.json -o -name vite.config.* -o -name next.config.* \) -not -path './node_modules/*' -not -path './.git/*' -not -path './dist/*' -not -path './build/*' | sort | head -100`
 !`find .spk/design-shotgun -maxdepth 3 -name approved.json 2>/dev/null | sort | tail -10`
 
