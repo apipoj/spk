@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 3.1.4 - 2026-05-12
+
+Packaging hotfix: quote `/spk:design-shotgun` frontmatter so Claude Code plugin validation can parse the skill metadata during release tagging.
+
+### Release
+- Bumped `manifest.json`, `.claude-plugin/marketplace.json`, and `plugins/spk/.claude-plugin/plugin.json` to `3.1.4` because `3.1.3` briefly reached `main`; this guarantees `/plugin update` sees a newer version even for users who updated during that window.
+
 ## 3.1.3 - 2026-05-12
 
 Hotfix: make git pre-computed context optional so SPK skills still run outside git worktrees.

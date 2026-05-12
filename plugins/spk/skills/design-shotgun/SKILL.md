@@ -1,5 +1,5 @@
 ---
-description: Run a design shotgun exploration: generate multiple distinct UI directions, compare them side-by-side, collect feedback, and lock an approved design direction before implementation.
+description: "Run a design shotgun exploration: generate multiple distinct UI directions, compare them side-by-side, collect feedback, and lock an approved design direction before implementation."
 argument-hint: "[screen, product area, URL, screenshot, or rough UI idea]"
 ---
 

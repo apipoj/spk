@@ -1,5 +1,5 @@
 ---
-description: Multi-pass pre-merge review: correctness, security, maintainability, tests, docs, and ship-readiness via spk:audit-orchestrator.
+description: "Multi-pass pre-merge review: correctness, security, maintainability, tests, docs, and ship-readiness via spk:audit-orchestrator."
 argument-hint: "[diff range, branch, PR, 'wiki', or working tree]"
 ---
 
