@@ -41,5 +41,8 @@ jobs:
       - name: Run grep gates
         run: npm run verify:gates
 
+      - name: Verify native skills
+        run: npm run verify:native
+
       - name: Run tests
         run: npm test
