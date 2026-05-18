@@ -46,6 +46,7 @@
     { "name": "/query",     "agent": "researcher" },
     { "name": "/wiki-lint", "orchestrator": "audit-orchestrator" },
     { "name": "/tdd",       "orchestrator": "build-orchestrator" },
+    { "name": "/release-check", "agent": "verifier" },
     { "name": "/uninstall", "agent": null }
   ]
 }

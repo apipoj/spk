@@ -48,6 +48,8 @@ function collectManifestSyncErrors(rootDir = REPO_ROOT) {
 
   const allAgents = [...manifest.agents.orchestrators, ...manifest.agents.specialists];
   const expectedAgents = new Set(allAgents.map(a => `${a.name}.md`));
+  const orchestratorNames = new Set(manifest.agents.orchestrators.map(a => a.name));
+  const specialistNames = new Set(manifest.agents.specialists.map(a => a.name));
 
   for (const agent of allAgents) {
     const file = path.join(pluginRoot, 'agents', `${agent.name}.md`);
@@ -80,6 +82,12 @@ function collectManifestSyncErrors(rootDir = REPO_ROOT) {
     const slug = cmd.name.replace(/^\//, '');
     const file = path.join(pluginRoot, 'skills', slug, 'SKILL.md');
     if (!fs.existsSync(file)) errors.push(`MISSING skill file: plugins/spk/skills/${slug}/SKILL.md`);
+    if (cmd.orchestrator && !orchestratorNames.has(cmd.orchestrator)) {
+      errors.push(`manifest command ${cmd.name}: unknown orchestrator "${cmd.orchestrator}"`);
+    }
+    if (cmd.agent && !specialistNames.has(cmd.agent)) {
+      errors.push(`manifest command ${cmd.name}: unknown agent "${cmd.agent}"`);
+    }
   }
 
   const skillsDir = path.join(pluginRoot, 'skills');

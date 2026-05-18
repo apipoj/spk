@@ -9,7 +9,7 @@
 > English version: [README-EN.md](./README-EN.md)
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **15 skills**
+**21 subagents** (4 orchestrators + 17 specialists) · **16 skills**
 <!-- SPK-COUNTS:end -->
 
 ## ติดตั้ง
@@ -90,6 +90,7 @@ Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:pla
 | `/spk:query` | researcher |
 | `/spk:wiki-lint` | audit-orchestrator |
 | `/spk:tdd` | build-orchestrator |
+| `/spk:release-check` | verifier |
 | `/spk:uninstall` | (no subagent) |
 <!-- SPK-COMMANDS:end -->
 

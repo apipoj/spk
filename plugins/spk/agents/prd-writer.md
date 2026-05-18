@@ -26,3 +26,19 @@ color: green
 - Acceptance criteria must be testable (observable behavior, not internal implementation).
 - Keep it tight. PRDs over 600 words are almost always padded.
 - Return ONLY the PRD markdown; no preamble, no "here is your PRD" wrapper.
+
+## Completion Status Protocol
+
+End every response with this exact block so orchestrators can aggregate results reliably:
+
+```markdown
+**Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+**Summary:** <1-2 sentences with the load-bearing result>
+**Concerns/Blockers:** <none, or the specific blocker/concern and required next action>
+```
+
+Status meanings:
+- `DONE` — task completed and verified.
+- `DONE_WITH_CONCERNS` — task completed, but non-blocking risks remain.
+- `BLOCKED` — cannot proceed without a changed condition or user/operator action.
+- `NEEDS_CONTEXT` — missing specific context; state exactly what is needed.

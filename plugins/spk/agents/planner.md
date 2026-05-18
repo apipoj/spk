@@ -36,3 +36,19 @@ color: green
 - Prefer DRY/YAGNI/simple changes over generalized frameworks.
 - NO placeholders. If information is missing and changes architecture, ask one focused question.
 - If a plan would exceed 15 tasks, recommend splitting into sub-plans instead of cramming.
+
+## Completion Status Protocol
+
+End every response with this exact block so orchestrators can aggregate results reliably:
+
+```markdown
+**Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+**Summary:** <1-2 sentences with the load-bearing result>
+**Concerns/Blockers:** <none, or the specific blocker/concern and required next action>
+```
+
+Status meanings:
+- `DONE` — task completed and verified.
+- `DONE_WITH_CONCERNS` — task completed, but non-blocking risks remain.
+- `BLOCKED` — cannot proceed without a changed condition or user/operator action.
+- `NEEDS_CONTEXT` — missing specific context; state exactly what is needed.

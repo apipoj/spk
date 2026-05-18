@@ -27,3 +27,19 @@ color: blue
 - Don't dump raw search results — synthesize.
 - Outdated info is worse than no info. Prefer docs dated < 12 months where possible.
 - For security-critical research (CVEs, compliance), cite the primary source.
+
+## Completion Status Protocol
+
+End every response with this exact block so orchestrators can aggregate results reliably:
+
+```markdown
+**Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+**Summary:** <1-2 sentences with the load-bearing result>
+**Concerns/Blockers:** <none, or the specific blocker/concern and required next action>
+```
+
+Status meanings:
+- `DONE` — task completed and verified.
+- `DONE_WITH_CONCERNS` — task completed, but non-blocking risks remain.
+- `BLOCKED` — cannot proceed without a changed condition or user/operator action.
+- `NEEDS_CONTEXT` — missing specific context; state exactly what is needed.

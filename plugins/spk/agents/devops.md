@@ -35,3 +35,19 @@ color: orange
 - Unfamiliar platform with no wiki context → report NEEDS_CONTEXT, don't improvise.
 - Platform auth missing → report BLOCKED, list exactly which credentials are needed.
 - Deploy succeeds but downstream smoke test should run — return clean success so the orchestrator can dispatch `spk:deployment-smoke` next.
+
+## Completion Status Protocol
+
+End every response with this exact block so orchestrators can aggregate results reliably:
+
+```markdown
+**Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
+**Summary:** <1-2 sentences with the load-bearing result>
+**Concerns/Blockers:** <none, or the specific blocker/concern and required next action>
+```
+
+Status meanings:
+- `DONE` — task completed and verified.
+- `DONE_WITH_CONCERNS` — task completed, but non-blocking risks remain.
+- `BLOCKED` — cannot proceed without a changed condition or user/operator action.
+- `NEEDS_CONTEXT` — missing specific context; state exactly what is needed.

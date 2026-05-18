@@ -1,7 +1,7 @@
 {
   "name": "spk",
   "version": "3.1.4",
-  "description": "AI Sprint Kit: skills-first Claude Code plugin for subagent development, with 21 subagents, 15 slash skills, LLM-wiki memory, visual design shotgun, RCA debugging, safe PR prep, and 5-layer wiki security.",
+  "description": "AI Sprint Kit: skills-first Claude Code plugin for subagent development, with 21 subagents, 16 slash skills, LLM-wiki memory, visual design shotgun, RCA debugging, safe PR prep, and 5-layer wiki security.",
   "author": {
     "name": "Apipoj Piasak",
     "url": "https://github.com/apipoj"

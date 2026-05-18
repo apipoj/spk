@@ -21,6 +21,10 @@
     "verify:gates": "node scripts/verify-grep-gates.cjs",
     "verify:native": "node scripts/verify-native-skills.cjs",
     "verify:sync": "node scripts/verify-manifest-sync.cjs",
+    "verify:refs": "node scripts/verify-reference-integrity.cjs",
+    "verify:descriptions": "node scripts/verify-skill-descriptions.cjs",
+    "verify:agents": "node scripts/verify-agent-contracts.cjs",
+    "verify:release": "npm run validate:manifest && npm run regen:check && npm run verify:sync && npm run verify:refs && npm run verify:descriptions && npm run verify:agents && npm run verify:gates && npm run verify:native && npm test -- --runInBand",
     "prepare": "husky"
   },
   "devDependencies": {

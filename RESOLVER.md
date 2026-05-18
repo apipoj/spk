@@ -19,6 +19,7 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 | `/spk:query` | researcher |
 | `/spk:wiki-lint` | audit-orchestrator |
 | `/spk:tdd` | build-orchestrator |
+| `/spk:release-check` | verifier |
 | `/spk:uninstall` | (no subagent) |
 <!-- SPK-COMMANDS:end -->
 
@@ -56,6 +57,7 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 - "deploy to production" → `/spk:deploy production` (requires user confirmation)
 - "check deployment health" → deploy-orchestrator's deployment-smoke agent
 - "UI smoke test" → deploy-orchestrator's browser-tester agent
+- "release check" / "pre-release validation" / "พร้อม release ไหม" → `/spk:release-check [scope]`
 
 ### Memory / Wiki
 
@@ -74,7 +76,7 @@ Skills map to 4 phases, color-coded:
 - Planning (green) → `/spk:plan`, `/spk:design-shotgun`, `/spk:prime`
 - Building (blue) → `/spk:code`, `/spk:tdd`, `/spk:ingest` (when ingesting for implementation), `/spk:query`
 - Auditing (purple) → `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:debug`, `/spk:wiki-lint`
-- Shipping (orange) → `/spk:deploy`, `/spk:pr`
+- Shipping (orange) → `/spk:deploy`, `/spk:pr`, `/spk:release-check`
 
 ## When Main-Thread Should Dispatch Directly
 
