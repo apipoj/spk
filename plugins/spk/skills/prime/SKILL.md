@@ -1,5 +1,5 @@
 ---
-description: Prime a repo for subagents by scanning source folders and creating/updating local CLAUDE.md + AGENTS.md context files.
+description: Prime a repo for subagents by scanning source folders and creating/updating local AGENTS.md context files (with CLAUDE.md as @AGENTS.md pointer).
 argument-hint: "[scope: repo|frontend/|apps/api/|packages/*]"
 ---
 
@@ -14,7 +14,7 @@ Prime this repository for downstream subagents. Use this before large multi-agen
 
 ## Workflow
 
-Dispatch: `Task(subagent_type="spk:primer", prompt="Prime this repository for subagents. Scope: $ARGUMENTS. Scan source-code folders, identify meaningful source subtrees, then create or update CLAUDE.md and AGENTS.md in the root and relevant source subfolders. Keep context files concise, preserve human-authored content, respect .gitignore, never write secrets, and do not change product source code.")`
+Dispatch: ``Task(subagent_type="spk:primer", prompt="Prime this repository for subagents. Scope: $ARGUMENTS. Scan source-code folders, identify meaningful source subtrees, then create or update AGENTS.md in the root and relevant source subfolders. AGENTS.md is the single source of truth; CLAUDE.md in the same folder should contain only the one-line pointer `@AGENTS.md` so Claude Code loads the AGENTS.md content via @-reference (eliminates content drift while keeping Claude Code auto-load). Keep context files concise, preserve human-authored content, respect .gitignore, never write secrets, and do not change product source code.")``
 
 For very large monorepos, the main thread may dispatch multiple `spk:primer` tasks in parallel only when source roots do not overlap, for example one task for `frontend/` and one task for `backend/`.
 

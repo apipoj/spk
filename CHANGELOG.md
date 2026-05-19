@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## 3.1.5 - 2026-05-19
+
+Prime context-file behavior now avoids drift between Claude Code and other agent tools by making `AGENTS.md` canonical and `CLAUDE.md` a one-line pointer.
+
+### Changed
+- Updated `/spk:prime` dispatch and `spk:primer` instructions so repo priming creates or updates `AGENTS.md` as the single source of truth.
+- `CLAUDE.md` files generated next to `AGENTS.md` must now contain only `@AGENTS.md`, with migration guidance for existing substantive `CLAUDE.md` content.
+- Updated the native `/spk-prime` skill and README highlights to document the same canonical context-file pattern.
+
+### Release
+- Bumped `manifest.json`, `.claude-plugin/marketplace.json`, `plugins/spk/.claude-plugin/plugin.json`, `package.json`, and `package-lock.json` to `3.1.5` so `/plugin update` receives the primer behavior change.
+
 ## 3.1.4 - 2026-05-12
 
 Packaging hotfix: quote `/spk:design-shotgun` frontmatter so Claude Code plugin validation can parse the skill metadata during release tagging.

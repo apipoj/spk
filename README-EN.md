@@ -36,6 +36,7 @@ Subagents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 - `/spk:design-shotgun` runs GStack-style visual brainstorming: generate 3+ design directions, build a comparison board, collect feedback, and lock an approved direction before `/spk:code`.
 - `/spk:debug` is for failing tests, unclear errors, regressions, and unexpected behavior: `spk:debugger` performs root-cause analysis before any fix and returns evidence + a regression-test recommendation.
 - `/spk:pr` prepares PRs safely: default mode is prepare-only, producing a PR body/checklist/safety report first, and requiring explicit confirmation before any push or `gh pr create/edit`.
+- `/spk:prime` prepares repo context for subagents by making `AGENTS.md` the source of truth and `CLAUDE.md` a `@AGENTS.md` pointer to avoid cross-tool drift.
 - `/spk:tdd` enforces RED-GREEN-REFACTOR: tests must fail for the expected reason before implementation begins.
 - Orchestrators share one subagent contract: self-contained specialist prompts, parallel dispatch only for non-overlapping work, one retry for `BLOCKED`, and verifier gate before saying done.
 
