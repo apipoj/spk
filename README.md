@@ -40,6 +40,7 @@ Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:pla
 - `/spk:design-shotgun` ทำ visual brainstorm แบบ GStack: แตก 3+ design directions, ทำ comparison board, เก็บ feedback แล้วล็อก approved direction ก่อน `/spk:code`
 - `/spk:debug` ใช้ตอน test fail / behavior เพี้ยน / error ไม่ชัด: ให้ `spk:debugger` ทำ root-cause analysis ก่อนเสนอ fix และต้องมี evidence + regression test recommendation
 - `/spk:pr` ใช้เตรียม PR อย่างปลอดภัย: default เป็น prepare-only, ทำ PR body/checklist/safety report ก่อน และต้องขอ explicit confirmation ก่อน push หรือ `gh pr create/edit`
+- `/spk:prime` เตรียม repo context สำหรับ subagents โดยให้ `AGENTS.md` เป็น source of truth และให้ `CLAUDE.md` เป็น pointer `@AGENTS.md` เพื่อลด drift ระหว่าง tools
 - `/spk:tdd` บังคับ RED-GREEN-REFACTOR: test ต้อง fail ก่อน implementation แล้วค่อย green/refactor
 - Orchestrators ใช้ shared subagent contract: prompt ต้อง self-contained, parallel เฉพาะงานไม่ชนไฟล์, retry `BLOCKED` ได้หนึ่งครั้ง, และต้องผ่าน verifier gate ก่อนบอกว่า done
 
