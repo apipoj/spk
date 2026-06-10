@@ -54,6 +54,35 @@ describe('runtime guards', () => {
   });
 });
 
+// Output bounding: rg -m caps matches PER FILE, so a broad query can return
+// max * fileCount matches. dispatch must enforce a real GLOBAL cap and report
+// `truncated` based on the true total, not the per-file cap.
+describe('global result cap', () => {
+  function makeMatches(n) {
+    return Array.from({ length: n }, (_, i) => ({ file: `f${i}.js`, line: 1, col: 0, text: 'x' }));
+  }
+
+  test('slices to max and reports truncated:true when total exceeds max', () => {
+    const out = srv.applyGlobalCap(makeMatches(120), 50);
+    expect(out.matches).toHaveLength(50);
+    expect(out.truncated).toBe(true);
+    expect(out.count).toBe(50);
+  });
+
+  test('does not truncate when total is at or under max', () => {
+    const out = srv.applyGlobalCap(makeMatches(40), 50);
+    expect(out.matches).toHaveLength(40);
+    expect(out.truncated).toBe(false);
+    expect(out.count).toBe(40);
+  });
+
+  test('exactly max is not flagged as truncated', () => {
+    const out = srv.applyGlobalCap(makeMatches(50), 50);
+    expect(out.truncated).toBe(false);
+    expect(out.matches).toHaveLength(50);
+  });
+});
+
 // Resolve a real ripgrep binary for live tests. Plain `rg` is preferred; some
 // environments only expose ripgrep via the Claude Code multiplexer (invoked
 // with argv0=rg), which we cannot pass through SPK_RG_PATH, so those live

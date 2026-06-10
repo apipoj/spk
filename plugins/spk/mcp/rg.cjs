@@ -4,7 +4,10 @@
 // This module MUST NOT import child_process — it only builds argv arrays and
 // parses ripgrep `--json` output so the logic is unit-testable in isolation.
 
+const nodePath = require('path');
+
 const DEFAULT_MAX_RESULTS = 50;
+const MAX_RESULTS_CEILING = 1000;
 const MAX_TEXT_LEN = 240;
 
 // Escape a string so it is safe to embed inside a ripgrep regex.
@@ -12,10 +15,12 @@ function escapeRegex(str) {
   return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// Clamp a requested result count into [1, MAX_RESULTS_CEILING]. The ceiling
+// prevents maxResults:1e9 from amplifying per-file output into a flood.
 function clampMax(maxResults) {
   const n = Number(maxResults);
   if (!Number.isFinite(n) || n <= 0) return DEFAULT_MAX_RESULTS;
-  return Math.floor(n);
+  return Math.min(Math.floor(n), MAX_RESULTS_CEILING);
 }
 
 // Reject a value that ripgrep would interpret as a flag. Used for positional
@@ -28,17 +33,33 @@ function rejectFlagLike(value, label) {
   return v;
 }
 
+// Confine a model-controlled positional path to the project root: reject
+// absolute paths and any ../ traversal that escapes `root`. Pure path math
+// (no filesystem access) so it stays unit-testable. Returns the original
+// (relative) value so the argv stays project-relative for ripgrep.
+function containPath(userPath, label, root) {
+  const v = rejectFlagLike(userPath, label);
+  const base = nodePath.resolve(root || process.cwd());
+  const resolved = nodePath.resolve(base, v);
+  if (resolved !== base && !resolved.startsWith(base + nodePath.sep)) {
+    throw new Error(`buildArgs: ${label} escapes project root (got ${JSON.stringify(v)})`);
+  }
+  return v;
+}
+
 // Base flags shared by every rg invocation.
 //   --no-config disables rc-file loading so a malicious .ripgreprc / RIPGREP_CONFIG_PATH
 //   cannot inject --pre or other dangerous flags.
+//   --one-file-system stops traversal from crossing into other mounts via
+//   symlinks, narrowing filesystem-escape surface.
 function baseArgs(maxResults) {
-  return ['--json', '--no-config', '-m', String(clampMax(maxResults))];
+  return ['--json', '--no-config', '--one-file-system', '-m', String(clampMax(maxResults))];
 }
 
 // Build argv for a code search. All flags come first; the query and any
 // positional path are pushed AFTER a "--" sentinel so model-controlled inputs
 // (e.g. "--pre=<cmd>") can never be parsed by ripgrep as flags.
-function buildSearchArgs({ query, path, maxResults, literal, glob } = {}) {
+function buildSearchArgs({ query, path, maxResults, literal, glob, root } = {}) {
   if (typeof query !== 'string' || query.length === 0) {
     throw new Error('buildSearchArgs: query is required');
   }
@@ -46,7 +67,7 @@ function buildSearchArgs({ query, path, maxResults, literal, glob } = {}) {
   if (literal) args.push('-F');
   if (glob) args.push('-g', rejectFlagLike(glob, 'glob'));
   args.push('--', query);
-  if (path) args.push(rejectFlagLike(path, 'path'));
+  if (path) args.push(containPath(path, 'path', root));
   return args;
 }
 
@@ -54,7 +75,7 @@ function buildSearchArgs({ query, path, maxResults, literal, glob } = {}) {
 const DECL_KEYWORDS = 'function|class|def|const|let|var|type|interface|struct|fn|enum|trait|module';
 
 // Build argv for a symbol-definition search (best-effort, regex not AST).
-function buildSymbolArgs(name, { path, maxResults } = {}) {
+function buildSymbolArgs(name, { path, maxResults, root } = {}) {
   if (typeof name !== 'string' || name.length === 0) {
     throw new Error('buildSymbolArgs: name is required');
   }
@@ -62,16 +83,16 @@ function buildSymbolArgs(name, { path, maxResults } = {}) {
   const pattern = `\\b(${DECL_KEYWORDS})\\s+${escaped}\\b`;
   const args = baseArgs(maxResults);
   args.push('--', pattern);
-  if (path) args.push(rejectFlagLike(path, 'path'));
+  if (path) args.push(containPath(path, 'path', root));
   return args;
 }
 
 // Build argv for a file outline: all top-level declarations in one file.
-function buildOutlineArgs(filePath, { maxResults } = {}) {
+function buildOutlineArgs(filePath, { maxResults, root } = {}) {
   if (typeof filePath !== 'string' || filePath.length === 0) {
     throw new Error('buildOutlineArgs: filePath is required');
   }
-  const safePath = rejectFlagLike(filePath, 'path');
+  const safePath = containPath(filePath, 'path', root);
   const pattern = `\\b(${DECL_KEYWORDS})\\s+[A-Za-z_$][\\w$]*`;
   const args = baseArgs(maxResults);
   args.push('--', pattern, safePath);
@@ -114,8 +135,11 @@ function parseRgJson(stdout) {
 
 module.exports = {
   DEFAULT_MAX_RESULTS,
+  MAX_RESULTS_CEILING,
   MAX_TEXT_LEN,
   escapeRegex,
+  clampMax,
+  containPath,
   buildSearchArgs,
   buildSymbolArgs,
   buildOutlineArgs,

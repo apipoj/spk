@@ -99,6 +99,73 @@ describe('argument injection hardening', () => {
   });
 });
 
+// Path-containment hardening: a positional path/filePath must never let
+// ripgrep search or read OUTSIDE the project root (no absolute paths, no ../
+// traversal). Builders accept an explicit `root` so the check is pure/testable.
+describe('path containment hardening', () => {
+  const path = require('path');
+  const ROOT = path.resolve('/Users/example/project');
+
+  test('buildSearchArgs rejects an absolute path outside root', () => {
+    expect(() => buildSearchArgs({ query: 'x', path: '/etc', root: ROOT })).toThrow(/escapes|absolute/i);
+  });
+
+  test('buildSearchArgs rejects ../ traversal that escapes root', () => {
+    expect(() => buildSearchArgs({ query: 'x', path: '../../foo', root: ROOT })).toThrow(/escapes/i);
+  });
+
+  test('buildSearchArgs allows a path inside root', () => {
+    const a = buildSearchArgs({ query: 'x', path: 'src/sub', root: ROOT });
+    expect(a[a.length - 1]).toBe('src/sub');
+  });
+
+  test('buildSearchArgs allows root itself (".")', () => {
+    expect(() => buildSearchArgs({ query: 'x', path: '.', root: ROOT })).not.toThrow();
+  });
+
+  test('buildSymbolArgs rejects a path that escapes root', () => {
+    expect(() => buildSymbolArgs('Widget', { path: '../../../etc', root: ROOT })).toThrow(/escapes/i);
+  });
+
+  test('buildSymbolArgs allows a path inside root', () => {
+    const a = buildSymbolArgs('Widget', { path: 'src', root: ROOT });
+    expect(a[a.length - 1]).toBe('src');
+  });
+
+  test('buildOutlineArgs rejects an absolute filePath outside root', () => {
+    expect(() => buildOutlineArgs('/etc/passwd', { root: ROOT })).toThrow(/escapes|absolute/i);
+  });
+
+  test('buildOutlineArgs rejects ../ traversal in filePath', () => {
+    expect(() => buildOutlineArgs('../../../../etc/passwd', { root: ROOT })).toThrow(/escapes/i);
+  });
+
+  test('buildOutlineArgs allows a filePath inside root', () => {
+    const a = buildOutlineArgs('src/a.js', { root: ROOT });
+    expect(a[a.length - 1]).toBe('src/a.js');
+  });
+
+  test('builders pass --one-file-system to limit symlink/mount escape', () => {
+    expect(buildSearchArgs({ query: 'x' })).toContain('--one-file-system');
+    expect(buildSymbolArgs('x')).toContain('--one-file-system');
+    expect(buildOutlineArgs('src/a.js')).toContain('--one-file-system');
+  });
+});
+
+describe('maxResults ceiling', () => {
+  test('clampMax caps an absurd request to the 1000 ceiling', () => {
+    const a = buildSearchArgs({ query: 'x', maxResults: 1e9 });
+    const i = a.indexOf('-m');
+    expect(a[i + 1]).toBe('1000');
+  });
+
+  test('clampMax preserves a reasonable request', () => {
+    const a = buildSearchArgs({ query: 'x', maxResults: 25 });
+    const i = a.indexOf('-m');
+    expect(a[i + 1]).toBe('25');
+  });
+});
+
 describe('parseRgJson', () => {
   test('extracts file/line/col/text from rg match lines', () => {
     const line = JSON.stringify({

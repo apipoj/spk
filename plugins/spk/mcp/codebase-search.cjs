@@ -13,7 +13,13 @@
 // cwd. No persisted index: correct on a moving codebase, zero warm-up.
 
 const { spawnSync } = require('child_process');
-const { buildSearchArgs, buildSymbolArgs, buildOutlineArgs, parseRgJson } = require('./rg.cjs');
+const {
+  buildSearchArgs,
+  buildSymbolArgs,
+  buildOutlineArgs,
+  parseRgJson,
+  clampMax,
+} = require('./rg.cjs');
 
 const SERVER_NAME = 'spk-codebase-search';
 const SERVER_VERSION = '0.1.0';
@@ -114,26 +120,43 @@ function dispatch(name, args = {}, env = process.env) {
     return { disabled: true, reason: 'SPK_CODEBASE_SEARCH=off' };
   }
   const max = Number.isFinite(Number(args.maxResults)) ? Number(args.maxResults) : DEFAULT_MAX_RESULTS;
+  // Project root = the same cwd ripgrep runs in (see runRg). Used to confine
+  // model-controlled positional paths so they cannot escape the project.
+  const root = env.CLAUDE_PROJECT_DIR || process.cwd();
   let rgArgs;
-  if (name === 'search_code') {
-    rgArgs = buildSearchArgs({
-      query: args.query,
-      path: args.path,
-      glob: args.glob,
-      literal: args.literal,
-      maxResults: max,
-    });
-  } else if (name === 'find_symbol') {
-    rgArgs = buildSymbolArgs(args.name, { path: args.path, maxResults: max });
-  } else if (name === 'file_outline') {
-    rgArgs = buildOutlineArgs(args.path, { maxResults: max });
-  } else {
-    return { error: 'unknown-tool', hint: name };
+  try {
+    if (name === 'search_code') {
+      rgArgs = buildSearchArgs({
+        query: args.query,
+        path: args.path,
+        glob: args.glob,
+        literal: args.literal,
+        maxResults: max,
+        root,
+      });
+    } else if (name === 'find_symbol') {
+      rgArgs = buildSymbolArgs(args.name, { path: args.path, maxResults: max, root });
+    } else if (name === 'file_outline') {
+      rgArgs = buildOutlineArgs(args.path, { maxResults: max, root });
+    } else {
+      return { error: 'unknown-tool', hint: name };
+    }
+  } catch (e) {
+    // Containment / flag-injection rejections surface as a structured error,
+    // never an uncaught throw across the JSON-RPC boundary.
+    return { error: 'invalid-argument', hint: String((e && e.message) || e) };
   }
   const out = runRg(rgArgs, env);
   if (out.error) return out;
-  const truncated = out.matches.length >= max;
-  return { matches: out.matches, count: out.matches.length, truncated };
+  // rg -m caps PER FILE; enforce the authoritative GLOBAL cap here.
+  return applyGlobalCap(out.matches, clampMax(max));
+}
+
+// Enforce a global result cap and report truncation against the true total.
+function applyGlobalCap(matches, max) {
+  const list = Array.isArray(matches) ? matches : [];
+  const capped = list.slice(0, max);
+  return { matches: capped, count: capped.length, truncated: list.length > max };
 }
 
 // ---- Server object (for tests + reuse) -------------------------------------
@@ -224,6 +247,7 @@ module.exports = {
   runRg,
   listTools,
   dispatch,
+  applyGlobalCap,
   createServer,
   handleRequest,
   startStdio,
