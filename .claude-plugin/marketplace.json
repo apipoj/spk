@@ -10,7 +10,7 @@
       "name": "spk",
       "source": "./plugins/spk",
       "description": "AI Sprint Kit: skills-first Claude Code plugin for subagent development, autonomous planning, coding, debugging, safe PR prep, and LLM-wiki memory",
-      "version": "3.3.0"
+      "version": "3.3.1"
     }
   ]
 }

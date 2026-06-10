@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+## 3.3.1 - 2026-06-10
+
+Patch: fix a functional regression in the codebase-search MCP found by live dogfooding right after 3.3.0.
+
+### Fixed
+- `spk-codebase-search`: `search_code` and `find_symbol` called **without** a `path` argument returned zero matches. With no positional path ripgrep reads stdin, and the MCP server's stdin is the JSON-RPC channel (a non-tty pipe), so it searched 0 bytes. The builders now default the positional to the project root (`.`, escape-safe via the existing containment check) so pathless queries recurse the repo, and `runRg` passes an empty stdin defensively. New tests reproduce the exact empty-stdin server condition (and the previously env-skipped live-search test now runs — 0 skipped).
+
+### Release
+- Bumped `manifest.json`, `.claude-plugin/marketplace.json`, `plugins/spk/.claude-plugin/plugin.json`, `package.json`, and `package-lock.json` to `3.3.1`.
+
 ## 3.3.0 - 2026-06-10
 
 Large-codebase support: SPK ships its own `spk-codebase-search` MCP server so subagents navigate big consumer repos without burning context on grep, plus a scoped-test inner loop, a richer prime, and a propose-only session-reflect hook. Learned from coleam00/helpline and Anthropic's "Claude Code in large codebases" guide.
