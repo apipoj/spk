@@ -39,15 +39,20 @@ color: green
    - If a folder already has a substantive `CLAUDE.md` with content not present in `AGENTS.md`, migrate the unique content into `AGENTS.md` first, then replace `CLAUDE.md` with the one-line `@AGENTS.md` pointer.
    - If `AGENT.md` or lowercase variants already exist, preserve them and add a short pointer to `AGENTS.md` rather than deleting user content.
    - Preserve existing human-authored sections inside `AGENTS.md`. Append or replace only clearly marked SPK sections.
+   - Fill the `## Scoped Commands` section with the test/build/lint commands that apply to THAT subtree (not just the repo-wide defaults) so downstream agents run only relevant checks.
+   - Fill the `## Code Navigation` section pointing agents at SPK's own `mcp__spk-codebase-search__*` tools for this subtree, with a Grep/Glob fallback when those tools are absent. Note the hot paths and the generated/vendor paths to skip.
    - Keep each `AGENTS.md` short and operational: aim for 80-150 lines max.
+   - End each generated `AGENTS.md` with a one-line staleness note: re-run `/spk:prime <scope>` after a structural change (new package, moved dirs, changed test/build commands) so this file does not silently rot.
 
-5. **ROOT SUMMARY** — If the repository root lacks global context, create or update root `AGENTS.md` with a repository map and pointers to subtree files, and write `CLAUDE.md` as `@AGENTS.md`.
+5. **ROOT SUMMARY** — If the repository root lacks global context, create or update root `AGENTS.md` with a repository map and pointers to subtree files, and write `CLAUDE.md` as `@AGENTS.md`. Also create or update a root `.claudeignore` listing high-volume generated/vendor/build paths so code-navigation tools skip search noise (see the `.claudeignore` template below).
 
 6. **VERIFY** — Re-read changed context files and check:
    - no secrets or raw env values were written
    - no source code was changed
    - every `CLAUDE.md` next to an `AGENTS.md` contains only the `@AGENTS.md` pointer (no duplicated content)
    - every instruction is specific to the folder where it lives
+   - each `AGENTS.md` carries a `## Scoped Commands` and `## Code Navigation` section filled for that subtree, plus the staleness note
+   - a root `.claudeignore` exists and lists the high-volume generated/vendor paths
    - downstream subagents can understand ownership, commands, and guardrails without re-scanning the whole repo
 
 ## Context File Template
@@ -63,9 +68,23 @@ Use this shape for `AGENTS.md` unless the existing file already has a better str
 ## Entry Points
 - `<path>` — <why it matters>
 
-## Commands
-- Test: `<exact command if known>`
-- Lint/typecheck: `<exact command if known>`
+## Scoped Commands
+<The test/build/lint commands that apply to THIS subtree specifically — not the
+repo-wide defaults. Scope them so an agent editing here runs only what is relevant
+(e.g. `npm test -- packages/api` or `pytest services/billing`), avoiding full-suite
+timeouts and wasted context.>
+- Test (this subtree): `<exact scoped command>`
+- Build (this subtree): `<exact scoped command if any>`
+- Lint/typecheck (this subtree): `<exact scoped command if any>`
+
+## Code Navigation
+For code/symbol lookup in this subtree, prefer the `mcp__spk-codebase-search__*` tools
+when available (discover via ToolSearch): `search_code` for precise text/regex search,
+`find_symbol` for definitions, `file_outline` for a file map. Fall back to Grep/Glob when
+those tools are absent or unavailable. Never block on the MCP — it is an optimization,
+not a dependency.
+- Hot paths an agent will hit most: `<key files/dirs to search first>`
+- Generated/vendor paths to ignore when searching: `<paths>`
 
 ## Conventions
 - <Naming, framework, data, routing, or component rules.>
@@ -85,6 +104,15 @@ The companion `CLAUDE.md` in the same folder is always exactly one line:
 ```markdown
 @AGENTS.md
 ```
+
+### `.claudeignore` (repo root)
+Also create or update a root `.claudeignore` listing generated/vendor/build paths so
+Claude Code and the `spk-codebase-search` tools skip them (`node_modules/`, `dist/`,
+`build/`, `coverage/`, `.next/`, `.venv/`, `vendor/`, lockfiles, large binary/asset
+dirs). This keeps code-navigation precise and prevents agents from pattern-matching on
+generated code. Do not duplicate every `.gitignore` line — `.claudeignore` is for
+search-noise reduction, so list the high-volume generated dirs that hurt search, and
+note that `.gitignore` is already honored by the search tools.
 
 ## Constraints
 

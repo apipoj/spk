@@ -28,8 +28,12 @@ Scan source-code folders และสร้างหรืออัพเดต 
 - เขียนหรืออัพเดต `AGENTS.md` ที่ root และใน source subfolders ที่เกี่ยวข้องเป็น source of truth
 - ให้ `CLAUDE.md` ใน folder เดียวกันมีเฉพาะ pointer บรรทัดเดียว `@AGENTS.md`
 - ถ้ามี `CLAUDE.md` เดิมที่มีเนื้อหาสำคัญ ให้ migrate เนื้อหาเฉพาะที่ยังไม่มีไปไว้ใน `AGENTS.md` ก่อน แล้วค่อยเปลี่ยน `CLAUDE.md` เป็น pointer
+- แต่ละ `AGENTS.md` ต้องมี section `## Scoped Commands` (คำสั่ง test/build/lint เฉพาะของ subtree นั้น ไม่ใช่ค่า default ของทั้ง repo) เพื่อให้รันเฉพาะที่เกี่ยวข้อง ไม่ติด timeout จากการรันทั้งชุด
+- แต่ละ `AGENTS.md` ต้องมี section `## Code Navigation` ที่ชี้ให้ใช้ tools `mcp__spk-codebase-search__*` เมื่อมี (`search_code`, `find_symbol`, `file_outline`) และให้ fallback ไป Grep/Glob เมื่อไม่มี — อย่า hard-depend
+- สร้างหรืออัพเดต `.claudeignore` ที่ root โดยลิสต์ path ที่ generated/vendor/build ปริมาณมาก (`node_modules/`, `dist/`, `build/`, `coverage/` ฯลฯ) เพื่อให้การค้นโค้ดแม่นและไม่เจอ noise
 - เก็บ `AGENTS.md` ให้กระชับและตรงตัวเป็นจริง
 - อนุรักษ์เนื้อหาที่คนเขียนใน `AGENTS.md` อย่าเขียนทับ sections ที่มีอยู่
+- ปิดท้ายแต่ละ `AGENTS.md` ด้วยบรรทัดเตือน: ให้ prime ใหม่ตาม scope หลังมีการเปลี่ยนโครงสร้าง (เพิ่ม package, ย้าย dir, เปลี่ยนคำสั่ง test/build) ไฟล์จะได้ไม่ล้าสมัยเงียบ ๆ
 
 ### 4. ตรวจสอบ
 - ยืนยันว่าไม่มี source code ถูกแก้ไข
