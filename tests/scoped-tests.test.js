@@ -1,5 +1,5 @@
 // tests/scoped-tests.test.js
-const { mapToSuites } = require('../scripts/scoped-tests.cjs');
+const { mapToSuites, suitesForPath } = require('../scripts/scoped-tests.cjs');
 
 describe('scoped-tests change-to-suite mapper', () => {
   test('script change maps to its sibling test', () => {
@@ -39,6 +39,20 @@ describe('scoped-tests change-to-suite mapper', () => {
 
   test('unknown path falls back to empty (caller runs full suite)', () => {
     expect(mapToSuites(['README.md'])).toEqual([]);
+  });
+
+  test('sibling-less non-hook plugin script is unmappable (full-suite fallback, R7)', () => {
+    // A brand-new plugin script with no sibling test and not a registered hook
+    // must NOT map to anything — otherwise main() would scope-skip the full
+    // suite and silently report zero-coverage code as covered.
+    expect(mapToSuites(['plugins/spk/scripts/brand-new-thing.cjs'])).toEqual([]);
+    // It must also be reported as unmapped (so it shows in the NOT-scoped warning).
+    expect(suitesForPath('plugins/spk/scripts/brand-new-thing.cjs')).toEqual([]);
+  });
+
+  test('existing hook script includes the hook-output contract suite', () => {
+    expect(mapToSuites(['plugins/spk/scripts/wiki-secret-scan.cjs']))
+      .toEqual(expect.arrayContaining(['tests/hook-output-contract.test.js']));
   });
 
   test('de-duplicates suites across multiple changed files', () => {
