@@ -46,3 +46,33 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+  plugin-install:
+    name: Plugin install smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate marketplace and plugin manifests
+        run: claude plugin validate .
+
+      - name: Add marketplace
+        run: claude plugin marketplace add ./
+
+      - name: Install plugin
+        run: claude plugin install spk@spk
+
+      - name: Verify plugin is installed, enabled, and version-synced
+        run: |
+          claude plugin list
+          claude plugin list | grep -q 'spk@spk'
+          claude plugin list | grep -q 'enabled'
+          VERSION=$(node -p "require('./manifest.json').version")
+          claude plugin list | grep -q "Version: $VERSION"

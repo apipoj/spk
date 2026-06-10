@@ -1,5 +1,6 @@
 {
   "name": "spk",
+  "description": "AI Sprint Kit marketplace: skills-first Claude Code plugin for subagent development, autonomous planning, coding, debugging, safe PR prep, and LLM-wiki memory",
   "owner": {
     "name": "Apipoj Piasak",
     "url": "https://github.com/apipoj"
