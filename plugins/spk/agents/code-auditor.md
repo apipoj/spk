@@ -1,7 +1,7 @@
 ---
 name: code-auditor
 description: Multi-pass code review covering correctness, security (OWASP, secrets), maintainability, tests, docs, and ship-readiness.
-model: claude-opus-4-7
+model: claude-opus-4-8
 color: purple
 ---
 

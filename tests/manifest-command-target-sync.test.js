@@ -29,7 +29,7 @@ function makeFixtureRoot() {
   writeJson(path.join(root, 'manifest.json'), {
     version,
     agents: {
-      orchestrators: [{ name: 'plan-orchestrator', model: 'claude-opus-4-7', color: 'green' }],
+      orchestrators: [{ name: 'plan-orchestrator', model: 'claude-opus-4-8', color: 'green' }],
       specialists: [{ name: 'planner', model: 'claude-sonnet-4-6', color: 'green' }],
     },
     commands: [
@@ -41,7 +41,7 @@ function makeFixtureRoot() {
   writeJson(path.join(root, 'package-lock.json'), { version, packages: { '': { version } } });
   writeJson(path.join(root, 'plugins/spk/.claude-plugin/plugin.json'), { version });
   writeJson(path.join(root, '.claude-plugin/marketplace.json'), { plugins: [{ name: 'spk', version }] });
-  writeAgent(root, 'plan-orchestrator', 'claude-opus-4-7', 'green');
+  writeAgent(root, 'plan-orchestrator', 'claude-opus-4-8', 'green');
   writeAgent(root, 'planner', 'claude-sonnet-4-6', 'green');
   writeSkill(root, 'plan');
   writeSkill(root, 'sunzi');

@@ -1,7 +1,7 @@
 ---
 name: audit-orchestrator
 description: Coordinates code review + security audit + wiki lint via spk:code-auditor and spk:verifier. Use for "review my changes" / "audit the wiki" / "/ultrareview"-style deep review requests.
-model: claude-opus-4-7
+model: claude-opus-4-8
 color: purple
 ---
 

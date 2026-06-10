@@ -1,7 +1,7 @@
 ---
 name: deploy-orchestrator
 description: Coordinates deployment via spk:devops → spk:deployment-smoke → spk:browser-tester. Use for "deploy this" / "ship it" / post-deploy verification.
-model: claude-opus-4-7
+model: claude-opus-4-8
 color: orange
 ---
 

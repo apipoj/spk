@@ -14,8 +14,8 @@ function makeInstalled() {
 
   fs.writeFileSync(path.join(dir, '.spk/manifest.json'), JSON.stringify({
     agents: {
-      orchestrators: [{ name: 'plan-orchestrator', model: 'claude-opus-4-7', color: 'green', phase: 'planning' }],
-      specialists: [{ name: 'planner', model: 'claude-opus-4-7', color: 'green', phase: 'planning' }]
+      orchestrators: [{ name: 'plan-orchestrator', model: 'claude-opus-4-8', color: 'green', phase: 'planning' }],
+      specialists: [{ name: 'planner', model: 'claude-opus-4-8', color: 'green', phase: 'planning' }]
     },
     commands: [{ name: '/spk-plan' }]
   }));

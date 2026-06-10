@@ -6,20 +6,20 @@
   "tagline": "Skills-first subagent development via Claude Code subscription",
   "agents": {
     "orchestrators": [
-      { "name": "plan-orchestrator", "model": "claude-opus-4-7",    "color": "green",    "phase": "planning" },
-      { "name": "build-orchestrator", "model": "claude-opus-4-7",    "color": "blue",     "phase": "building" },
-      { "name": "audit-orchestrator", "model": "claude-opus-4-7",    "color": "purple",   "phase": "auditing" },
-      { "name": "deploy-orchestrator", "model": "claude-opus-4-7",    "color": "orange",   "phase": "shipping" }
+      { "name": "plan-orchestrator", "model": "claude-opus-4-8",    "color": "green",    "phase": "planning" },
+      { "name": "build-orchestrator", "model": "claude-opus-4-8",    "color": "blue",     "phase": "building" },
+      { "name": "audit-orchestrator", "model": "claude-opus-4-8",    "color": "purple",   "phase": "auditing" },
+      { "name": "deploy-orchestrator", "model": "claude-opus-4-8",    "color": "orange",   "phase": "shipping" }
     ],
     "specialists": [
-      { "name": "prd-writer",      "model": "claude-opus-4-7",    "color": "green",    "phase": "planning" },
-      { "name": "business-analyst", "model": "claude-opus-4-7",    "color": "green",    "phase": "planning" },
-      { "name": "architect",       "model": "claude-opus-4-7",    "color": "green",    "phase": "planning" },
-      { "name": "planner",         "model": "claude-opus-4-7",    "color": "green",    "phase": "planning" },
+      { "name": "prd-writer",      "model": "claude-opus-4-8",    "color": "green",    "phase": "planning" },
+      { "name": "business-analyst", "model": "claude-opus-4-8",    "color": "green",    "phase": "planning" },
+      { "name": "architect",       "model": "claude-opus-4-8",    "color": "green",    "phase": "planning" },
+      { "name": "planner",         "model": "claude-opus-4-8",    "color": "green",    "phase": "planning" },
       { "name": "designer",        "model": "claude-sonnet-4-6",  "color": "green",    "phase": "planning" },
       { "name": "primer",          "model": "claude-sonnet-4-6",  "color": "green",    "phase": "planning" },
-      { "name": "debugger",        "model": "claude-opus-4-7",    "color": "purple",   "phase": "auditing" },
-      { "name": "code-auditor",    "model": "claude-opus-4-7",    "color": "purple",   "phase": "auditing" },
+      { "name": "debugger",        "model": "claude-opus-4-8",    "color": "purple",   "phase": "auditing" },
+      { "name": "code-auditor",    "model": "claude-opus-4-8",    "color": "purple",   "phase": "auditing" },
       { "name": "implementer",     "model": "claude-sonnet-4-6",  "color": "blue",     "phase": "building" },
       { "name": "tester",          "model": "claude-sonnet-4-6",  "color": "blue",     "phase": "building" },
       { "name": "docs",            "model": "claude-sonnet-4-6",  "color": "blue",     "phase": "building" },

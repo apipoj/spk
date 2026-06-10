@@ -10,10 +10,10 @@ describe('validateManifest', () => {
     tagline: 'Skills-first subagent development via Claude Code subscription',
     agents: {
       orchestrators: [
-        { name: 'plan-orchestrator', model: 'claude-opus-4-7', color: 'green', phase: 'planning' }
+        { name: 'plan-orchestrator', model: 'claude-opus-4-8', color: 'green', phase: 'planning' }
       ],
       specialists: [
-        { name: 'planner', model: 'claude-opus-4-7', color: 'green', phase: 'planning' }
+        { name: 'planner', model: 'claude-opus-4-8', color: 'green', phase: 'planning' }
       ]
     },
     commands: [

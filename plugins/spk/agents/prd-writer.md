@@ -1,7 +1,7 @@
 ---
 name: prd-writer
 description: Generates a PRD via focused question-asking. Use when orchestrator needs a structured product requirements doc for a feature.
-model: claude-opus-4-7
+model: claude-opus-4-8
 color: green
 ---
 

@@ -45,7 +45,7 @@
         "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]+$" },
         "model": {
           "type": "string",
-          "enum": ["claude-opus-4-7", "claude-sonnet-4-6"]
+          "enum": ["claude-opus-4-8", "claude-sonnet-4-6"]
         },
         "color": { "type": "string", "enum": ["green", "blue", "purple", "orange"] },
         "phase": { "type": "string", "enum": ["planning", "building", "auditing", "shipping"] }
