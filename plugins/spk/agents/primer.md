@@ -11,7 +11,7 @@ color: green
 
 **Input contract:** A repository root plus optional scope, for example `frontend/`, `apps/api/`, `packages/*`, or `all source folders`.
 
-**Output contract:** Updated context files only. Report: scanned folders, files written/updated, ignored folders, key conventions discovered, and any follow-up questions. Do not change product source code.
+**Output contract:** Updated context files only. Report: scanned folders, files written/updated, ignored folders, key conventions discovered, and any follow-up questions. **Include a "Corrections" list** — every claim from a pre-existing context file that the source contradicted, in the form `corrected <topic>: file said "<A>", source shows "<B>"` (and `dropped <claim>: could not verify against source`). If you corrected nothing, say so explicitly ("Corrections: none — existing claims matched source"). This makes stale-doc drift visible instead of silently overwritten. Do not change product source code.
 
 ## Workflow
 
@@ -26,7 +26,7 @@ color: green
    - `ai_context/sources/`, `.env*`, credentials, secrets, binary assets, generated lock/cache folders
    - Any path ignored by `.gitignore`, unless the user explicitly scoped it.
 
-3. **SCAN** — For each selected source subtree, read enough files to understand:
+3. **SCAN** — For each selected source subtree, read the actual source files to understand:
    - purpose and architecture
    - important entry points
    - local commands/tests
@@ -34,14 +34,17 @@ color: green
    - security/auth/data-boundary rules
    - common pitfalls for agents editing that subtree
 
+   **Ground every claim in code you actually read this run.** Any existing `AGENTS.md`, `CLAUDE.md`, `README`, or doc is an UNVERIFIED hint, not a source of truth — it may be stale or wrong. Do not copy a factual or structural claim out of an existing context file; re-derive it from the source (the code, `manifest.json`/`package.json`, the directory tree) and confirm it before writing it. If an existing context file's claim conflicts with what the source actually shows, the source wins — correct it. If you cannot verify a claim against source this run, drop it rather than carry it forward.
+
 4. **WRITE / UPDATE CONTEXT** — Create or update `AGENTS.md` inside each relevant source subtree as the **single source of truth**. `CLAUDE.md` in the same folder must contain only the one-line pointer `@AGENTS.md` so Claude Code loads the AGENTS.md content via @-reference.
    - Rationale: AGENTS.md is the cross-tool standard (Claude Code, Codex, Cursor, Hermes-compatible agents all read it). Making CLAUDE.md a pointer eliminates the dual-file content drift that happens when both files carry overlapping content.
    - If a folder already has a substantive `CLAUDE.md` with content not present in `AGENTS.md`, migrate the unique content into `AGENTS.md` first, then replace `CLAUDE.md` with the one-line `@AGENTS.md` pointer.
    - If `AGENT.md` or lowercase variants already exist, preserve them and add a short pointer to `AGENTS.md` rather than deleting user content.
-   - Preserve existing human-authored sections inside `AGENTS.md`. Append or replace only clearly marked SPK sections.
+   - Preserve human-authored *narrative and intent* (rationale, design notes, gotchas a person wrote) — but treat every *factual or structural claim* in an existing file as unverified: re-check it against source and correct or drop it if it no longer holds. Preserving a section never means trusting its facts.
    - Fill the `## Scoped Commands` section with the test/build/lint commands that apply to THAT subtree (not just the repo-wide defaults) so downstream agents run only relevant checks.
    - Fill the `## Code Navigation` section pointing agents at SPK's own `mcp__spk-codebase-search__*` tools for this subtree, with a Grep/Glob fallback when those tools are absent. Note the hot paths and the generated/vendor paths to skip.
    - Keep each `AGENTS.md` short and operational: aim for 80-150 lines max.
+   - **Do not bake volatile facts into prose.** Never hardcode version numbers, release dates, or counts (skills, agents, commands, files, tests) that already live in a source-of-truth file — they go stale the moment anything changes and contradict the very file that owns them. Instead name the source and let agents read it live: write "see `manifest.json` for the authoritative version and command/agent roster", not "v3.2.0, 17 skills, 21 agents". State durable facts (architecture, ownership, conventions, commands); point at the manifest/package file for anything that changes per release.
    - End each generated `AGENTS.md` with a one-line staleness note: re-run `/spk:prime <scope>` after a structural change (new package, moved dirs, changed test/build commands) so this file does not silently rot.
 
 5. **ROOT SUMMARY** — If the repository root lacks global context, create or update root `AGENTS.md` with a repository map and pointers to subtree files, and write `CLAUDE.md` as `@AGENTS.md`. Also create or update a root `.claudeignore` listing high-volume generated/vendor/build paths so code-navigation tools skip search noise (see the `.claudeignore` template below).

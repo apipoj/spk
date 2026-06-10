@@ -23,6 +23,7 @@ Scan source-code folders และสร้างหรืออัพเดต 
 - ระบุ: language, framework, test setup, build tool, entry points
 - บันทึก dependencies, scripts และ configuration
 - ตรวจจับ monorepo structure (workspaces, packages, apps)
+- **อ้างทุก claim จาก source code ที่อ่านจริงในรอบนี้** — `AGENTS.md`/`CLAUDE.md`/`README` ที่มีอยู่เดิมถือเป็น hint ที่ยังไม่ verify ไม่ใช่ source of truth (อาจ stale หรือผิด) ห้าม copy ข้อเท็จจริงจากไฟล์ context เดิมมาตรง ๆ ให้ re-derive จาก source (โค้ด, `manifest.json`/`package.json`, โครงไดเรกทอรี) แล้ว confirm ก่อนเขียน ถ้า claim เดิมขัดกับ source จริง → ยึด source แล้วแก้ให้ถูก ถ้า verify ไม่ได้ → ตัดทิ้ง อย่า carry forward
 
 ### 3. สร้างหรืออัพเดต Context Files
 - เขียนหรืออัพเดต `AGENTS.md` ที่ root และใน source subfolders ที่เกี่ยวข้องเป็น source of truth
@@ -32,6 +33,7 @@ Scan source-code folders และสร้างหรืออัพเดต 
 - แต่ละ `AGENTS.md` ต้องมี section `## Code Navigation` ที่ชี้ให้ใช้ tools `mcp__spk-codebase-search__*` เมื่อมี (`search_code`, `find_symbol`, `file_outline`) และให้ fallback ไป Grep/Glob เมื่อไม่มี — อย่า hard-depend
 - สร้างหรืออัพเดต `.claudeignore` ที่ root โดยลิสต์ path ที่ generated/vendor/build ปริมาณมาก (`node_modules/`, `dist/`, `build/`, `coverage/` ฯลฯ) เพื่อให้การค้นโค้ดแม่นและไม่เจอ noise
 - เก็บ `AGENTS.md` ให้กระชับและตรงตัวเป็นจริง
+- **อย่า hardcode ข้อเท็จจริงที่เปลี่ยนบ่อยลงใน prose** — ห้ามเขียนเลข version, วันที่ release, หรือจำนวน (skills, agents, commands, ไฟล์, tests) ที่มีอยู่แล้วในไฟล์ source-of-truth เพราะมันจะ stale ทันทีที่มีอะไรเปลี่ยน และขัดกับไฟล์ที่เป็นเจ้าของข้อมูลนั้น ให้ชี้ไปที่ source แทน เช่นเขียนว่า "ดู `manifest.json` สำหรับ version และ roster ของ command/agent ที่เป็นทางการ" ไม่ใช่ "v3.2.0, 17 skills, 21 agents" — ระบุเฉพาะข้อเท็จจริงที่คงทน (สถาปัตยกรรม, ownership, conventions, คำสั่ง) ส่วนอะไรที่เปลี่ยนทุก release ให้ชี้ไป manifest/package
 - อนุรักษ์เนื้อหาที่คนเขียนใน `AGENTS.md` อย่าเขียนทับ sections ที่มีอยู่
 - ปิดท้ายแต่ละ `AGENTS.md` ด้วยบรรทัดเตือน: ให้ prime ใหม่ตาม scope หลังมีการเปลี่ยนโครงสร้าง (เพิ่ม package, ย้าย dir, เปลี่ยนคำสั่ง test/build) ไฟล์จะได้ไม่ล้าสมัยเงียบ ๆ
 
@@ -49,6 +51,7 @@ Scan source-code folders และสร้างหรืออัพเดต 
 - Source trees ที่พบ: <list>
 - Context files ที่สร้าง: <list ของ AGENTS.md/CLAUDE.md pointer>
 - Context files ที่อัพเดต: <list ของ AGENTS.md/CLAUDE.md pointer>
+- Corrections: <claim เดิมที่ source ขัด เช่น `corrected <หัวข้อ>: ไฟล์เขียน "<A>" แต่ source เป็น "<B>"`, `dropped <claim>: verify กับ source ไม่ได้` — ถ้าไม่มีให้เขียน "none — claim เดิมตรงกับ source">
 - Directories ที่ข้าม: <list>
 - Source code ที่เปลี่ยน: <none>
 - Secrets ที่พบ: <none>

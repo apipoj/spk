@@ -33,4 +33,32 @@ describe('primer hierarchy-upgrade contract', () => {
     expect(en).toMatch(/Scoped Commands|Code Navigation|\.claudeignore/);
     expect(th).toMatch(/Scoped Commands|Code Navigation|\.claudeignore/);
   });
+
+  test('primer grounds claims in source and does not trust existing context files', () => {
+    // Regression (the real defect): /spk:prime trusted a pre-existing
+    // CLAUDE.md/AGENTS.md instead of reading the source, so it carried stale
+    // claims forward as if true. The primer must treat existing context files
+    // as unverified hints and re-derive every claim from source.
+    expect(primer).toMatch(/ground every claim in code you actually read/i);
+    expect(primer).toMatch(/unverified hint|may be stale|the source wins/i);
+    const th = fs.readFileSync(path.join(NATIVE_SKILLS, 'spk-prime', 'SKILL.md'), 'utf-8');
+    expect(th).toMatch(/อ้างทุก claim จาก source|ยังไม่ verify|ยึด source/);
+  });
+
+  test('primer reports corrections it made to stale existing claims', () => {
+    // The override must be visible, not silent: the report names every claim
+    // the source contradicted (or says "none").
+    expect(primer).toMatch(/Corrections/);
+    expect(primer).toMatch(/corrected <topic>|dropped <claim>|none — existing claims matched source/i);
+    const th = fs.readFileSync(path.join(NATIVE_SKILLS, 'spk-prime', 'SKILL.md'), 'utf-8');
+    expect(th).toMatch(/Corrections/);
+  });
+
+  test('primer forbids baking volatile facts (version/counts) into AGENTS.md', () => {
+    // Related: even when grounded, do not freeze volatile facts (version,
+    // skill/agent counts) into prose — point at the manifest instead.
+    expect(primer).toMatch(/do not bake volatile facts|hardcode version/i);
+    const th = fs.readFileSync(path.join(NATIVE_SKILLS, 'spk-prime', 'SKILL.md'), 'utf-8');
+    expect(th).toMatch(/hardcode|manifest\.json/i);
+  });
 });
