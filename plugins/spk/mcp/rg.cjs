@@ -67,7 +67,11 @@ function buildSearchArgs({ query, path, maxResults, literal, glob, root } = {}) 
   if (literal) args.push('-F');
   if (glob) args.push('-g', rejectFlagLike(glob, 'glob'));
   args.push('--', query);
-  if (path) args.push(containPath(path, 'path', root));
+  // Always supply a positional path. With none, ripgrep reads STDIN — and the
+  // server's stdin is the JSON-RPC pipe (0 bytes), so every pathless query
+  // would return 0 matches. Default to "." so rg recurses the project root
+  // (runRg spawns with cwd=root); containPath('.') resolves to root and passes.
+  args.push(path ? containPath(path, 'path', root) : '.');
   return args;
 }
 
@@ -83,7 +87,8 @@ function buildSymbolArgs(name, { path, maxResults, root } = {}) {
   const pattern = `\\b(${DECL_KEYWORDS})\\s+${escaped}\\b`;
   const args = baseArgs(maxResults);
   args.push('--', pattern);
-  if (path) args.push(containPath(path, 'path', root));
+  // Default to "." when no path (see buildSearchArgs) — avoids the stdin trap.
+  args.push(path ? containPath(path, 'path', root) : '.');
   return args;
 }
 

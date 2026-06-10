@@ -1,10 +1,40 @@
 // tests/mcp-rg.test.js
+const { spawnSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 const {
   buildSearchArgs,
   buildSymbolArgs,
   buildOutlineArgs,
   parseRgJson,
 } = require('../plugins/spk/mcp/rg.cjs');
+
+const REPO_ROOT = path.join(__dirname, '..');
+
+// Resolve a real ripgrep binary usable from a spawned process. Plain `rg` is
+// preferred; some environments expose ripgrep only via the Claude Code binary
+// (invoked with argv0=rg). We try both via spawnSync so the live test RUNS
+// wherever ripgrep is reachable, and skips only when none is.
+function resolveRgBin() {
+  const plain = spawnSync('rg', ['--version'], { encoding: 'utf-8' });
+  if (!plain.error && plain.status === 0) return { bin: 'rg', argv0: undefined };
+  const claudeExec = process.env.CLAUDE_CODE_EXECPATH;
+  const candidates = [
+    claudeExec,
+    process.env.SPK_RG_PATH,
+    '/Users/apipoj/.local/bin/claude',
+  ].filter(Boolean);
+  for (const c of candidates) {
+    if (!fs.existsSync(c)) continue;
+    const probe = spawnSync(c, ['--version'], { encoding: 'utf-8', argv0: 'rg' });
+    if (!probe.error && probe.status === 0 && /ripgrep/.test(probe.stdout || '')) {
+      return { bin: c, argv0: 'rg' };
+    }
+  }
+  return null;
+}
+const RG = resolveRgBin();
+const liveRg = RG ? test : test.skip;
 
 describe('buildSearchArgs', () => {
   test('uses --json and caps results', () => {
@@ -17,9 +47,14 @@ describe('buildSearchArgs', () => {
     expect(a).toEqual(expect.arrayContaining(['-F', '-g', '*.js', 'a.b']));
   });
 
-  test('query comes after flags and before optional path', () => {
+  test('query comes after the -- sentinel, before the positional path', () => {
     const a = buildSearchArgs({ query: 'needle' });
-    expect(a[a.length - 1]).toBe('needle');
+    const sep = a.indexOf('--');
+    const q = a.indexOf('needle');
+    expect(sep).toBeGreaterThanOrEqual(0);
+    expect(q).toBe(sep + 1); // query immediately follows the sentinel
+    // With no path the positional defaults to "." (so rg recurses, not stdin).
+    expect(a[a.length - 1]).toBe('.');
     expect(a).toContain('--json');
   });
 });
@@ -149,6 +184,66 @@ describe('path containment hardening', () => {
     expect(buildSearchArgs({ query: 'x' })).toContain('--one-file-system');
     expect(buildSymbolArgs('x')).toContain('--one-file-system');
     expect(buildOutlineArgs('src/a.js')).toContain('--one-file-system');
+  });
+});
+
+// Pathless queries must default the positional path to "." so ripgrep recurses
+// the project root (cwd=root in runRg) instead of reading stdin — the server's
+// stdin is the JSON-RPC pipe, which would make rg search 0 bytes.
+describe('pathless search defaults positional to "."', () => {
+  test('buildSearchArgs ends with "." when no path is given', () => {
+    const a = buildSearchArgs({ query: 'x', root: REPO_ROOT });
+    expect(a[a.length - 1]).toBe('.');
+  });
+
+  test('buildSearchArgs still ends with the (contained) user path when given', () => {
+    const a = buildSearchArgs({ query: 'x', path: 'plugins', root: REPO_ROOT });
+    expect(a[a.length - 1]).toBe('plugins');
+  });
+
+  test('buildSymbolArgs ends with "." when no path is given', () => {
+    const a = buildSymbolArgs('x', { root: REPO_ROOT });
+    expect(a[a.length - 1]).toBe('.');
+  });
+
+  test('buildSymbolArgs still ends with the user path when given', () => {
+    const a = buildSymbolArgs('x', { path: 'plugins', root: REPO_ROOT });
+    expect(a[a.length - 1]).toBe('plugins');
+  });
+
+  test('buildOutlineArgs always carries its required file path positional', () => {
+    const a = buildOutlineArgs('plugins/spk/mcp/rg.cjs', { root: REPO_ROOT });
+    expect(a[a.length - 1]).toBe('plugins/spk/mcp/rg.cjs');
+    expect(a[a.length - 1]).not.toBe('.');
+  });
+});
+
+// Regression for the empty-stdin / no-path bug: run rg exactly as the server
+// does — empty stdin (simulating the JSON-RPC pipe) and cwd=root — and assert a
+// known repo symbol is found WITHOUT passing a path. argv-only tests masked this.
+describe('live empty-stdin no-path search (server condition)', () => {
+  function runRgLive(args) {
+    return spawnSync(RG.bin, args, {
+      encoding: 'utf-8',
+      input: '', // empty stdin, exactly like the server's JSON-RPC pipe after reads
+      cwd: REPO_ROOT,
+      argv0: RG.argv0,
+    });
+  }
+
+  liveRg('find_symbol with NO path finds a symbol that exists in the repo', () => {
+    const args = buildSymbolArgs('escapeRegex', { root: REPO_ROOT });
+    const r = runRgLive(args);
+    const matches = parseRgJson(r.stdout || '');
+    expect(matches.length).toBeGreaterThanOrEqual(1);
+    expect(matches.some((m) => /rg\.cjs$/.test(m.file))).toBe(true);
+  });
+
+  liveRg('search_code with NO path finds a string that exists in the repo', () => {
+    const args = buildSearchArgs({ query: 'buildSearchArgs', root: REPO_ROOT });
+    const r = runRgLive(args);
+    const matches = parseRgJson(r.stdout || '');
+    expect(matches.length).toBeGreaterThanOrEqual(1);
   });
 });
 

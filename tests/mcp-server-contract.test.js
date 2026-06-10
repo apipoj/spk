@@ -142,16 +142,30 @@ describe('global result cap', () => {
   });
 });
 
-// Resolve a real ripgrep binary for live tests. Plain `rg` is preferred; some
-// environments only expose ripgrep via the Claude Code multiplexer (invoked
-// with argv0=rg), which we cannot pass through SPK_RG_PATH, so those live
-// assertions are skipped rather than failing on an environment quirk.
-function resolveRg() {
-  const probe = spawnSync('rg', ['--version'], { encoding: 'utf-8' });
-  if (!probe.error && probe.status === 0) return 'rg';
+// Resolve a value usable as SPK_RG_PATH for the live server process (which
+// spawns rg internally and cannot set argv0). Plain `rg` is preferred. If
+// ripgrep is reachable only via the Claude Code binary (argv0=rg), generate a
+// tiny shim wrapper so the live process can still run it. Only skip when no
+// ripgrep is reachable at all.
+function resolveLiveRgPath() {
+  const plain = spawnSync('rg', ['--version'], { encoding: 'utf-8' });
+  if (!plain.error && plain.status === 0) return 'rg';
+  const candidates = [process.env.CLAUDE_CODE_EXECPATH, '/Users/apipoj/.local/bin/claude'].filter(
+    Boolean,
+  );
+  for (const c of candidates) {
+    if (!fs.existsSync(c)) continue;
+    const probe = spawnSync(c, ['--version'], { encoding: 'utf-8', argv0: 'rg' });
+    if (!probe.error && probe.status === 0 && /ripgrep/.test(probe.stdout || '')) {
+      const shim = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'spk-rgshim-')), 'rg');
+      fs.writeFileSync(shim, `#!/bin/bash\nexec -a rg ${c} "$@"\n`);
+      fs.chmodSync(shim, 0o755);
+      return shim;
+    }
+  }
   return null;
 }
-const LIVE_RG = resolveRg();
+const LIVE_RG = resolveLiveRgPath();
 const liveSearch = LIVE_RG ? test : test.skip;
 
 describe('stdio JSON-RPC handshake (live process)', () => {
@@ -160,7 +174,7 @@ describe('stdio JSON-RPC handshake (live process)', () => {
     const r = spawnSync('node', [ENTRY], {
       input,
       encoding: 'utf-8',
-      env: { ...process.env, ...env },
+      env: { ...process.env, SPK_RG_PATH: LIVE_RG || undefined, ...env },
       timeout: 10000,
     });
     const lines = r.stdout.split('\n').filter(Boolean).map((l) => JSON.parse(l));
@@ -205,5 +219,24 @@ describe('stdio JSON-RPC handshake (live process)', () => {
     expect(payload.matches.length).toBeGreaterThan(0);
     expect(payload.matches[0]).toHaveProperty('file');
     expect(payload.matches[0]).toHaveProperty('line');
+  });
+
+  // End-to-end repro of the no-path / empty-stdin bug: full server process,
+  // JSON-RPC over a real stdin pipe, NO path arg. Before the "." default this
+  // returned 0 matches because rg read the (drained) JSON-RPC stdin.
+  liveSearch('find_symbol over stdio with NO path finds a repo symbol', () => {
+    const { lines } = rpc([
+      { jsonrpc: '2.0', id: 1, method: 'initialize', params: {} },
+      {
+        jsonrpc: '2.0',
+        id: 2,
+        method: 'tools/call',
+        params: { name: 'find_symbol', arguments: { name: 'escapeRegex' } },
+      },
+    ]);
+    const call = lines.find((l) => l.id === 2);
+    const payload = JSON.parse(call.result.content[0].text);
+    expect(payload.matches.length).toBeGreaterThanOrEqual(1);
+    expect(payload.matches.some((m) => /rg\.cjs$/.test(m.file))).toBe(true);
   });
 });

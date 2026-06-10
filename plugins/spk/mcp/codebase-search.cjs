@@ -45,6 +45,10 @@ function runRg(args, env = process.env) {
       timeout: RG_TIMEOUT_MS,
       maxBuffer: 16 * 1024 * 1024,
       cwd: env.CLAUDE_PROJECT_DIR || process.cwd(),
+      // Defensive: never let rg inherit/observe the server's JSON-RPC stdin.
+      // The "." positional default is the real fix; this guarantees rg can
+      // never block on or read an inherited stdin even if a path were missing.
+      input: '',
     });
   } catch (e) {
     return { error: 'rg-spawn-failed', hint: String((e && e.message) || e) };
