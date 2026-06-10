@@ -18,16 +18,35 @@ function clampMax(maxResults) {
   return Math.floor(n);
 }
 
-// Build argv for a code search. Flags first, then the query, then optional path.
+// Reject a value that ripgrep would interpret as a flag. Used for positional
+// inputs (paths, globs) that come from model-controlled tool arguments.
+function rejectFlagLike(value, label) {
+  const v = String(value);
+  if (v.startsWith('-')) {
+    throw new Error(`buildArgs: ${label} may not start with "-" (got ${JSON.stringify(v)})`);
+  }
+  return v;
+}
+
+// Base flags shared by every rg invocation.
+//   --no-config disables rc-file loading so a malicious .ripgreprc / RIPGREP_CONFIG_PATH
+//   cannot inject --pre or other dangerous flags.
+function baseArgs(maxResults) {
+  return ['--json', '--no-config', '-m', String(clampMax(maxResults))];
+}
+
+// Build argv for a code search. All flags come first; the query and any
+// positional path are pushed AFTER a "--" sentinel so model-controlled inputs
+// (e.g. "--pre=<cmd>") can never be parsed by ripgrep as flags.
 function buildSearchArgs({ query, path, maxResults, literal, glob } = {}) {
   if (typeof query !== 'string' || query.length === 0) {
     throw new Error('buildSearchArgs: query is required');
   }
-  const args = ['--json', '-m', String(clampMax(maxResults))];
+  const args = baseArgs(maxResults);
   if (literal) args.push('-F');
-  if (glob) args.push('-g', String(glob));
-  args.push(query);
-  if (path) args.push(String(path));
+  if (glob) args.push('-g', rejectFlagLike(glob, 'glob'));
+  args.push('--', query);
+  if (path) args.push(rejectFlagLike(path, 'path'));
   return args;
 }
 
@@ -41,8 +60,9 @@ function buildSymbolArgs(name, { path, maxResults } = {}) {
   }
   const escaped = escapeRegex(name);
   const pattern = `\\b(${DECL_KEYWORDS})\\s+${escaped}\\b`;
-  const args = ['--json', '-m', String(clampMax(maxResults)), pattern];
-  if (path) args.push(String(path));
+  const args = baseArgs(maxResults);
+  args.push('--', pattern);
+  if (path) args.push(rejectFlagLike(path, 'path'));
   return args;
 }
 
@@ -51,8 +71,11 @@ function buildOutlineArgs(filePath, { maxResults } = {}) {
   if (typeof filePath !== 'string' || filePath.length === 0) {
     throw new Error('buildOutlineArgs: filePath is required');
   }
+  const safePath = rejectFlagLike(filePath, 'path');
   const pattern = `\\b(${DECL_KEYWORDS})\\s+[A-Za-z_$][\\w$]*`;
-  return ['--json', '-m', String(clampMax(maxResults)), pattern, String(filePath)];
+  const args = baseArgs(maxResults);
+  args.push('--', pattern, safePath);
+  return args;
 }
 
 function normalizePath(p) {
