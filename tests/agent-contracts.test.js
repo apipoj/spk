@@ -38,6 +38,13 @@ describe('agent status contract', () => {
     }
   });
 
+  test('tester agent prefers scoped tests in the inner loop', () => {
+    const AGENTS_DIR = path.join(__dirname, '..', 'plugins', 'spk', 'agents');
+    const t = fs.readFileSync(path.join(AGENTS_DIR, 'tester.md'), 'utf-8');
+    expect(t).toMatch(/scoped[- ]?tests|scoped-tests\.cjs/i);
+    expect(t).toMatch(/full suite|before sign-?off/i);
+  });
+
   test('reports missing status protocol and tokens', () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), 'spk-agent-contract-'));
     try {

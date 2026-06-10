@@ -21,8 +21,9 @@ color: blue
    - Happy path for each exported function
    - Edge cases (empty input, null, large input, boundary values)
    - Error paths (what happens when expected exceptions fire)
-4. Run tests — all must pass.
+4. Run tests — all must pass. For the inner loop, prefer a scoped run over the full suite: use `/scoped-tests` or `node scripts/scoped-tests.cjs` to map changed files to the relevant suites. When the mapper returns nothing it cannot confidently scope, run the full suite instead — never present a partial run as full coverage.
 5. Check coverage. If < 80%, add tests for uncovered branches.
+6. Always run the full suite before sign-off; a scoped pass is for iteration speed only.
 
 ## Constraints
 
