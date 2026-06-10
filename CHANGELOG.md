@@ -2,6 +2,27 @@
 
 ## Unreleased
 
+## 3.1.6 - 2026-06-10
+
+Opus agents move to `claude-opus-4-8`, hooks now speak Claude Code's output contract, and a new HTTP-revalidated WebFetch cache speeds up research flows.
+
+### Added
+- `webfetch-cache` hook: WebFetch responses are cached per URL and served only after the origin confirms `304 Not Modified` via ETag/Last-Modified revalidation. Entries without validators are never cached; disable with `SPK_WEBFETCH_CACHE=off`.
+- Anti-slop design gates in `spk:designer` and the native `spk-design-shotgun` skill, distilled from Together AI's MIT-licensed hallmark skill.
+- Hooks section and SSH-clone install fallback documented in both READMEs.
+- CI: plugin-install smoke test that validates, installs, and version-checks `spk@spk` with the real Claude Code CLI; weekly scheduled run plus manual dispatch.
+
+### Changed
+- All 10 Opus agents (4 orchestrators plus prd-writer, business-analyst, architect, planner, debugger, code-auditor) upgraded from `claude-opus-4-7` to `claude-opus-4-8`; the manifest schema enum now rejects the old ID.
+- CI actions bumped to `actions/checkout@v6` and `actions/setup-node@v6` (Node 24-ready).
+
+### Fixed
+- `wiki-secret-scan` and `gitignore-guard` block reasons now reach the model (stderr on exit 2 instead of stdout JSON, which Claude Code ignores on exit 2).
+- `auto-ingest`'s `/spk:ingest` nudge now uses `hookSpecificOutput.additionalContext`, so the model actually sees it instead of it landing in verbose-only stderr.
+
+### Release
+- Bumped `manifest.json`, `.claude-plugin/marketplace.json`, `plugins/spk/.claude-plugin/plugin.json`, `package.json`, and `package-lock.json` to `3.1.6` so `/plugin update` delivers the model upgrade and hook fixes.
+
 ## 3.1.5 - 2026-05-19
 
 Prime context-file behavior now avoids drift between Claude Code and other agent tools by making `AGENTS.md` canonical and `CLAUDE.md` a one-line pointer.
