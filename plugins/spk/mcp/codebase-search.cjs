@@ -13,6 +13,8 @@
 // cwd. No persisted index: correct on a moving codebase, zero warm-up.
 
 const { spawnSync } = require('child_process');
+const fs = require('fs');
+const path = require('path');
 const {
   buildSearchArgs,
   buildSymbolArgs,
@@ -114,6 +116,33 @@ function listTools() {
   return TOOLS;
 }
 
+// Realpath-based containment: after the pure-path containPath gate, resolve
+// symlinks so an in-root symlink pointing OUTSIDE root cannot leak out-of-root
+// content via an explicit path arg. A not-yet-existing path (ENOENT) is already
+// cleared by the pure-path check, so it passes here. Throws on escape.
+function assertRealpathContained(userPath, root) {
+  if (!userPath) return;
+  const base = path.resolve(root);
+  const resolved = path.resolve(base, userPath);
+  let realBase;
+  try {
+    realBase = fs.realpathSync(base);
+  } catch (e) {
+    if (e.code === 'ENOENT') return; // root itself missing — nothing to leak
+    throw e;
+  }
+  let realResolved;
+  try {
+    realResolved = fs.realpathSync(resolved);
+  } catch (e) {
+    if (e.code === 'ENOENT') return; // path doesn't exist yet — pure-path check sufficed
+    throw e;
+  }
+  if (realResolved !== realBase && !realResolved.startsWith(realBase + path.sep)) {
+    throw new Error('path escapes project root via symlink');
+  }
+}
+
 // ---- Tool dispatch ---------------------------------------------------------
 function dispatch(name, args = {}, env = process.env) {
   if (!toolsEnabled(env)) {
@@ -125,6 +154,9 @@ function dispatch(name, args = {}, env = process.env) {
   const root = env.CLAUDE_PROJECT_DIR || process.cwd();
   let rgArgs;
   try {
+    // Pure-path containment runs inside the builders; realpath containment runs
+    // here (dispatch has fs access; builders stay fs-free and unit-testable).
+    assertRealpathContained(args.path, root);
     if (name === 'search_code') {
       rgArgs = buildSearchArgs({
         query: args.query,

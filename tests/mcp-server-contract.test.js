@@ -1,4 +1,6 @@
 // tests/mcp-server-contract.test.js
+const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
@@ -51,6 +53,63 @@ describe('runtime guards', () => {
     const server = srv.createServer({ SPK_CODEBASE_SEARCH: 'off' });
     const res = server.callTool('search_code', { query: 'foo' });
     expect(res.disabled).toBe(true);
+  });
+});
+
+// Symlink-escape hardening: an in-root symlink whose target resolves OUTSIDE
+// the project root must be rejected when passed as an explicit path arg. Pure
+// path math cannot catch this (it never resolves symlinks), so dispatch must
+// add realpath-based containment. A symlink staying inside root is allowed, and
+// a not-yet-existing path (ENOENT) must still pass.
+describe('symlink escape hardening', () => {
+  let root;
+  let outside;
+  beforeEach(() => {
+    // realpathSync resolves macOS /var -> /private/var so comparisons are stable.
+    root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'spk-root-')));
+    outside = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'spk-outside-')));
+    fs.mkdirSync(path.join(root, 'src'));
+    fs.writeFileSync(path.join(root, 'src', 'a.js'), 'const inRoot = 1;\n');
+    fs.writeFileSync(path.join(outside, 'leak.txt'), 'SECRET\n');
+  });
+  afterEach(() => {
+    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(outside, { recursive: true, force: true });
+  });
+
+  function call(name, args) {
+    return srv.dispatch(name, args, { CLAUDE_PROJECT_DIR: root });
+  }
+
+  test('rejects an in-root symlink that resolves outside root', () => {
+    fs.symlinkSync(outside, path.join(root, 'escape'));
+    const res = call('search_code', { query: 'SECRET', path: 'escape' });
+    expect(res.error).toBe('invalid-argument');
+    expect(res.hint).toMatch(/symlink|escapes/i);
+  });
+
+  test('rejects an in-root symlink target for file_outline too', () => {
+    fs.symlinkSync(path.join(outside, 'leak.txt'), path.join(root, 'escape.txt'));
+    const res = call('file_outline', { path: 'escape.txt' });
+    expect(res.error).toBe('invalid-argument');
+  });
+
+  test('allows an in-root symlink that resolves inside root', () => {
+    fs.symlinkSync(path.join(root, 'src'), path.join(root, 'innerlink'));
+    const res = call('search_code', { query: 'inRoot', path: 'innerlink' });
+    // Either a clean match set or an rg-availability error, but never an
+    // invalid-argument containment rejection.
+    expect(res.error).not.toBe('invalid-argument');
+  });
+
+  test('allows a normal in-root path', () => {
+    const res = call('search_code', { query: 'inRoot', path: 'src' });
+    expect(res.error).not.toBe('invalid-argument');
+  });
+
+  test('allows a not-yet-existing in-root path (ENOENT passes containment)', () => {
+    const res = call('search_code', { query: 'x', path: 'does/not/exist/yet' });
+    expect(res.error).not.toBe('invalid-argument');
   });
 });
 
