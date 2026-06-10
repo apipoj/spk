@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## 3.3.2 - 2026-06-10
+
+Patch: fix `/spk:prime` trusting stale context files instead of reading the source.
+
+### Fixed
+- `spk:primer` / `/spk:prime` no longer carries claims forward from a pre-existing `AGENTS.md`/`CLAUDE.md`/`README` as if true. It now **grounds every claim in source read this run** — existing context files are treated as unverified hints, each fact is re-derived from the code/`manifest.json`/tree, the source wins on any conflict, and unverifiable claims are dropped rather than propagated. This was producing wrong context (e.g. stale version/skill counts) on repos that already had a context file.
+- The primer no longer bakes volatile facts (version, skill/agent/command counts) into `AGENTS.md` prose; it points at `manifest.json` (the source of truth) instead, so the file can't go stale on the next release.
+
+### Added
+- The prime report now includes a **Corrections** list naming every stale claim the source contradicted (`corrected <topic>: file said "<A>", source shows "<B>"` / `dropped <claim>: could not verify`), so overrides are visible instead of silent.
+
+### Release
+- Bumped `manifest.json`, `.claude-plugin/marketplace.json`, `plugins/spk/.claude-plugin/plugin.json`, `package.json`, and `package-lock.json` to `3.3.2`.
+
 ## 3.3.1 - 2026-06-10
 
 Patch: fix a functional regression in the codebase-search MCP found by live dogfooding right after 3.3.0.
