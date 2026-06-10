@@ -44,6 +44,22 @@ argument-hint: "[screen, product area, URL, screenshot, หรือ rough UI id
 - อย่า copy UI จากบุคคลที่สามโดยตรง แปลง references เป็นหลักการ
 - อย่าละเลย DESIGN.md เว้นแต่ user ขอสำรวจนอก design system
 
+## Anti-Slop Gates
+
+เช็คทุก variant ก่อนนำเสนอ ทุกข้อต้องตอบ **ไม่** (กลั่นจาก [hallmark](https://github.com/Nutlope/hallmark) ของ Together AI, MIT license):
+
+- ใช้ template AI ทั่วไป (hero → 3 feature cards → CTA → footer) หรือ structure ซ้ำกับ variant อื่น?
+- Hero centered ทุกอย่าง (eyebrow + title + lede + CTA อยู่แกนกลางเดียวกันหมด)? centered ได้ไม่เกิน 2 element
+- Display font เป็น Inter/Roboto/Open Sans/Poppins? มี gradient ม่วง-น้ำเงิน (โดยเฉพาะ gradient text)? heading เป็น italic?
+- ใช้ font เกิน 3 family? สี base เป็น `#000`/`#fff` ล้วนหรือเทาแบบ zero-chroma? accent เกิน ~5% ของ viewport?
+- Card ซ้อนใน card, grid 3 คอลัมน์ icon-บน-heading, icon หลาย library ปนกัน หรือใช้ emoji (✨🚀⚡) เป็น feature icon?
+- `transition: all`, hover-scale เหมือนกันทุกที่ หรือ animate `width`/`height`/`top`/`left`? (animate เฉพาะ transform/opacity)
+- Motion ไม่มี `prefers-reduced-motion` fallback? focus ring แบบ fade-in? interactive element ขาด state ใดใน default/hover/focus-visible/active/disabled?
+- Contrast ต่ำกว่า 4.5:1 (body) / 3:1 (text ใหญ่, icon, focus ring)? section พื้นเข้มแต่ลืม flip สีตัวอักษร? ปุ่มสีตัวอักษรเกือบเท่าสีพื้น?
+- มี Jane Doe / John Smith หรือชื่อ startup โหล ๆ (Acme, Nexus)? prose กว้างเกิน 45–75ch? spacing นอก scale 4px?
+
+**Self-critique ก่อนนำเสนอ:** ให้คะแนน 1–5 ต่อ variant ใน Philosophy / Hierarchy / Execution / Specificity / Restraint / Variety ข้อไหนต่ำกว่า 3 ให้แก้ก่อนนำเสนอ และบันทึกคะแนนลง board
+
 ## Artifact Convention
 
 ```text
