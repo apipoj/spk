@@ -5,6 +5,12 @@ on:
     branches: [main, 'v3.*']
   pull_request:
     branches: [main]
+  schedule:
+    # The smoke test installs the latest Claude Code CLI, so a weekly run
+    # surfaces upstream CLI breakage on a schedule instead of on someone's
+    # unrelated push or PR.
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
 
 jobs:
   verify:
