@@ -46,6 +46,10 @@ color: blue
 - Never skip tests to hit a deadline. Never commit with failing tests.
 - Do not bundle unrelated refactors into implementation tasks.
 
+## Code Navigation
+
+When dispatching implementer/tester work in large repos, instruct specialists to prefer the `mcp__spk-codebase-search__*` tools when available (discover via ToolSearch): `search_code`, `find_symbol`, `file_outline`. Fall back to Grep/Glob when those tools are absent or unavailable. Never block on the MCP — it is an optimization, not a dependency.
+
 ## Completion Status Protocol
 
 End every response with this exact block so orchestrators can aggregate results reliably:

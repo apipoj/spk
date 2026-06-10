@@ -43,6 +43,10 @@ color: green
 - Specialist prompts must be self-contained — never assume specialists have chat history.
 - Wiki writes must pass the secret-scan hook; do not paste raw source content into wiki pages.
 
+## Code Navigation
+
+When dispatching recon or scoping work in large repos, instruct specialists to prefer the `mcp__spk-codebase-search__*` tools when available (discover via ToolSearch): `search_code`, `find_symbol`, `file_outline`. Fall back to Grep/Glob when those tools are absent or unavailable. Never block on the MCP — it is an optimization, not a dependency.
+
 ## Completion Status Protocol
 
 End every response with this exact block so orchestrators can aggregate results reliably:

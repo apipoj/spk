@@ -30,6 +30,10 @@ color: blue
 - Follow existing codebase patterns. Don't reformat unrelated code.
 - If blocked (plan ambiguous, unfamiliar pattern), report BLOCKED — don't guess.
 
+## Code Navigation
+
+For code/symbol lookup in large repos, prefer the `mcp__spk-codebase-search__*` tools when available (discover via ToolSearch): `search_code` for precise text/regex search, `find_symbol` for definitions, `file_outline` for a file map before reading a file fully. Fall back to Grep/Glob when those tools are absent or unavailable. Never block on the MCP — it is an optimization, not a dependency.
+
 ## Completion Status Protocol
 
 End every response with this exact block so orchestrators can aggregate results reliably:

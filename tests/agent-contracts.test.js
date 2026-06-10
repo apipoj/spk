@@ -29,6 +29,15 @@ describe('agent status contract', () => {
     }
   });
 
+  test('search-aware agents reference spk-codebase-search with grep fallback', () => {
+    const AGENTS_DIR = path.join(__dirname, '..', 'plugins', 'spk', 'agents');
+    for (const f of ['researcher', 'implementer', 'plan-orchestrator', 'build-orchestrator']) {
+      const t = fs.readFileSync(path.join(AGENTS_DIR, `${f}.md`), 'utf-8');
+      expect(t).toMatch(/spk-codebase-search|codebase-search/i);
+      expect(t).toMatch(/fall ?back|when (?:absent|unavailable)|Grep/i);
+    }
+  });
+
   test('reports missing status protocol and tokens', () => {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), 'spk-agent-contract-'));
     try {

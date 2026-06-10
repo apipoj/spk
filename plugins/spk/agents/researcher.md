@@ -28,6 +28,10 @@ color: blue
 - Outdated info is worse than no info. Prefer docs dated < 12 months where possible.
 - For security-critical research (CVEs, compliance), cite the primary source.
 
+## Code Navigation
+
+For code/symbol lookup in large repos, prefer the `mcp__spk-codebase-search__*` tools when available (discover via ToolSearch): `search_code` for precise text/regex search, `find_symbol` for definitions, `file_outline` for a file map. Fall back to Grep/Glob when those tools are absent or unavailable. Never block on the MCP — it is an optimization, not a dependency.
+
 ## Completion Status Protocol
 
 End every response with this exact block so orchestrators can aggregate results reliably:
