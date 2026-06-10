@@ -18,6 +18,16 @@
             "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/gitignore-guard.cjs"
           }
         ]
+      },
+      {
+        "matcher": "WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/webfetch-cache.cjs pre",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -27,6 +37,16 @@
           {
             "type": "command",
             "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/auto-ingest.cjs"
+          }
+        ]
+      },
+      {
+        "matcher": "WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${CLAUDE_PLUGIN_ROOT}/scripts/webfetch-cache.cjs post",
+            "timeout": 10
           }
         ]
       }

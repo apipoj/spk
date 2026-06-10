@@ -43,6 +43,7 @@ Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:pla
 - `/spk:prime` เตรียม repo context สำหรับ subagents โดยให้ `AGENTS.md` เป็น source of truth และให้ `CLAUDE.md` เป็น pointer `@AGENTS.md` เพื่อลด drift ระหว่าง tools
 - `/spk:tdd` บังคับ RED-GREEN-REFACTOR: test ต้อง fail ก่อน implementation แล้วค่อย green/refactor
 - Orchestrators ใช้ shared subagent contract: prompt ต้อง self-contained, parallel เฉพาะงานไม่ชนไฟล์, retry `BLOCKED` ได้หนึ่งครั้ง, และต้องผ่าน verifier gate ก่อนบอกว่า done
+- WebFetch cache ต่อ URL: เสิร์ฟจาก cache เฉพาะเมื่อ origin ตอบ `304 Not Modified` ผ่าน ETag/Last-Modified revalidation - lookup เอกสารซ้ำใน `/spk:query` และ research flow เร็วขึ้นโดยไม่มีความเสี่ยง stale ปิดได้ด้วย `SPK_WEBFETCH_CACHE=off`
 
 ## Subagent Squad
 

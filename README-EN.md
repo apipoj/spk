@@ -39,6 +39,7 @@ Subagents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 - `/spk:prime` prepares repo context for subagents by making `AGENTS.md` the source of truth and `CLAUDE.md` a `@AGENTS.md` pointer to avoid cross-tool drift.
 - `/spk:tdd` enforces RED-GREEN-REFACTOR: tests must fail for the expected reason before implementation begins.
 - Orchestrators share one subagent contract: self-contained specialist prompts, parallel dispatch only for non-overlapping work, one retry for `BLOCKED`, and verifier gate before saying done.
+- WebFetch responses are cached per URL and served only after the origin confirms `304 Not Modified` via ETag/Last-Modified revalidation — repeat doc lookups in `/spk:query` and research flows get faster with zero staleness risk. Disable with `SPK_WEBFETCH_CACHE=off`.
 
 ## Subagent Squad
 
