@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## 3.2.0 - 2026-06-10
+
+One-command onboarding: `/spk:jumpstart` takes a new user from install to a reviewed plan on their real project with one question and one confirmation.
+
+### Added
+- `/spk:jumpstart` wizard: primes the repo via `spk:primer` when `AGENTS.md` is missing, asks one goal question (feature/bug/UI, with a default route for anything else), routes to `spk:plan-orchestrator` / `spk:debugger` / `spk:designer`, presents the first win, and requires one explicit confirmation before any code is written. Goal can be passed inline (`/spk:jumpstart <goal>`).
+- Native Thai standalone copy `skills/spk-jumpstart/`.
+- "เริ่มใน 60 วินาที / Start in 60 seconds" section in both READMEs and an onboarding entry in INSTALL_FOR_AGENTS.md.
+
+### Release
+- Bumped `manifest.json`, `.claude-plugin/marketplace.json`, `plugins/spk/.claude-plugin/plugin.json`, `package.json`, and `package-lock.json` to `3.2.0` so `/plugin update` delivers the wizard.
+
 ## 3.1.6 - 2026-06-10
 
 Opus agents move to `claude-opus-4-8`, hooks now speak Claude Code's output contract, and a new HTTP-revalidated WebFetch cache speeds up research flows.
