@@ -9,7 +9,7 @@
 > English version: [README-EN.md](./README-EN.md)
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **16 skills**
+**21 subagents** (4 orchestrators + 17 specialists) · **17 skills**
 <!-- SPK-COUNTS:end -->
 
 ## ติดตั้ง
@@ -36,9 +36,21 @@
 /plugin update
 ```
 
-Skills มี namespace `/spk:` ให้เอง - พิมพ์ `/spk:` แล้วจะเห็น `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
+Skills มี namespace `/spk:` ให้เอง - พิมพ์ `/spk:` แล้วจะเห็น `/spk:jumpstart`, `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`
 
 Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:planner`, `spk:architect`, ฯลฯ
+
+## เริ่มใน 60 วินาที
+
+ติดตั้งเสร็จแล้ว ไม่ต้องเลือกจาก 17 skills เอง — รันคำสั่งเดียว:
+
+```text
+/spk:jumpstart
+```
+
+Jumpstart จะเตรียม repo ให้ (สร้าง `AGENTS.md` ถ้ายังไม่มี) ถาม 1 คำถามว่าอยากทำอะไร (สร้าง feature / แก้ bug / ปรับ UI) แล้วพาไปถึง first win — plan ที่รีวิวได้จริงบน project ของคุณ — โดยถามยืนยัน 1 ครั้งก่อนเขียนโค้ดเสมอ
+
+มีเป้าหมายอยู่แล้วก็พิมพ์ไปเลย: `/spk:jumpstart เพิ่มหน้า login`
 
 ## Workflow Highlights
 
@@ -85,6 +97,7 @@ Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:pla
 <!-- SPK-COMMANDS:start -->
 | Skill | Dispatches to subagent |
 |---|---|
+| `/spk:jumpstart` | plan-orchestrator |
 | `/spk:plan` | plan-orchestrator |
 | `/spk:code` | build-orchestrator |
 | `/spk:review` | audit-orchestrator |

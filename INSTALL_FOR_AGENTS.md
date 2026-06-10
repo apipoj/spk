@@ -17,12 +17,13 @@ Update an existing install with:
 
 ## Skills (after install)
 
-Type `/spk:` to see: `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
+Type `/spk:` to see: `/spk:jumpstart`, `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
 
 Subagents are auto-namespaced: `spk:planner`, `spk:architect`, etc.
 
 ## Common Workflows
 
+- First run / onboarding: `/spk:jumpstart [goal]` primes the repo, asks one question, routes to the right workflow, and reaches a reviewed plan with one confirmation before any code.
 - Bala 5 balance check: `/spk:bala <scope|plan|diff>` applies confidence, energy, mindfulness, concentration, and wisdom as an engineering workflow check.
 - Sunzi strategy check: `/spk:sunzi <goal|plan|rollout>` applies know-self/know-constraint, terrain, leverage, and smallest-winning-move thinking.
 - Design shotgun: `/spk:design-shotgun <screen|URL|rough idea>` generates multiple UI directions, a comparison board, feedback notes, and an approved direction before implementation.

@@ -138,6 +138,10 @@
   },
   "commands": [
     {
+      "name": "/jumpstart",
+      "orchestrator": "plan-orchestrator"
+    },
+    {
       "name": "/plan",
       "orchestrator": "plan-orchestrator"
     },

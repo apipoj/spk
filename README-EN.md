@@ -7,7 +7,7 @@ Skills & subagent development for Claude Code. Ships as a plugin - hot-reloads i
 **Positioning:** Skills-first Subagents - subagents become more capable through reusable skills/playbooks, not just longer prompts.
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **16 skills**
+**21 subagents** (4 orchestrators + 17 specialists) · **17 skills**
 <!-- SPK-COUNTS:end -->
 
 ## Install
@@ -32,9 +32,21 @@ Update an existing install with:
 /plugin update
 ```
 
-Skills are auto-namespaced: type `/spk:` to see `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
+Skills are auto-namespaced: type `/spk:` to see `/spk:jumpstart`, `/spk:plan`, `/spk:code`, `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:design-shotgun`, `/spk:debug`, `/spk:deploy`, `/spk:pr`, `/spk:ingest`, `/spk:prime`, `/spk:query`, `/spk:wiki-lint`, `/spk:tdd`, `/spk:uninstall`.
 
 Subagents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
+
+## Start in 60 seconds
+
+Installed? Don't pick from 17 skills — run one command:
+
+```text
+/spk:jumpstart
+```
+
+Jumpstart prepares your repo (creates `AGENTS.md` if missing), asks one question about what you want to do (build a feature / fix a bug / improve UI), and walks you to a first win — a reviewable plan on your real project — always asking one confirmation before writing any code.
+
+Already know your goal? Pass it directly: `/spk:jumpstart add a login page`
 
 ## Workflow Highlights
 
@@ -81,6 +93,7 @@ Subagents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 <!-- SPK-COMMANDS:start -->
 | Skill | Dispatches to subagent |
 |---|---|
+| `/spk:jumpstart` | plan-orchestrator |
 | `/spk:plan` | plan-orchestrator |
 | `/spk:code` | build-orchestrator |
 | `/spk:review` | audit-orchestrator |

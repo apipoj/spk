@@ -5,6 +5,7 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 <!-- SPK-COMMANDS:start -->
 | Skill | Dispatches to subagent |
 |---|---|
+| `/spk:jumpstart` | plan-orchestrator |
 | `/spk:plan` | plan-orchestrator |
 | `/spk:code` | build-orchestrator |
 | `/spk:review` | audit-orchestrator |
