@@ -17,6 +17,13 @@ Skills & subagent development for Claude Code. Ships as a plugin - hot-reloads i
 /plugin install spk@spk
 ```
 
+> **SSH errors?** The marketplace clones repos via SSH. If you don't have SSH keys set up on GitHub, use the full HTTPS URL instead:
+>
+> ```text
+> /plugin marketplace add https://github.com/apipoj/spk.git
+> /plugin install spk@spk
+> ```
+
 Done. The plugin hot-reloads. On next session start, SPK scaffolds `ai_context/wiki/` and `ai_context/sources/` into your project automatically.
 
 Update an existing install with:
@@ -46,18 +53,18 @@ Subagents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 <!-- SPK-AGENTS:start -->
 | Name | Role | Model | Color | Phase |
 |---|---|---|---|---|
-| `plan-orchestrator` | orchestrator | claude-opus-4-7 | green | planning |
-| `build-orchestrator` | orchestrator | claude-opus-4-7 | blue | building |
-| `audit-orchestrator` | orchestrator | claude-opus-4-7 | purple | auditing |
-| `deploy-orchestrator` | orchestrator | claude-opus-4-7 | orange | shipping |
-| `prd-writer` | specialist | claude-opus-4-7 | green | planning |
-| `business-analyst` | specialist | claude-opus-4-7 | green | planning |
-| `architect` | specialist | claude-opus-4-7 | green | planning |
-| `planner` | specialist | claude-opus-4-7 | green | planning |
+| `plan-orchestrator` | orchestrator | claude-opus-4-8 | green | planning |
+| `build-orchestrator` | orchestrator | claude-opus-4-8 | blue | building |
+| `audit-orchestrator` | orchestrator | claude-opus-4-8 | purple | auditing |
+| `deploy-orchestrator` | orchestrator | claude-opus-4-8 | orange | shipping |
+| `prd-writer` | specialist | claude-opus-4-8 | green | planning |
+| `business-analyst` | specialist | claude-opus-4-8 | green | planning |
+| `architect` | specialist | claude-opus-4-8 | green | planning |
+| `planner` | specialist | claude-opus-4-8 | green | planning |
 | `designer` | specialist | claude-sonnet-4-6 | green | planning |
 | `primer` | specialist | claude-sonnet-4-6 | green | planning |
-| `debugger` | specialist | claude-opus-4-7 | purple | auditing |
-| `code-auditor` | specialist | claude-opus-4-7 | purple | auditing |
+| `debugger` | specialist | claude-opus-4-8 | purple | auditing |
+| `code-auditor` | specialist | claude-opus-4-8 | purple | auditing |
 | `implementer` | specialist | claude-sonnet-4-6 | blue | building |
 | `tester` | specialist | claude-sonnet-4-6 | blue | building |
 | `docs` | specialist | claude-sonnet-4-6 | blue | building |
@@ -105,6 +112,18 @@ Drop a file in `ai_context/sources/` and it auto-ingests. Ask `/spk:query "..."`
 ## Security
 
 5-layer defense for wiki: ingest-time secret scan, pre-write fail-closed hook, lint-time audit, `.gitignore`-gated sources directory, `.gitignore` respect during wiki-build. Secrets never land in wiki pages.
+
+## Hooks
+
+SPK registers these hooks automatically. All of them fail open — any internal error lets the underlying tool call proceed:
+
+| Hook | Event | What it does |
+|---|---|---|
+| `init-ai-context` | SessionStart | Scaffolds the `ai_context/` templates on first session (idempotent via a version marker) |
+| `wiki-secret-scan` | PreToolUse (Write/Edit) | Blocks writes of secret-shaped strings into `ai_context/wiki/**` |
+| `gitignore-guard` | PreToolUse (Read/Grep/Glob) | During wiki-build, blocks reads of `.gitignore`d files |
+| `webfetch-cache` | PreToolUse + PostToolUse (WebFetch) | Per-URL cache served only after the origin confirms `304 Not Modified`; disable with `SPK_WEBFETCH_CACHE=off` |
+| `auto-ingest` | PostToolUse (Write) | New files in `ai_context/sources/` trigger a nudge to run `/spk:ingest`; tune with `SPK_AUTO_INGEST` |
 
 ## Native Skills (Thai, No Plugin)
 

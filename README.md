@@ -19,6 +19,13 @@
 /plugin install spk@spk
 ```
 
+> **เจอ SSH error?** Marketplace clone repo ผ่าน SSH ถ้ายังไม่ได้ตั้ง SSH key บน GitHub ให้ใช้ HTTPS URL เต็มแทน:
+>
+> ```text
+> /plugin marketplace add https://github.com/apipoj/spk.git
+> /plugin install spk@spk
+> ```
+
 เสร็จ Plugin hot-reload ให้เอง ไม่ต้อง restart `claude`
 
 ครั้งต่อไปที่เริ่ม session ใหม่ SPK จะ scaffold `ai_context/wiki/` และ `ai_context/sources/` ใน project ของคุณอัตโนมัติ
@@ -50,18 +57,18 @@ Subagents ก็ namespace `spk:` ให้เหมือนกัน: `spk:pla
 <!-- SPK-AGENTS:start -->
 | Name | Role | Model | Color | Phase |
 |---|---|---|---|---|
-| `plan-orchestrator` | orchestrator | claude-opus-4-7 | green | planning |
-| `build-orchestrator` | orchestrator | claude-opus-4-7 | blue | building |
-| `audit-orchestrator` | orchestrator | claude-opus-4-7 | purple | auditing |
-| `deploy-orchestrator` | orchestrator | claude-opus-4-7 | orange | shipping |
-| `prd-writer` | specialist | claude-opus-4-7 | green | planning |
-| `business-analyst` | specialist | claude-opus-4-7 | green | planning |
-| `architect` | specialist | claude-opus-4-7 | green | planning |
-| `planner` | specialist | claude-opus-4-7 | green | planning |
+| `plan-orchestrator` | orchestrator | claude-opus-4-8 | green | planning |
+| `build-orchestrator` | orchestrator | claude-opus-4-8 | blue | building |
+| `audit-orchestrator` | orchestrator | claude-opus-4-8 | purple | auditing |
+| `deploy-orchestrator` | orchestrator | claude-opus-4-8 | orange | shipping |
+| `prd-writer` | specialist | claude-opus-4-8 | green | planning |
+| `business-analyst` | specialist | claude-opus-4-8 | green | planning |
+| `architect` | specialist | claude-opus-4-8 | green | planning |
+| `planner` | specialist | claude-opus-4-8 | green | planning |
 | `designer` | specialist | claude-sonnet-4-6 | green | planning |
 | `primer` | specialist | claude-sonnet-4-6 | green | planning |
-| `debugger` | specialist | claude-opus-4-7 | purple | auditing |
-| `code-auditor` | specialist | claude-opus-4-7 | purple | auditing |
+| `debugger` | specialist | claude-opus-4-8 | purple | auditing |
+| `code-auditor` | specialist | claude-opus-4-8 | purple | auditing |
 | `implementer` | specialist | claude-sonnet-4-6 | blue | building |
 | `tester` | specialist | claude-sonnet-4-6 | blue | building |
 | `docs` | specialist | claude-sonnet-4-6 | blue | building |
@@ -118,6 +125,18 @@ Drop ไฟล์ลงใน `ai_context/sources/` แล้ว auto-ingest จ
 5. `.gitignore` respect ระหว่าง wiki-build
 
 Secrets จะไม่หลุดเข้า wiki pages
+
+## Hooks
+
+SPK ติดตั้ง hooks ให้อัตโนมัติ ทุกตัว fail-open (ถ้า error จะปล่อยงานผ่าน ไม่บล็อกการทำงานปกติ):
+
+| Hook | Event | ทำอะไร |
+|---|---|---|
+| `init-ai-context` | SessionStart | scaffold `ai_context/` template ครั้งแรก (idempotent ผ่าน version marker) |
+| `wiki-secret-scan` | PreToolUse (Write/Edit) | บล็อกการเขียน secret-shaped strings ลง `ai_context/wiki/**` |
+| `gitignore-guard` | PreToolUse (Read/Grep/Glob) | ระหว่าง wiki-build บล็อกการอ่านไฟล์ที่อยู่ใน `.gitignore` |
+| `webfetch-cache` | PreToolUse + PostToolUse (WebFetch) | cache ต่อ URL เสิร์ฟเฉพาะเมื่อ origin ตอบ `304 Not Modified` ปิดด้วย `SPK_WEBFETCH_CACHE=off` |
+| `auto-ingest` | PostToolUse (Write) | ไฟล์ใหม่ใน `ai_context/sources/` จะถูกแจ้งให้ run `/spk:ingest` ปรับโหมดด้วย `SPK_AUTO_INGEST` |
 
 ## Native Skills (Thai, No Plugin)
 
