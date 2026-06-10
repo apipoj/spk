@@ -2,13 +2,24 @@
 
 ## Unreleased
 
+## 3.3.0 - 2026-06-10
+
+Large-codebase support: SPK ships its own `spk-codebase-search` MCP server so subagents navigate big consumer repos without burning context on grep, plus a scoped-test inner loop, a richer prime, and a propose-only session-reflect hook. Learned from coleam00/helpline and Anthropic's "Claude Code in large codebases" guide.
+
 ### Added
+- **`spk-codebase-search` MCP server** (`plugins/spk/mcp/`, wired via `plugins/spk/.mcp.json`): a zero-dependency, ripgrep-backed stdio server shipped to consumer projects, exposing `search_code`, `find_symbol`, and `file_outline`. Index-light (no build step), bounded output (global result cap), and disabled with `SPK_CODEBASE_SEARCH=off`. `spk:researcher`, `spk:implementer`, and the orchestrators prefer it when present and fall back to Grep/Glob otherwise.
 - `/spk:scoped-tests` command (backed by the `tester` agent) plus `scripts/scoped-tests.cjs`: maps changed files to the relevant Jest suites for a fast inner loop, falls back to the full suite when a file cannot be confidently scoped, and reports which suites ran vs which changes were skipped. Native Thai copy `skills/spk-scoped-tests/`.
 - `session-reflect` Stop hook: at session end it reflects while context is fresh and **proposes** (never writes) capturing a `learning` wiki page and re-priming any `AGENTS.md` whose subtree changed. Non-blocking, read-only, propose-only; disable with `SPK_SESSION_REFLECT=off`.
 
 ### Changed
 - `spk:primer` + `/spk:prime` now emit richer `AGENTS.md`: a `## Scoped Commands` section (subtree-scoped test/build/lint), a `## Code Navigation` section pointing at the `spk-codebase-search` tools with a Grep/Glob fallback, a root `.claudeignore` for search-noise reduction, and a staleness re-prime note.
 - The `tester` agent prefers a scoped run in the inner loop and always runs the full suite before sign-off.
+
+### Security
+- The codebase-search MCP receives model-controlled input, so it is hardened against four classes of attack, each with regression tests and verified by live exploit attempts: ripgrep argument injection (`--`/`--no-config`/flag-like rejection blocking `--pre` RCE), arbitrary file read via absolute/`../` path arguments (project-root containment), in-root symlinks escaping the root (realpath containment), and unbounded output (per-file + authoritative global result cap).
+
+### Release
+- Bumped `manifest.json`, `.claude-plugin/marketplace.json`, `plugins/spk/.claude-plugin/plugin.json`, `package.json`, and `package-lock.json` to `3.3.0` so `/plugin update` delivers the MCP server and scoped-test loop.
 
 ## 3.2.0 - 2026-06-10
 
