@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Added
+- `/spk:scoped-tests` command (backed by the `tester` agent) plus `scripts/scoped-tests.cjs`: maps changed files to the relevant Jest suites for a fast inner loop, falls back to the full suite when a file cannot be confidently scoped, and reports which suites ran vs which changes were skipped. Native Thai copy `skills/spk-scoped-tests/`.
+- `session-reflect` Stop hook: at session end it reflects while context is fresh and **proposes** (never writes) capturing a `learning` wiki page and re-priming any `AGENTS.md` whose subtree changed. Non-blocking, read-only, propose-only; disable with `SPK_SESSION_REFLECT=off`.
+
+### Changed
+- `spk:primer` + `/spk:prime` now emit richer `AGENTS.md`: a `## Scoped Commands` section (subtree-scoped test/build/lint), a `## Code Navigation` section pointing at the `spk-codebase-search` tools with a Grep/Glob fallback, a root `.claudeignore` for search-noise reduction, and a staleness re-prime note.
+- The `tester` agent prefers a scoped run in the inner loop and always runs the full suite before sign-off.
+
 ## 3.2.0 - 2026-06-10
 
 One-command onboarding: `/spk:jumpstart` takes a new user from install to a reviewed plan on their real project with one question and one confirmation.
