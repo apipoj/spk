@@ -58,7 +58,14 @@ function main() {
     try { event = JSON.parse(raw || '{}'); } catch { process.exit(0); }
     const result = shouldEnqueue(event);
     if (result.enqueue) {
-      process.stderr.write(`[SPK auto-ingest] ${result.reason}. Run /spk:ingest to process.\n`);
+      // additionalContext is the documented non-blocking way to put a message
+      // in front of the model; stderr on exit 0 only shows in verbose mode.
+      process.stdout.write(JSON.stringify({
+        hookSpecificOutput: {
+          hookEventName: 'PostToolUse',
+          additionalContext: `[SPK auto-ingest] ${result.reason}. Run /spk:ingest to process.`
+        }
+      }) + '\n');
     }
     process.exit(0);
   });

@@ -46,7 +46,9 @@ function main() {
     }
     const result = shouldBlock(event);
     if (result.block) {
-      process.stdout.write(JSON.stringify({ decision: 'block', reason: result.reason }) + '\n');
+      // Exit 2 blocks the tool call; Claude Code feeds STDERR (not stdout)
+      // back to the model, so the reason must go there to be seen.
+      process.stderr.write(result.reason + '\n');
       process.exit(2);
     }
     process.exit(0);
