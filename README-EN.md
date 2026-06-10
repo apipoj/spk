@@ -7,7 +7,7 @@ Skills & subagent development for Claude Code. Ships as a plugin - hot-reloads i
 **Positioning:** Skills-first Subagents - subagents become more capable through reusable skills/playbooks, not just longer prompts.
 
 <!-- SPK-COUNTS:start -->
-**21 subagents** (4 orchestrators + 17 specialists) · **17 skills**
+**21 subagents** (4 orchestrators + 17 specialists) · **18 skills**
 <!-- SPK-COUNTS:end -->
 
 ## Install
@@ -38,7 +38,7 @@ Subagents are auto-namespaced too: `spk:planner`, `spk:architect`, etc.
 
 ## Start in 60 seconds
 
-Installed? Don't pick from 17 skills — run one command:
+Installed? Don't pick from 18 skills — run one command:
 
 ```text
 /spk:jumpstart
@@ -109,6 +109,7 @@ Already know your goal? Pass it directly: `/spk:jumpstart add a login page`
 | `/spk:wiki-lint` | audit-orchestrator |
 | `/spk:tdd` | build-orchestrator |
 | `/spk:release-check` | verifier |
+| `/spk:scoped-tests` | tester |
 | `/spk:uninstall` | (no subagent) |
 <!-- SPK-COMMANDS:end -->
 

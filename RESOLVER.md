@@ -21,6 +21,7 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 | `/spk:wiki-lint` | audit-orchestrator |
 | `/spk:tdd` | build-orchestrator |
 | `/spk:release-check` | verifier |
+| `/spk:scoped-tests` | tester |
 | `/spk:uninstall` | (no subagent) |
 <!-- SPK-COMMANDS:end -->
 
@@ -38,6 +39,7 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 
 - "implement X" / "build the feature" / "code this up" → `/spk:code <plan ref>`
 - "write tests first" / "TDD X" → `/spk:tdd <feature>`
+- "run only the relevant tests" / "scoped tests" / "test just my changes" / "fast test loop" → `/spk:scoped-tests [changed paths]`
 - "update docs" / "document the API" → `/spk:code` (build-orchestrator dispatches docs)
 
 ### Auditing
@@ -75,7 +77,7 @@ Maps user intent → the right SPK skill. When the main-thread Claude is unsure 
 Skills map to 4 phases, color-coded:
 
 - Planning (green) → `/spk:plan`, `/spk:design-shotgun`, `/spk:prime`
-- Building (blue) → `/spk:code`, `/spk:tdd`, `/spk:ingest` (when ingesting for implementation), `/spk:query`
+- Building (blue) → `/spk:code`, `/spk:tdd`, `/spk:scoped-tests`, `/spk:ingest` (when ingesting for implementation), `/spk:query`
 - Auditing (purple) → `/spk:review`, `/spk:bala`, `/spk:sunzi`, `/spk:debug`, `/spk:wiki-lint`
 - Shipping (orange) → `/spk:deploy`, `/spk:pr`, `/spk:release-check`
 
