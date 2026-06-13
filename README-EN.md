@@ -48,6 +48,18 @@ Jumpstart prepares your repo (creates `AGENTS.md` if missing), asks one question
 
 Already know your goal? Pass it directly: `/spk:jumpstart add a login page`
 
+**Which subagents Jumpstart calls** (you never run these yourself — the wizard handles it):
+
+| Step | Condition | Subagent / Workflow called |
+|---|---|---|
+| 1. Prime repo | when `AGENTS.md` is missing | `spk:primer` |
+| 2. Route by goal | build a feature | `spk:plan-orchestrator` (same as `/spk:plan`) |
+|  | fix a bug | `spk:debugger` (same as `/spk:debug`) |
+|  | improve UI | `spk:designer` (same as `/spk:design-shotgun`) |
+| 3. Implement | after your one "go ahead" confirmation | `spk:build-orchestrator` (same as `/spk:code`) |
+
+Before the implement step (step 3), Jumpstart writes no source code and never pushes or opens a PR — that stays behind `/spk:pr`'s separate confirmation.
+
 ## Workflow Highlights
 
 - `/spk:bala` applies the Buddhist Five Powers as a practical balance check before plan/code/review/debug: confidence, energy, mindfulness, concentration, and wisdom.
