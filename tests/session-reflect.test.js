@@ -46,6 +46,12 @@ describe('session-reflect Stop hook', () => {
     }
   });
 
+  test('loop guard: stays silent when stop_hook_active is true', () => {
+    const r = run({ hook_event_name: 'Stop', stop_hook_active: true });
+    expect(r.status).toBe(0);
+    expect(r.stdout).toBe('');
+  });
+
   test('malformed stdin never breaks the hook', () => {
     const r = spawnSync('node', [SCRIPT], { input: 'not json{', encoding: 'utf-8' });
     expect(r.status).toBe(0);

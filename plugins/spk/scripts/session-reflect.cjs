@@ -53,6 +53,11 @@ function buildSuggestion(changed) {
 function reflect(event, env) {
   env = env || process.env;
   if ((env.SPK_SESSION_REFLECT || '').toLowerCase() === 'off') return null;
+  // Loop guard: Claude Code sets stop_hook_active=true when this Stop is itself
+  // a continuation triggered by a previous Stop-hook suggestion. Emitting again
+  // would re-feed the model and loop forever, so stay silent. Net effect: the
+  // suggestion fires exactly once per genuine session end.
+  if (event && event.stop_hook_active) return null;
   const root = env.CLAUDE_PROJECT_DIR || env.SPK_PROJECT_ROOT || process.cwd();
   const changed = changedSourcePaths(root);
   return buildSuggestion(changed);
