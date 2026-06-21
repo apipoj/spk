@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+## 3.4.0 - 2026-06-21
+
+Minor: reintroduce `session-reflect` as a background `claude -p` reflection (modeled on coleam00/helpline), replacing the removed-in-3.3.5 in-band hook.
+
+### Added
+- `session-reflect` Stop hook, redesigned to be loop-proof by construction. It writes **nothing to stdout** (no `decision`, no `additionalContext`), so it never re-feeds the model — no "Stop hook feedback" banner and no "blocked the turn from ending N times" loop. Instead it does cheap deterministic work (detect which `AGENTS.md`-governed areas changed, dedup on a diff fingerprint) and spawns a detached background reflector.
+- `scripts/session-reflect-run.cjs` (the reflector): gathers the session diff + each changed area's `AGENTS.md`, asks headless `claude -p` whether those conventions still hold and what learnings to capture, and writes a proposal to `ai_context/session-reflect-review.md`. Falls back to a deterministic "re-check these files" note when the `claude` CLI is unavailable.
+- Recursion guard: the background `claude` runs with `SPK_REFLECT_LOCK=1` so its own Stop hook no-ops — the nested session can't trigger another reflection. Kill switch `SPK_SESSION_REFLECT=off` disables the feature.
+
+### Release
+- Bumped `manifest.json`, `.claude-plugin/marketplace.json`, `plugins/spk/.claude-plugin/plugin.json`, `package.json`, and `package-lock.json` to `3.4.0`.
+
 ## 3.3.5 - 2026-06-21
 
 Patch: remove the `session-reflect` Stop hook entirely.

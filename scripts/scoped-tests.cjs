@@ -40,7 +40,7 @@ function deriveHookScripts() {
   }
   return new Set([
     'auto-ingest', 'gitignore-guard', 'init-ai-context',
-    'webfetch-cache', 'wiki-secret-scan',
+    'session-reflect', 'webfetch-cache', 'wiki-secret-scan',
   ]);
 }
 

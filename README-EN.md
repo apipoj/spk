@@ -150,6 +150,7 @@ SPK registers these hooks automatically. All of them fail open — any internal 
 | `gitignore-guard` | PreToolUse (Read/Grep/Glob) | During wiki-build, blocks reads of `.gitignore`d files |
 | `webfetch-cache` | PreToolUse + PostToolUse (WebFetch) | Per-URL cache served only after the origin confirms `304 Not Modified`; disable with `SPK_WEBFETCH_CACHE=off` |
 | `auto-ingest` | PostToolUse (Write) | New files in `ai_context/sources/` trigger a nudge to run `/spk:ingest`; tune with `SPK_AUTO_INGEST` |
+| `session-reflect` | Stop | At session end, spawns a background `claude -p` that reflects on whether the changed subtrees' `AGENTS.md` still match the code (and what learnings to `/spk:ingest`), writing a proposal to `ai_context/session-reflect-review.md`. Writes nothing to stdout — never re-feeds the model, so no banner and no loop. Disable with `SPK_SESSION_REFLECT=off` |
 
 ## Native Skills (Thai, No Plugin)
 
