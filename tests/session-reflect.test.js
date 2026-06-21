@@ -75,6 +75,19 @@ describe('session-reflect-run.cjs (reflector)', () => {
     } finally { fs.rmSync(dir, { recursive: true, force: true }); }
   });
 
+  test('scopedDiff includes UNTRACKED new files, not just tracked changes', () => {
+    // Regression: `git diff HEAD` omits untracked files, so a session that only
+    // ADDS files would show an empty diff and never reach claude. The diff must
+    // include new files' contents.
+    const dir = gitInitRepo();
+    try {
+      touch(dir, 'pkg/newfile.js', 'const POOLED_ONLY = true;\n');
+      const diff = reflector.scopedDiff(dir, { pkg: 1 });
+      expect(diff).toMatch(/pkg\/newfile\.js/);
+      expect(diff).toMatch(/POOLED_ONLY/);
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  });
+
   test('writes a deterministic fallback review when claude is unavailable', () => {
     const dir = gitInitRepo();
     try {

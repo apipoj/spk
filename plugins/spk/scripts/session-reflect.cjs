@@ -37,15 +37,12 @@ const LOCK_ENV = reflector.LOCK_ENV; // 'SPK_REFLECT_LOCK'
 const STATE_FILE = reflector.STATE_FILE; // ai_context/.session-reflect-state
 const RUNNER = path.join(__dirname, 'session-reflect-run.cjs');
 
+// Hash the SAME scoped diff the reflector will reflect on (tracked + untracked),
+// so adding a new file changes the fingerprint and a turn that only added files
+// is not wrongly deduped against an "empty diff" state.
 function diffFingerprint(root, areas) {
-  const { execFileSync } = require('child_process');
-  const targets = Object.keys(areas).map(a => (a === '.' ? '.' : a));
   let raw = '';
-  try {
-    raw = execFileSync('git', ['diff', 'HEAD', '--', ...targets], {
-      cwd: root, encoding: 'utf-8', stdio: ['ignore', 'pipe', 'ignore']
-    });
-  } catch { /* no git -> empty -> stable fingerprint */ }
+  try { raw = reflector.scopedDiff(root, areas); } catch { /* empty -> stable */ }
   return crypto.createHash('sha256').update(raw).digest('hex');
 }
 

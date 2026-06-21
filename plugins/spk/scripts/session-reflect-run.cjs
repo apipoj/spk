@@ -98,9 +98,25 @@ function touchedAreas(root) {
   return counts;
 }
 
+// Untracked files (new this session), scoped to the touched areas.
+function untrackedFiles(root, targets) {
+  return git(['ls-files', '--others', '--exclude-standard', '--', ...targets], root)
+    .split('\n').map(s => s.trim()).filter(Boolean);
+}
+
+// The working-tree change set to reflect on. `git diff HEAD` only covers TRACKED
+// changes, so untracked new files (common in SPK work) are appended as synthetic
+// added-file blocks — otherwise a session that only adds files would show an
+// empty diff and always fall back to the deterministic note.
 function scopedDiff(root, areas) {
   const targets = Object.keys(areas).map(a => (a === '.' ? '.' : a));
   let diff = git(['diff', 'HEAD', '--', ...targets], root);
+  for (const f of untrackedFiles(root, targets)) {
+    let content = '';
+    try { content = fs.readFileSync(path.join(root, f), 'utf-8'); } catch { /* skip */ }
+    const added = content.split('\n').map(l => '+' + l).join('\n');
+    diff += `\n--- /dev/null\n+++ b/${f}\n${added}\n`;
+  }
   if (diff.length > MAX_DIFF_CHARS) {
     diff = diff.slice(0, MAX_DIFF_CHARS) + '\n... (diff truncated for the reflection)';
   }
