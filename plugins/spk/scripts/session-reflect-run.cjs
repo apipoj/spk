@@ -51,13 +51,26 @@ function git(args, root, timeout = 10000) {
   }
 }
 
-// Working-tree changed paths (posix), best-effort.
+// session-reflect's OWN generated files (posix). They live under ai_context/ as
+// untracked files; if counted as "changes" they would map to the root area and
+// shift the diff fingerprint every run — a feedback loop that breaks dedup and
+// makes the hook reflect on its own output. Always excluded.
+const SELF_ARTIFACTS = new Set([
+  REVIEW_FILE.replace(/\\/g, '/'),
+  STATE_FILE.replace(/\\/g, '/')
+]);
+function isSelfArtifact(p) {
+  return SELF_ARTIFACTS.has(p.replace(/\\/g, '/'));
+}
+
+// Working-tree changed paths (posix), best-effort, excluding our own artifacts.
 function changedPaths(root) {
   return git(['status', '--porcelain'], root)
     .split('\n')
     .filter(l => l.length > 3)
     .map(l => l.slice(3).trim().replace(/\\/g, '/'))
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter(p => !isSelfArtifact(p));
 }
 
 // Every directory that carries its own AGENTS.md (the areas the hierarchy
@@ -101,7 +114,8 @@ function touchedAreas(root) {
 // Untracked files (new this session), scoped to the touched areas.
 function untrackedFiles(root, targets) {
   return git(['ls-files', '--others', '--exclude-standard', '--', ...targets], root)
-    .split('\n').map(s => s.trim()).filter(Boolean);
+    .split('\n').map(s => s.trim()).filter(Boolean)
+    .filter(p => !isSelfArtifact(p));
 }
 
 // The working-tree change set to reflect on. `git diff HEAD` only covers TRACKED

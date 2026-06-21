@@ -64,41 +64,54 @@ function spawnReflector(root, env) {
   }
 }
 
-// Decide-and-act. Returns an exit code. Pure of stdout — never prints to stdout.
-function propose(env) {
+// Pure decision: should we reflect this turn, and with what fingerprint? No
+// spawning, no writes — so the guard logic (kill switch, recursion lock, no-op
+// when nothing changed, dedup) is deterministically testable. `act` is true only
+// when a reflection should be spawned.
+function reflectDecision(env) {
   env = env || process.env;
-  if ((env.SPK_SESSION_REFLECT || '').toLowerCase() === 'off') return 0;
+  if ((env.SPK_SESSION_REFLECT || '').toLowerCase() === 'off') return { act: false, reason: 'off' };
   // Guard 1 — recursion. A reflection spawns a headless `claude` whose own Stop
   // hook runs this file again. If the lock is set, do nothing.
-  if (env[LOCK_ENV]) return 0;
+  if (env[LOCK_ENV]) return { act: false, reason: 'lock' };
 
   const root = reflector.projectRoot(env);
   const areas = reflector.touchedAreas(root);
-  if (Object.keys(areas).length === 0) return 0;
+  if (Object.keys(areas).length === 0) return { act: false, reason: 'no-areas', root, areas };
 
   // Guard 2 — dedup. Only reflect when the touched-area diff is new since the
   // last reflection this session.
   const fingerprint = diffFingerprint(root, areas);
   const state = path.join(root, STATE_FILE);
   try {
-    if (fs.readFileSync(state, 'utf-8').trim() === fingerprint) return 0;
+    if (fs.readFileSync(state, 'utf-8').trim() === fingerprint) {
+      return { act: false, reason: 'dedup', root, areas, fingerprint, state };
+    }
   } catch { /* no prior state — first reflection for this diff */ }
+  return { act: true, reason: 'reflect', root, areas, fingerprint, state };
+}
+
+// Decide-and-act. Returns an exit code. Pure of stdout — never prints to stdout.
+function propose(env) {
+  env = env || process.env;
+  const d = reflectDecision(env);
+  if (!d.act) return 0;
 
   if (!fs.existsSync(env.SPK_REFLECT_RUNNER || RUNNER)) {
     process.stderr.write('[session-reflect] reflector missing — skipped\n');
     return 0;
   }
-  if (!spawnReflector(root, env)) return 0;
+  if (!spawnReflector(d.root, env)) return 0;
 
   // Record the fingerprint so identical follow-up turns do not re-spawn.
   try {
-    fs.mkdirSync(path.dirname(state), { recursive: true });
-    fs.writeFileSync(state, fingerprint);
+    fs.mkdirSync(path.dirname(d.state), { recursive: true });
+    fs.writeFileSync(d.state, d.fingerprint);
   } catch { /* best-effort */ }
 
   process.stderr.write(
-    `[session-reflect] ${Object.keys(areas).length} area(s) changed ` +
-    `(${Object.keys(areas).sort().join(', ')}) — reflecting in the background ` +
+    `[session-reflect] ${Object.keys(d.areas).length} area(s) changed ` +
+    `(${Object.keys(d.areas).sort().join(', ')}) — reflecting in the background ` +
     `→ ${reflector.REVIEW_FILE}\n`
   );
   return 0;
@@ -118,4 +131,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { propose, diffFingerprint, spawnReflector, LOCK_ENV, STATE_FILE };
+module.exports = { propose, reflectDecision, diffFingerprint, spawnReflector, LOCK_ENV, STATE_FILE };

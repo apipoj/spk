@@ -161,32 +161,44 @@ describe('session-reflect.cjs (Stop hook trigger)', () => {
     } finally { fs.rmSync(dir, { recursive: true, force: true }); }
   });
 
-  test('spawns the reflector and records a dedup fingerprint; identical turn does not re-spawn', () => {
+  test('dedup decision: act on a new diff, skip when fingerprint already seen', () => {
     const dir = gitInitRepo();
-    const sentinelDir = fs.mkdtempSync(path.join(os.tmpdir(), 'spk-sentinel-'));
-    const sentinel = path.join(sentinelDir, 'ran');
-    // A stand-in reflector: appends a line each time it is spawned.
-    const fakeRunner = path.join(sentinelDir, 'fake-runner.cjs');
-    fs.writeFileSync(fakeRunner, `require('fs').appendFileSync(${JSON.stringify(sentinel)}, 'x');\n`);
     try {
       touch(dir, 'pkg/a.js', 'const a = 7;\n');
+      const env = { CLAUDE_PROJECT_DIR: dir };
+
+      const d1 = hook.reflectDecision(env);
+      expect(d1.act).toBe(true);
+      expect(d1.fingerprint).toMatch(/^[0-9a-f]{64}$/);
+
+      // Simulate a prior reflection of this exact diff.
+      fs.mkdirSync(path.dirname(path.join(dir, hook.STATE_FILE)), { recursive: true });
+      fs.writeFileSync(path.join(dir, hook.STATE_FILE), d1.fingerprint);
+
+      const d2 = hook.reflectDecision(env);
+      expect(d2.act).toBe(false);
+      expect(d2.reason).toBe('dedup');
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  });
+
+  test('propose records the fingerprint once; an identical follow-up turn dedups', () => {
+    const dir = gitInitRepo();
+    const sentinelDir = fs.mkdtempSync(path.join(os.tmpdir(), 'spk-sentinel-'));
+    // Stand-in reflector so propose() does not spawn the real one.
+    const fakeRunner = path.join(sentinelDir, 'fake-runner.cjs');
+    fs.writeFileSync(fakeRunner, 'process.exit(0);\n');
+    try {
+      touch(dir, 'pkg/a.js', 'const a = 8;\n');
       const env = { CLAUDE_PROJECT_DIR: dir, SPK_REFLECT_RUNNER: fakeRunner };
 
-      const c1 = hook.propose(env);
-      expect(c1).toBe(0);
-      expect(fs.existsSync(path.join(dir, hook.STATE_FILE))).toBe(true);
+      expect(hook.propose(env)).toBe(0);
+      const state = path.join(dir, hook.STATE_FILE);
+      expect(fs.existsSync(state)).toBe(true);
+      const fp = fs.readFileSync(state, 'utf-8');
 
-      // Second call, SAME diff -> dedup -> must NOT spawn again.
-      const c2 = hook.propose(env);
-      expect(c2).toBe(0);
-
-      // Give the single detached spawn a moment to write the sentinel.
-      const deadline = Date.now() + 3000;
-      while (!fs.existsSync(sentinel) && Date.now() < deadline) {
-        execFileSync('node', ['-e', 'setTimeout(()=>{},50)']);
-      }
-      const runs = fs.existsSync(sentinel) ? fs.readFileSync(sentinel, 'utf-8').length : 0;
-      expect(runs).toBe(1); // spawned exactly once despite two propose() calls
+      // Same diff -> decision must now dedup (deterministic, no spawn timing).
+      expect(hook.reflectDecision(env).act).toBe(false);
+      expect(fs.readFileSync(state, 'utf-8')).toBe(fp); // unchanged
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });
       fs.rmSync(sentinelDir, { recursive: true, force: true });
