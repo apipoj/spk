@@ -98,6 +98,15 @@ describe('hook output contract', () => {
     expect(miss.status).toBe(0);
   });
 
+  test('session-reflect Stop hook writes NOTHING to stdout (loop-proof), exit 0', () => {
+    // A Stop hook re-feeds the model only via stdout decision/additionalContext.
+    // session-reflect must never do that — it spawns the reflector in the
+    // background instead. Kill switch keeps this from touching the repo.
+    const result = runHook('session-reflect.cjs', { hook_event_name: 'Stop' }, { SPK_SESSION_REFLECT: 'off' });
+    expect(result.status).toBe(0);
+    expect(result.stdout).toBe('');
+  });
+
   test('malformed stdin never breaks a hook', () => {
     for (const script of ['wiki-secret-scan.cjs', 'gitignore-guard.cjs', 'auto-ingest.cjs', 'webfetch-cache.cjs']) {
       const result = spawnSync('node', [path.join(SCRIPTS, script), 'pre'], {
