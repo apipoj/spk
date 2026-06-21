@@ -98,23 +98,8 @@ describe('hook output contract', () => {
     expect(miss.status).toBe(0);
   });
 
-  test('session-reflect proposes via additionalContext JSON on stdout, exit 0', () => {
-    const result = runHook('session-reflect.cjs', { hook_event_name: 'Stop' });
-    expect(result.status).toBe(0);
-    const out = JSON.parse(result.stdout);
-    expect(out.hookSpecificOutput.hookEventName).toBe('Stop');
-    expect(out.hookSpecificOutput.additionalContext).toMatch(/learning|AGENTS\.md|reflect|prime/i);
-  });
-
-  test('session-reflect kill switch is silent with exit 0', () => {
-    const result = runHook('session-reflect.cjs', { hook_event_name: 'Stop' }, { SPK_SESSION_REFLECT: 'off' });
-    expect(result.status).toBe(0);
-    expect(result.stdout).toBe('');
-    expect(result.stderr).toBe('');
-  });
-
   test('malformed stdin never breaks a hook', () => {
-    for (const script of ['wiki-secret-scan.cjs', 'gitignore-guard.cjs', 'auto-ingest.cjs', 'webfetch-cache.cjs', 'session-reflect.cjs']) {
+    for (const script of ['wiki-secret-scan.cjs', 'gitignore-guard.cjs', 'auto-ingest.cjs', 'webfetch-cache.cjs']) {
       const result = spawnSync('node', [path.join(SCRIPTS, script), 'pre'], {
         input: 'not json{',
         encoding: 'utf-8'
