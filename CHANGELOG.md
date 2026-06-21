@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+## 3.3.5 - 2026-06-21
+
+Patch: remove the `session-reflect` Stop hook entirely.
+
+### Removed
+- Dropped the `session-reflect` Stop hook (wiring in `hooks.json`, `scripts/session-reflect.cjs`, and its tests). Even firing once per session, its `Stop hook feedback: [SPK session-reflect] …` banner was intrusive, and any Stop hook that re-feeds the model risks the "blocked the turn from ending N consecutive times" loop. Removing the hook eliminates that class of error outright — there is no longer a Stop hook in the plugin. Capturing a learning is still available on demand via `/spk:ingest`.
+
+### Release
+- Bumped `manifest.json`, `.claude-plugin/marketplace.json`, `plugins/spk/.claude-plugin/plugin.json`, `package.json`, and `package-lock.json` to `3.3.5`.
+
+## 3.3.4 - 2026-06-21
+
+Patch: fix the `session-reflect` Stop hook infinite loop (superseded by its removal in 3.3.5).
+
+### Fixed
+- The `session-reflect` Stop hook looped until Claude Code's stop-hook cap. The 3.3.3 `stop_hook_active` guard was ineffective because the hook re-prompts via `additionalContext`, a path that never sets that flag. Added a persistent per-session marker (keyed on `session_id`, falling back to `transcript_path`, then a short cooldown) so it fired exactly once per session.
+
 ## 3.3.2 - 2026-06-10
 
 Patch: fix `/spk:prime` trusting stale context files instead of reading the source.
